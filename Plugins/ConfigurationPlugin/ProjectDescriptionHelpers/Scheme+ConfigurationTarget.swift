@@ -15,7 +15,7 @@ public extension Scheme {
     return .init(
       name: name + target.rawValue,
       shared: true,
-      buildAction: .buildAction(targets: ["\(target.rawValue)"]),
+      buildAction: .buildAction(targets: ["\(name)"]),
       runAction: .runAction(configuration: target.configurationName),
       archiveAction: .archiveAction(configuration: target.configurationName),
       profileAction: .profileAction(configuration: target.configurationName),

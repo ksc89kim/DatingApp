@@ -1,16 +1,29 @@
 import ProjectDescription
 import ProjectDescriptionHelpers
 import ConfigurationPlugin
+import EnvironmentPlugin
 
 let configurations: [Configuration] = .default
 
+let targets: [Target] = [
+  .init(
+    name: env.name,
+    platform: env.platform,
+    product: .app,
+    bundleId: env.bundleId,
+    deploymentTarget: env.deploymentTarget,
+    sources: ["Sources/**"],
+    resources: ["Resources/**"],
+    settings: .settings(base: env.baseSetting)
+  )
+]
+
 let project: Project = .init(
-  name: "FoodReviewBlog",
-  settings: .settings(configurations: configurations),
-  schemes: configurations.compactMap { (configuration: Configuration) -> Scheme? in
-    guard let target = configuration.target else { return nil }
-    return .make(name: "FoodReviewBlog", target: target)
-  }
+  name: env.name,
+  organizationName: env.organizationName,
+  settings: .settings(base: env.baseSetting, configurations: configurations),
+  targets: targets,
+  schemes: configurations.schems(name: env.name)
 )
 
 

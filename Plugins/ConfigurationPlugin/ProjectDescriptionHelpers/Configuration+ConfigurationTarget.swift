@@ -34,9 +34,21 @@ public extension Array where Element == Configuration {
 
   // MARK: - Property
 
-    static let `default`: [Configuration] = [
-      .debug(target: .dev),
-      .debug(target: .stage),
-      .release(target: .release)
-    ]
+  static let `default`: [Configuration] = [
+    .debug(target: .dev),
+    .debug(target: .stage),
+    .release(target: .release)
+  ]
+
+  var targets: [ConfigurationTarget] {
+    return self.compactMap { (configuration: Configuration) -> ConfigurationTarget? in
+      return configuration.target
+    }
+  }
+
+  func schems(name: String) -> [Scheme] {
+    return self.targets.map { (target: ConfigurationTarget) -> Scheme in
+      return .make(name: name, target: target)
+    }
+  }
 }
