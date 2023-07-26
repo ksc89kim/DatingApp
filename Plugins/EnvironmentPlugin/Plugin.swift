@@ -1,3 +1,3 @@
 import ProjectDescription
 
-let plugin = Plugin(name: "EnvironmentPlugin")
+let environmentPlugin = Plugin(name: "EnvironmentPlugin")

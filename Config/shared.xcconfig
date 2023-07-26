@@ -1,0 +1,13 @@
+//
+//  shared.xcconfig
+//  NoondateKO
+//
+//  Created by sc.kim on 2021/10/22.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+
+OTHER_SWIFT_FLAGS[config=Dev][sdk=*] = $(inherited) -DDev
+OTHER_SWIFT_FLAGS[config=Stage][sdk=*] = $(inherited) -DStage
+OTHER_SWIFT_FLAGS[config=Release][sdk=*] = $(inherited) -DRelase

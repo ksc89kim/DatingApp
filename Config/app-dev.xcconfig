@@ -1,0 +1,11 @@
+//
+//  app-dev.xcconfig
+//  NoondateKO
+//
+//  Created by sc.kim on 2021/10/22.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+
+#include "./shared.xcconfig"
