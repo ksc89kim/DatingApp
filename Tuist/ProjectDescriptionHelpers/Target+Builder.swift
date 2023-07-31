@@ -7,6 +7,7 @@
 
 import ProjectDescription
 import EnvironmentPlugin
+import ConfigurationPlugin
 
 public extension Target {
 
@@ -74,7 +75,10 @@ public extension Target {
       scripts: [TargetScript] = [],
       dependencies: [TargetDependency] = [],
       featuresDependencies: MicroFeaturesDependencies = .init(),
-      settings: Settings? = .settings(base: env.baseSetting),
+      settings: Settings? = .settings(
+        base: env.baseSetting,
+        configurations: .default
+      ),
       coreDataModels: [CoreDataModel] = [],
       environment: [String : String] = [:],
       launchArguments: [LaunchArgument] = [],
