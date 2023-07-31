@@ -12,7 +12,7 @@ let targets: [Target] = [
     product: .app,
     bundleId: env.bundleId,
     deploymentTarget: env.deploymentTarget,
-    sources: ["Sources/**"],
+    sources: .sources,
     resources: ["Resources/**"],
     settings: .settings(base: env.baseSetting)
   )

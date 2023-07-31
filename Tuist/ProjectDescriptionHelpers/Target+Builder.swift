@@ -67,7 +67,7 @@ public extension Target {
       bundleId: String? = nil,
       deploymentTarget: DeploymentTarget? = env.deploymentTarget,
       infoPlist: InfoPlist? = .default,
-      sources: SourceFilesList? = nil,
+      sources: SourceFilesList? = .sources,
       resources: ResourceFileElements? = nil,
       copyFiles: [CopyFilesAction]? = nil,
       headers: Headers? = nil,

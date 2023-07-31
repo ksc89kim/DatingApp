@@ -6,11 +6,12 @@
 //
 
 import ProjectDescription
+import ProjectPathPlugin
 
 public extension Target {
 
   static func features(
-    name: String,
+    target: ProjectPathType.Features,
     types: Set<MicroFeaturesType>,
     baseBuilder: Target.Builder? = nil
   ) -> [Self] {
@@ -18,7 +19,7 @@ public extension Target {
     if types.contains(.interface) {
       targets.append(
         .feature(
-          name: name,
+          target: target,
           type: .interface,
           baseBuilder: baseBuilder
         )
@@ -28,7 +29,7 @@ public extension Target {
     if types.contains(.source) {
       targets.append(
         .feature(
-          name: name,
+          target: target,
           type: .source,
           baseBuilder: baseBuilder
         )
@@ -38,7 +39,7 @@ public extension Target {
     if types.contains(.testing) {
       targets.append(
         .feature(
-          name: name,
+          target: target,
           type: .testing,
           baseBuilder: baseBuilder
         )
@@ -48,7 +49,7 @@ public extension Target {
     if types.contains(.tests) {
       targets.append(
         .feature(
-          name: name,
+          target: target,
           type: .tests,
           baseBuilder: baseBuilder
         )
@@ -58,7 +59,7 @@ public extension Target {
     if types.contains(.examples) {
       targets.append(
         .feature(
-          name: name,
+          target: target,
           type: .examples,
           baseBuilder: baseBuilder
         )
@@ -69,7 +70,7 @@ public extension Target {
   }
 
   static func feature(
-    name: String,
+    target: ProjectPathType.Features,
     type: MicroFeaturesType,
     baseBuilder: Target.Builder? = nil
   ) -> Self {
@@ -79,7 +80,7 @@ public extension Target {
     }
     builder
       .sources(type.sourceFileList)
-      .name(type.name(name: name))
+      .name(type.name(target))
 
     switch type {
     case .source:

@@ -1,9 +1,11 @@
 import ProjectDescription
 import EnvironmentPlugin
+import ProjectPathPlugin
 
 let workspace = Workspace(
   name: env.name,
     projects: [
-        "Projects/App"
+      "\(ProjectPathType.app.path)",
+      "\(ProjectPathType.features(.base).path)"
     ]
 )

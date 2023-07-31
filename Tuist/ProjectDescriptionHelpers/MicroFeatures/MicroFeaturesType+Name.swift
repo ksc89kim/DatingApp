@@ -6,10 +6,11 @@
 //
 
 import Foundation
+import ProjectPathPlugin
 
 public extension MicroFeaturesType {
 
-  func name(name: String) -> String {
-    return name + self.rawValue
+  func name(_ type: ProjectPathType.Features) -> String {
+    return type.rawValue + self.rawValue
   }
 }
