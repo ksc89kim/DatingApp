@@ -296,11 +296,11 @@ public extension Target {
       return self
     }
 
-    public static func makeBuilder(dependencies: [TargetDependency]) -> Self {
+    public static func make(dependencies: [TargetDependency]) -> Self {
       return .init().dependencies(dependencies)
     }
 
-    public static func makeBuilder(featuresDependencies: MicroFeaturesDependencies) -> Self {
+    public static func make(featuresDependencies: MicroFeaturesDependencies) -> Self {
       return .init().featuresDependencies(featuresDependencies)
     }
   }

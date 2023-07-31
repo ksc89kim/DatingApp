@@ -9,7 +9,7 @@ import ProjectDescription
 
 public extension Target {
 
-  static func makeTargets(
+  static func features(
     name: String,
     types: Set<MicroFeaturesType>,
     baseBuilder: Target.Builder? = nil
@@ -17,7 +17,7 @@ public extension Target {
     var targets: [Target] = []
     if types.contains(.interface) {
       targets.append(
-        .makeTarget(
+        .feature(
           name: name,
           type: .interface,
           baseBuilder: baseBuilder
@@ -27,7 +27,7 @@ public extension Target {
 
     if types.contains(.source) {
       targets.append(
-        .makeTarget(
+        .feature(
           name: name,
           type: .source,
           baseBuilder: baseBuilder
@@ -37,7 +37,7 @@ public extension Target {
 
     if types.contains(.testing) {
       targets.append(
-        .makeTarget(
+        .feature(
           name: name,
           type: .testing,
           baseBuilder: baseBuilder
@@ -47,7 +47,7 @@ public extension Target {
 
     if types.contains(.tests) {
       targets.append(
-        .makeTarget(
+        .feature(
           name: name,
           type: .tests,
           baseBuilder: baseBuilder
@@ -57,7 +57,7 @@ public extension Target {
 
     if types.contains(.examples) {
       targets.append(
-        .makeTarget(
+        .feature(
           name: name,
           type: .examples,
           baseBuilder: baseBuilder
@@ -68,7 +68,7 @@ public extension Target {
     return targets
   }
 
-  static func makeTarget(
+  static func feature(
     name: String,
     type: MicroFeaturesType,
     baseBuilder: Target.Builder? = nil

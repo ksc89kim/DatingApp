@@ -9,35 +9,35 @@ import ProjectDescription
 
 public extension TargetDependency {
 
-  static func makeDependencies(
+  static func features(
     name: String,
     types: Set<MicroFeaturesType>
   ) -> [Self] {
     var dependencies: [TargetDependency] = []
     if types.contains(.interface) {
-      dependencies.append(.makeDependency(name: name, type: .interface))
+      dependencies.append(.feature(name: name, type: .interface))
     }
 
     if types.contains(.source) {
-      dependencies.append(.makeDependency(name: name, type: .source))
+      dependencies.append(.feature(name: name, type: .source))
     }
 
     if types.contains(.testing) {
-      dependencies.append(.makeDependency(name: name, type: .testing))
+      dependencies.append(.feature(name: name, type: .testing))
     }
 
     if types.contains(.tests) {
-      dependencies.append(.makeDependency(name: name, type: .tests))
+      dependencies.append(.feature(name: name, type: .tests))
     }
 
     if types.contains(.examples) {
-      dependencies.append(.makeDependency(name: name, type: .examples))
+      dependencies.append(.feature(name: name, type: .examples))
     }
 
     return dependencies
   }
 
-  static func makeDependency(
+  static func feature(
     name: String,
     type: MicroFeaturesType
   ) -> Self {
