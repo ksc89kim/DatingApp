@@ -8,8 +8,67 @@
 import ProjectDescription
 
 public extension Target {
-  
-  static func make(
+
+  static func makeTargets(
+    name: String,
+    types: Set<MicroFeaturesType>,
+    baseBuilder: Target.Builder? = nil
+  ) -> [Self] {
+    var targets: [Target] = []
+    if types.contains(.interface) {
+      targets.append(
+        .makeTarget(
+          name: name,
+          type: .interface,
+          baseBuilder: baseBuilder
+        )
+      )
+    }
+
+    if types.contains(.source) {
+      targets.append(
+        .makeTarget(
+          name: name,
+          type: .source,
+          baseBuilder: baseBuilder
+        )
+      )
+    }
+
+    if types.contains(.testing) {
+      targets.append(
+        .makeTarget(
+          name: name,
+          type: .testing,
+          baseBuilder: baseBuilder
+        )
+      )
+    }
+
+    if types.contains(.tests) {
+      targets.append(
+        .makeTarget(
+          name: name,
+          type: .tests,
+          baseBuilder: baseBuilder
+        )
+      )
+    }
+
+    if types.contains(.examples) {
+      targets.append(
+        .makeTarget(
+          name: name,
+          type: .examples,
+          baseBuilder: baseBuilder
+        )
+      )
+    }
+
+    return targets
+  }
+
+  static func makeTarget(
     name: String,
     type: MicroFeaturesType,
     baseBuilder: Target.Builder? = nil
@@ -18,83 +77,37 @@ public extension Target {
     if let baseBuilder = baseBuilder {
       builder.builder(baseBuilder)
     }
-    builder.sources(.path(type: type))
+    builder
+      .sources(type.sourceFileList)
+      .name(type.name(name: name))
 
-    if type.contains(.interface) {
-      builder.name(name + "Interface")
-        .product(.framework)
-    } else if type.contains(.source) {
-      builder.name(name)
-        .product(.framework)
-    } else if type.contains(.testing) {
-      builder.name(name + "Testing")
-        .product(.framework)
-    } else if type.contains(.tests) {
-      builder.name(name + "Tests")
-        .product(.unitTests)
-    } else if type.contains(.examples) {
-      builder.name(name + "Examples")
-        .product(.app)
+    switch type {
+    case .source:
+      builder.product(.framework)
+        .featuresDependencies(
+          .init(interface: builder.featuresDependencies.interfaceDependencies)
+        )
+    case .interface:
+      builder.product(.framework)
+        .featuresDependencies(
+          .init(source: builder.featuresDependencies.sourceDependencies)
+        )
+    case .testing:
+      builder.product(.framework)
+        .featuresDependencies(
+          .init(testing: builder.featuresDependencies.testingDependencies)
+        )
+    case .tests:
+      builder.product(.unitTests)
+        .featuresDependencies(
+          .init(tests: builder.featuresDependencies.testsDependencies)
+        )
+    case .examples:
+      builder.product(.app)
+        .featuresDependencies(
+          .init(tests: builder.featuresDependencies.examplesDependencies)
+        )
     }
     return builder.build()
-  }
-
-  static func make(
-    name: String,
-    type: MicroFeaturesType,
-    baseBuilder: Target.Builder? = nil
-  ) -> [Self] {
-    var targets: [Target] = []
-    if type.contains(.interface) {
-      targets.append(
-        .make(
-          name: name,
-          type: type,
-          baseBuilder: baseBuilder
-        )
-      )
-    }
-    
-    if type.contains(.source) {
-      targets.append(
-        .make(
-          name: name,
-          type: type,
-          baseBuilder: baseBuilder
-        )
-      )
-    }
-    
-    if type.contains(.testing) {
-      targets.append(
-        .make(
-          name: name,
-          type: type,
-          baseBuilder: baseBuilder
-        )
-      )
-    }
-    
-    if type.contains(.tests) {
-      targets.append(
-        .make(
-          name: name,
-          type: type,
-          baseBuilder: baseBuilder
-        )
-      )
-    }
-    
-    if type.contains(.examples) {
-      targets.append(
-        .make(
-          name: name,
-          type: type,
-          baseBuilder: baseBuilder
-        )
-      )
-    }
-    
-    return targets
   }
 }

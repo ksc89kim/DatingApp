@@ -42,7 +42,7 @@ public extension Target {
 
     private var dependencies: [TargetDependency]
 
-    private var testDependencies: [TargetDependency]
+    public var featuresDependencies: MicroFeaturesDependencies
 
     private var settings: Settings?
 
@@ -66,14 +66,14 @@ public extension Target {
       bundleId: String? = nil,
       deploymentTarget: DeploymentTarget? = env.deploymentTarget,
       infoPlist: InfoPlist? = .default,
-      sources: SourceFilesList? = .path(type: .source),
+      sources: SourceFilesList? = nil,
       resources: ResourceFileElements? = nil,
       copyFiles: [CopyFilesAction]? = nil,
       headers: Headers? = nil,
       entitlements: Path? = nil,
       scripts: [TargetScript] = [],
       dependencies: [TargetDependency] = [],
-      testDependencies: [TargetDependency] = [],
+      featuresDependencies: MicroFeaturesDependencies = .init(),
       settings: Settings? = .settings(base: env.baseSetting),
       coreDataModels: [CoreDataModel] = [],
       environment: [String : String] = [:],
@@ -95,7 +95,7 @@ public extension Target {
       self.entitlements = entitlements
       self.scripts = scripts
       self.dependencies = dependencies
-      self.testDependencies = testDependencies
+      self.featuresDependencies = featuresDependencies
       self.settings = settings
       self.coreDataModels = coreDataModels
       self.environment = environment
@@ -107,6 +107,14 @@ public extension Target {
     // MARK: - Build Methods
 
     public func build() -> Target {
+      var targetDependencies: [TargetDependency] = []
+      targetDependencies += self.dependencies
+      targetDependencies += self.featuresDependencies.interfaceDependencies
+      targetDependencies += self.featuresDependencies.sourceDependencies
+      targetDependencies += self.featuresDependencies.examplesDependencies
+      targetDependencies += self.featuresDependencies.testingDependencies
+      targetDependencies += self.featuresDependencies.testsDependencies
+
       return .init(
         name: self.name,
         platform: self.platform,
@@ -121,7 +129,7 @@ public extension Target {
         headers: self.headers,
         entitlements: self.entitlements,
         scripts: self.scripts,
-        dependencies: self.dependencies + self.testDependencies,
+        dependencies: targetDependencies,
         settings: self.settings,
         coreDataModels: self.coreDataModels,
         environment: self.environment,
@@ -217,8 +225,8 @@ public extension Target {
     }
 
     @discardableResult
-    public func testDependencies(_ dependencies: [TargetDependency]) -> Self {
-      self.testDependencies = dependencies
+    public func featuresDependencies(_ dependencies: MicroFeaturesDependencies) -> Self {
+      self.featuresDependencies = dependencies
       return self
     }
 
@@ -274,7 +282,7 @@ public extension Target {
       self.entitlements = builder.entitlements
       self.scripts = builder.scripts
       self.dependencies = builder.dependencies
-      self.testDependencies = builder.testDependencies
+      self.featuresDependencies = builder.featuresDependencies
       self.settings = builder.settings
       self.coreDataModels = builder.coreDataModels
       self.environment = builder.environment
@@ -284,8 +292,12 @@ public extension Target {
       return self
     }
 
-    public static func create(_ dependencies: [TargetDependency]) -> Self {
+    public static func makeBuilder(dependencies: [TargetDependency]) -> Self {
       return .init().dependencies(dependencies)
+    }
+
+    public static func makeBuilder(featuresDependencies: MicroFeaturesDependencies) -> Self {
+      return .init().featuresDependencies(featuresDependencies)
     }
   }
 }
