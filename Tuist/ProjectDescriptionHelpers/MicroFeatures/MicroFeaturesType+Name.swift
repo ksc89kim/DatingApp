@@ -11,6 +11,9 @@ import ProjectPathPlugin
 public extension MicroFeaturesType {
 
   func name(_ type: ProjectPathType.Features) -> String {
+    if case .source = self {
+      return type.rawValue
+    }
     return type.rawValue + self.rawValue
   }
 }

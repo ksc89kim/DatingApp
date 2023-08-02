@@ -80,34 +80,48 @@ public extension Target {
     }
     builder
       .sources(type.sourceFileList)
+      .resources(type.resources)
       .name(type.name(target))
+
+    let feturesDependencies = builder.featuresDependencies
 
     switch type {
     case .source:
       builder.product(.framework)
-        .featuresDependencies(
-          .init(interface: builder.featuresDependencies.interfaceDependencies)
-        )
+        .featuresDependencies(.init(
+          interface: feturesDependencies.interfaceDependencies
+          + [.featureForTarget(target: target, type: .interface)]
+        ))
     case .interface:
       builder.product(.framework)
         .featuresDependencies(
-          .init(source: builder.featuresDependencies.sourceDependencies)
+          .init(source: feturesDependencies.sourceDependencies)
         )
     case .testing:
       builder.product(.framework)
-        .featuresDependencies(
-          .init(testing: builder.featuresDependencies.testingDependencies)
-        )
+        .featuresDependencies(.init(
+          testing: feturesDependencies.testingDependencies
+          + [.featureForTarget(target: target, type: .interface)]
+        ))
     case .tests:
       builder.product(.unitTests)
-        .featuresDependencies(
-          .init(tests: builder.featuresDependencies.testsDependencies)
-        )
+        .featuresDependencies(.init(
+          tests: feturesDependencies.testsDependencies
+          + [
+            .featureForTarget(target: target, type: .testing),
+            .featureForTarget(target: target, type: .source),
+            .xctest
+          ]
+        ))
     case .examples:
       builder.product(.app)
-        .featuresDependencies(
-          .init(tests: builder.featuresDependencies.examplesDependencies)
-        )
+        .featuresDependencies(.init(
+          examples: feturesDependencies.examplesDependencies
+          + [
+            .featureForTarget(target: target, type: .testing),
+            .featureForTarget(target: target, type: .source)
+          ]
+        ))
     }
     return builder.build()
   }

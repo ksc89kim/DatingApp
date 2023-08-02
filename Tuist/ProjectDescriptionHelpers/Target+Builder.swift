@@ -67,7 +67,7 @@ public extension Target {
       bundleId: String? = nil,
       deploymentTarget: DeploymentTarget? = env.deploymentTarget,
       infoPlist: InfoPlist? = .default,
-      sources: SourceFilesList? = .sources,
+      sources: SourceFilesList? = "Sources/**",
       resources: ResourceFileElements? = nil,
       copyFiles: [CopyFilesAction]? = nil,
       headers: Headers? = nil,
@@ -194,7 +194,7 @@ public extension Target {
     }
 
     @discardableResult
-    public func resources(_ resources: ResourceFileElements) -> Self {
+    public func resources(_ resources: ResourceFileElements?) -> Self {
       self.resources = resources
       return self
     }
