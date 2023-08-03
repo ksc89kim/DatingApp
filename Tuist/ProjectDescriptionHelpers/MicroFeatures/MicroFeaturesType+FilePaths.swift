@@ -21,8 +21,8 @@ public extension MicroFeaturesType {
 
   var resources: ResourceFileElements? {
     switch self {
-    case .source, .examples: return "Resources/**"
-    case .interface, .testing, .tests: return nil
+    case .source: return "Resources/**"
+    case .interface, .testing, .tests, .examples: return nil
     }
   }
 }

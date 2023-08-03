@@ -2,7 +2,7 @@ import Foundation
 
 public enum ProjectPathType {
   case app
-  case features(ProjectPathType.Features)
+  case features(Features)
 
   public var path: String {
     switch self {

@@ -1,7 +1,5 @@
 import ProjectDescription
 import ProjectDescriptionHelpers
-import ConfigurationPlugin
-import EnvironmentPlugin
 import ProjectPathPlugin
 
 func targets() -> [Target] {

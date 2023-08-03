@@ -11,3 +11,5 @@
 OTHER_SWIFT_FLAGS[config=Dev][sdk=*] = $(inherited) -DDev
 OTHER_SWIFT_FLAGS[config=Stage][sdk=*] = $(inherited) -DStage
 OTHER_SWIFT_FLAGS[config=Release][sdk=*] = $(inherited) -DRelase
+
+ENABLE_TESTABILITY = true

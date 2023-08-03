@@ -1,7 +1,7 @@
 import SwiftUI
 
 @main
-struct BaseExampleApp: App {
+struct {{ name }}ExampleApp: App {
     var body: some Scene {
         WindowGroup {
             Text("Hellow World")
