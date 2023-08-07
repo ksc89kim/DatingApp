@@ -1,6 +1,6 @@
 import Foundation
 
-enum BaseExampleItem: String, CaseIterable, Identifiable {
+enum LaunchExampleItem: String, CaseIterable, Identifiable {
   case demoExample = "데모 예제1"
 
   // MARK: - Property

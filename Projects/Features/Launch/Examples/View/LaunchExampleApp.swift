@@ -1,10 +1,10 @@
 import SwiftUI
 
 @main
-struct BaseExampleApp: App {
+struct LaunchExampleApp: App {
     var body: some Scene {
         WindowGroup {
-            BaseContentView()
+            LaunchContentView()
         }
     }
 }

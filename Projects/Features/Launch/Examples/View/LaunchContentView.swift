@@ -1,11 +1,11 @@
 
 import SwiftUI
 
-struct BaseContentView: View {
+struct LaunchContentView: View {
 
   // MARK: - Property
 
-  let sections: [BaseExampleSection] = [
+  let sections: [LaunchExampleSection] = [
     .examples
   ]
 
@@ -23,9 +23,9 @@ struct BaseContentView: View {
         }
       }
       .navigationTitle("데모")
-      .navigationDestination(for: BaseExampleItem.self) { item in
+      .navigationDestination(for: LaunchExampleItem.self) { item in
         switch item {
-        case .demoExample: BaseDetailView(name: item.rawValue)
+        case .demoExample: LaunchDetailView(name: item.rawValue)
         }
       }
       .listStyle(.sidebar)
@@ -33,9 +33,9 @@ struct BaseContentView: View {
   }
 }
 
-struct BaseContentView_Previews: PreviewProvider {
+struct LaunchContentView_Previews: PreviewProvider {
   public static var previews: some View {
-    BaseContentView()
+    LaunchContentView()
   }
 }
 

@@ -1,7 +1,7 @@
 
 import Foundation
 
-struct BaseExampleSection: Identifiable {
+struct LaunchExampleSection: Identifiable {
 
   // MARK: - Property
 
@@ -9,15 +9,15 @@ struct BaseExampleSection: Identifiable {
 
   let name: String
 
-  let items: [BaseExampleItem]
+  let items: [LaunchExampleItem]
 }
 
 
 // MARK: - Sections
 
-extension BaseExampleSection {
+extension LaunchExampleSection {
 
-  static let examples: BaseExampleSection = .init(
+  static let examples: LaunchExampleSection = .init(
     name: "예시1",
     items: [.demoExample]
   )

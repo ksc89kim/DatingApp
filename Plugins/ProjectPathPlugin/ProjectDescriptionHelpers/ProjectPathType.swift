@@ -18,6 +18,6 @@ public enum ProjectPathType {
 public extension ProjectPathType {
 
   enum Features: String {
-    case base = "Base"
+    case launch = "Launch"
   }
 }

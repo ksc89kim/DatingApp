@@ -11,9 +11,6 @@ func targets() -> [Target] {
     .name(env.name)
     .product(.app)
     .settings(.settings(base: env.baseSetting, configurations: configurations))
-    .dependencies([
-      .feature(target: .base, type: .source),
-    ])
     .build()
   ]
 }
