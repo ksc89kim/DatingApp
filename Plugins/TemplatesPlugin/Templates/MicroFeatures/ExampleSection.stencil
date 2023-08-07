@@ -1,0 +1,25 @@
+
+import Foundation
+
+struct {{ name }}ExampleSection: Identifiable {
+
+  // MARK: - Property
+
+  let id: UUID = .init()
+
+  let name: String
+
+  let items: [{{ name }}ExampleItem]
+}
+
+
+// MARK: - Sections
+
+extension {{ name }}ExampleSection {
+
+  static let examples: {{ name }}ExampleSection = .init(
+    name: "예시1",
+    items: [.demoExample]
+  )
+}
+

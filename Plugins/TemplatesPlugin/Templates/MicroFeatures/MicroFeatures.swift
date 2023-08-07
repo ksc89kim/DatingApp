@@ -15,27 +15,45 @@ private let template = Template(
       path: "Projects/Features/\(nameAttribute)/Project.swift",
       templatePath: "Project.stencil"
     ),
-    .file(
-      path: "Projects/Features/\(nameAttribute)/Examples/\(nameAttribute)ExampleApp.swift",
-      templatePath: "ExampleApp.stencil"
-    ),
-    .file(
+    .string(
       path: "Projects/Features/\(nameAttribute)/Interface/\(nameAttribute)Interface.swift",
-      templatePath: "EmptyFile.stencil"
+      contents: ""
     ),
-    .file(
+    .string(
       path: "Projects/Features/\(nameAttribute)/Sources/\(nameAttribute).swift",
-      templatePath: "EmptyFile.stencil"
+      contents: ""
     ),
-    .file(
+    .string(
       path: "Projects/Features/\(nameAttribute)/Testing/\(nameAttribute)Testing.swift",
-      templatePath: "EmptyFile.stencil"
+      contents: ""
     ),
     .file(
       path: "Projects/Features/\(nameAttribute)/Tests/\(nameAttribute)Tests.swift",
       templatePath: "Tests.stencil"
     ),
     .directory(
-      path: "Projects/Features/\(nameAttribute)", sourcePath: "Resources")
+      path: "Projects/Features/\(nameAttribute)",
+      sourcePath: "Resources"
+    ),
+    .file(
+      path: "Projects/Features/\(nameAttribute)/Examples/Model/\(nameAttribute)ExampleItem.swift",
+      templatePath: "ExampleItem.stencil"
+    ),
+    .file(
+      path: "Projects/Features/\(nameAttribute)/Examples/Model/\(nameAttribute)ExampleSection.swift",
+      templatePath: "ExampleSection.stencil"
+    ),
+    .file(
+      path: "Projects/Features/\(nameAttribute)/Examples/View/\(nameAttribute)ExampleApp.swift",
+      templatePath: "ExampleApp.stencil"
+    ),
+    .file(
+      path: "Projects/Features/\(nameAttribute)/Examples/View/\(nameAttribute)ContentView.swift",
+      templatePath: "ContentView.stencil"
+    ),
+    .file(
+      path: "Projects/Features/\(nameAttribute)/Examples/View/\(nameAttribute)DetailView.swift",
+      templatePath: "DetailView.stencil"
+    )
   ]
 )
