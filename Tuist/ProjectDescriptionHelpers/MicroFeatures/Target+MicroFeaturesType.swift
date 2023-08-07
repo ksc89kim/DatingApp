@@ -89,13 +89,13 @@ public extension Target {
     case .source:
       builder.product(.framework)
         .featuresDependencies(.init(
-          interface: feturesDependencies.interfaceDependencies
+          interface: feturesDependencies.sourceDependencies
           + [.featureForTarget(target: target, type: .interface)]
         ))
     case .interface:
       builder.product(.framework)
         .featuresDependencies(
-          .init(source: feturesDependencies.sourceDependencies)
+          .init(source: feturesDependencies.interfaceDependencies)
         )
     case .testing:
       builder.product(.framework)
