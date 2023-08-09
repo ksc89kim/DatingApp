@@ -10,6 +10,8 @@ func targets() -> [Target] {
     .Builder()
     .name(env.name)
     .product(.app)
+    .infoPlist("Support/Info.plist")
+    .resources("Resources/**")
     .settings(.settings(base: env.baseSetting, configurations: configurations))
     .build()
   ]
