@@ -9,6 +9,7 @@ struct {{ name }}DetailView: View {
 }
 
 struct {{ name }}DetailView_Previews: PreviewProvider {
+
   static var previews: some View {
     {{ name }}DetailView(name: "테스트 예제")
   }

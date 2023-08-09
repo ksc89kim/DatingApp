@@ -2,9 +2,12 @@ import SwiftUI
 
 @main
 struct {{ name }}ExampleApp: App {
-    var body: some Scene {
-        WindowGroup {
-            {{ name }}ContentView()
-        }
+
+  // MARK: - Body
+
+  var body: some Scene {
+    WindowGroup {
+      {{ name }}ContentView()
     }
+  }
 }
