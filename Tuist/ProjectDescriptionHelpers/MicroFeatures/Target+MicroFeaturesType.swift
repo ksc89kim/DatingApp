@@ -115,6 +115,9 @@ public extension Target {
         ))
     case .examples:
       builder.product(.app)
+        .infoPlist(.extendingDefault(with: [
+          "UILaunchScreen" : .dictionary([:])
+        ]))
         .featuresDependencies(.init(
           examples: feturesDependencies.examplesDependencies
           + [
