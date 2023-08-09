@@ -17,15 +17,15 @@ private let template = Template(
     ),
     .string(
       path: "Projects/Features/\(nameAttribute)/Interface/\(nameAttribute)Interface.swift",
-      contents: ""
+      contents: "// EMPTY FILE"
     ),
     .string(
       path: "Projects/Features/\(nameAttribute)/Sources/\(nameAttribute).swift",
-      contents: ""
+      contents: "// EMPTY FILE"
     ),
     .string(
       path: "Projects/Features/\(nameAttribute)/Testing/\(nameAttribute)Testing.swift",
-      contents: ""
+      contents: "// EMPTY FILE"
     ),
     .file(
       path: "Projects/Features/\(nameAttribute)/Tests/\(nameAttribute)Tests.swift",
