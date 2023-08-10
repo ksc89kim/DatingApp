@@ -2,34 +2,28 @@ import ProjectDescription
 import ProjectDescriptionHelpers
 import ConfigurationPlugin
 import EnvironmentPlugin
-import ProjectPathPlugin
 
 let configurations: [Configuration] = .default
+let name = "DI"
 
 func targets() -> [Target] {
   return [
     .Builder()
-    .name(env.name)
-    .product(.app)
-    .infoPlist("Support/Info.plist")
-    .resources("Resources/**")
+    .name(name)
+    .product(.framework)
     .settings(.settings(base: env.baseSetting, configurations: configurations))
-    .dependencies([
-      .di
-    ])
     .build()
   ]
 }
 
 let project: Project = .init(
-  name: env.name,
+  name: name,
   organizationName: env.organizationName,
   settings: .settings(
     base: env.baseSetting,
     configurations: configurations
   ),
-  targets: targets(),
-  schemes: configurations.schems(name: env.name)
+  targets: targets()
 )
 
 
