@@ -1,7 +1,7 @@
 import Foundation
 
 enum LaunchExampleItem: String, CaseIterable, Identifiable {
-  case demoExample = "데모 예제1"
+  case launchView = "런치 뷰"
 
   // MARK: - Property
 

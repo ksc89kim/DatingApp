@@ -18,8 +18,8 @@ struct LaunchExampleSection: Identifiable {
 extension LaunchExampleSection {
 
   static let examples: LaunchExampleSection = .init(
-    name: "예시1",
-    items: [.demoExample]
+    name: "런치",
+    items: [.launchView]
   )
 }
 
