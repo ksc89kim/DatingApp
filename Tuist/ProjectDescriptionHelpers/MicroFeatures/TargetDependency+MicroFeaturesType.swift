@@ -47,11 +47,4 @@ public extension TargetDependency {
       path: .relativeToPathType(.features(target))
     )
   }
-
-  static func featureForTarget(
-    target: ProjectPathType.Features,
-    type: MicroFeaturesType
-  ) -> Self {
-    return .target(name: type.name(target))
-  }
 }

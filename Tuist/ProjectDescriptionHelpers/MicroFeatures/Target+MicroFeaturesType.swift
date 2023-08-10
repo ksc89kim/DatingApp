@@ -90,7 +90,7 @@ public extension Target {
       builder.product(.framework)
         .featuresDependencies(.init(
           interface: feturesDependencies.sourceDependencies
-          + [.featureForTarget(target: target, type: .interface)]
+          + [.feature(target: target, type: .interface)]
         ))
     case .interface:
       builder.product(.framework)
@@ -101,15 +101,15 @@ public extension Target {
       builder.product(.framework)
         .featuresDependencies(.init(
           testing: feturesDependencies.testingDependencies
-          + [.featureForTarget(target: target, type: .interface)]
+          + [.feature(target: target, type: .interface)]
         ))
     case .tests:
       builder.product(.unitTests)
         .featuresDependencies(.init(
           tests: feturesDependencies.testsDependencies
           + [
-            .featureForTarget(target: target, type: .testing),
-            .featureForTarget(target: target, type: .source),
+            .feature(target: target, type: .testing),
+            .feature(target: target, type: .source),
             .xctest
           ]
         ))
@@ -121,8 +121,8 @@ public extension Target {
         .featuresDependencies(.init(
           examples: feturesDependencies.examplesDependencies
           + [
-            .featureForTarget(target: target, type: .testing),
-            .featureForTarget(target: target, type: .source)
+            .feature(target: target, type: .testing),
+            .feature(target: target, type: .source)
           ]
         ))
     }
