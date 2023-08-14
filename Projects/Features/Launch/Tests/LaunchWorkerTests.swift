@@ -4,63 +4,126 @@ import XCTest
 
 final class LaunchWorkerTests: XCTestCase {
 
-  func testTotalSizeAtWorker() throws {
-    let rootWorker: LaunchWorkable = MockLaunchWorker()
+  // MARK: - Property
 
-    XCTAssertEqual(rootWorker.totalSize, 1)
-    rootWorker.push(item: MockLaunchWorker())
-    rootWorker.push(item: MockLaunchWorker())
-    rootWorker.push(item: MockLaunchWorker())
-    XCTAssertEqual(rootWorker.totalSize, 4)
-    rootWorker.push(item: MockLaunchWorker())
-    XCTAssertEqual(rootWorker.totalSize, 5)
-    XCTAssertNotEqual(rootWorker.totalSize, 3)
+  var rootWorker: MockLaunchWorker!
 
-    let chainFirstItem: LaunchWorkable = MockLaunchWorker()
-    rootWorker.push(item: chainFirstItem)
-    XCTAssertEqual(rootWorker.totalSize, 6)
-    chainFirstItem.push(item: MockLaunchWorker())
-    XCTAssertEqual(rootWorker.totalSize, 7)
-    chainFirstItem.push(item: MockLaunchWorker())
-    XCTAssertEqual(rootWorker.totalSize, 8)
+  var chainWorker: MockLaunchWorker!
+
+  // MARK: - Tests
+
+  override func setUp() {
+    super.setUp()
+    self.rootWorker = .init()
+
+    self.chainWorker = .init()
+    self.chainWorker.push(item: MockLaunchWorker())
   }
 
-  func testLaunchStateAtWorker() throws {
-    let rootWorker: LaunchWorkable = MockLaunchWorker()
-    XCTAssertEqual(rootWorker.isComplete, false)
-    rootWorker.state = .complete
-    XCTAssertEqual(rootWorker.isComplete, true)
+  /// Root Worker 아이템 추가 테스트
+  func testPushItemAtRootWorker() {
+    let firstWorker = MockLaunchWorker()
+    let secondWorker = MockLaunchWorker()
+    let thirdWorker = MockLaunchWorker()
 
-    let firstItem: LaunchWorkable = MockLaunchWorker()
-    rootWorker.push(item: firstItem)
-    XCTAssertEqual(rootWorker.isComplete, false)
-    firstItem.state = .complete
-    XCTAssertEqual(rootWorker.isComplete, true)
-    firstItem.state = .running
-    XCTAssertEqual(rootWorker.isComplete, false)
+    self.rootWorker.push(item: firstWorker)
+    self.rootWorker.push(item: secondWorker)
+    self.rootWorker.push(item: thirdWorker)
 
-    let secondItem: MockLaunchWorker = .init()
-    firstItem.push(item: secondItem)
-    XCTAssertEqual(rootWorker.isComplete, false)
-    firstItem.state = .complete
-    secondItem.state = .complete
-    XCTAssertEqual(rootWorker.isComplete, true)
-    secondItem.state = .running
-    XCTAssertEqual(rootWorker.isComplete, false)
-    secondItem.state = .ready
-    XCTAssertEqual(rootWorker.isComplete, false)
-    firstItem.state = .ready
-    secondItem.state = .complete
-    XCTAssertEqual(rootWorker.isComplete, false)
+    XCTAssertEqual(self.rootWorker.items.count, 3)
+  }
 
-    let thirdItem: MockLaunchWorker = .init()
-    firstItem.state = .complete
-    secondItem.state = .complete
-    rootWorker.push(item: thirdItem)
-    XCTAssertEqual(rootWorker.isComplete, false)
-    thirdItem.state = .complete
-    XCTAssertEqual(rootWorker.isComplete, true)
-    firstItem.state = .ready
-    XCTAssertEqual(rootWorker.isComplete, false)
+  /// Chain Worker 아이템 추가 테스트
+  func testPushItemAtChainWorker() {
+    let subWorker = self.chainWorker.items.first!
+    let firstItem = MockLaunchWorker()
+    let secondItem = MockLaunchWorker()
+
+    self.chainWorker.push(item: firstItem)
+    subWorker.push(item: secondItem)
+
+    XCTAssertEqual(self.chainWorker.items.count, 2)
+    XCTAssertEqual(subWorker.items.count, 1)
+  }
+
+  /// Root Worker 총 갯수 테스트
+  func testTotalSizeAtRootWorker() {
+    let fristItem  = MockLaunchWorker()
+    let secondItem  = MockLaunchWorker()
+
+    self.rootWorker.push(item: fristItem)
+    self.rootWorker.push(item: secondItem)
+
+    XCTAssertEqual(rootWorker.totalSize, 3)
+  }
+
+  /// Chain Worker Total Size 테스트
+  func testTotalSizeAtChainWorker() {
+    let item = MockLaunchWorker()
+    self.chainWorker.push(item: item)
+    self.chainWorker.items.first?.push(item: item)
+
+    XCTAssertEqual(self.chainWorker.totalSize, 4)
+  }
+
+  /// Root Worker에서 LaunchState가 Ready인 경우 IsComplete 테스트
+  func testIsCompleteWhenReadyAtRootWorker() {
+    self.rootWorker.state = .ready
+
+    XCTAssertEqual(self.rootWorker.isComplete, false)
+  }
+
+  /// Root Worker에서 LaunchState가 Running인 경우 IsComplete 테스트
+  func testIsCompleteWhenRunningAtRootWorker() {
+    self.rootWorker.state = .running
+
+    XCTAssertEqual(self.rootWorker.isComplete, false)
+  }
+
+  /// Root Worker에서 LaunchState가 Complete인 경우 IsComplete 테스트
+  func testIsCompleteWhenCompleteAtRootWorker() {
+    self.rootWorker.state = .complete
+
+    XCTAssertEqual(self.rootWorker.isComplete, true)
+  }
+
+  /// ChainWorekr에서 LaunchState가 모두 Ready인 경우 IsComplete 테스트
+  func testIsCompleteWhenAllReadyAtChainWorker() {
+    self.chainWorker.state = .ready
+    self.chainWorker.items.first?.state = .ready
+
+    XCTAssertEqual(self.chainWorker.isComplete, false)
+  }
+
+  /// ChainWorekr에서 LaunchState가 하나만 Ready인 경우 IsComplete 테스트
+  func testIsCompleteWhenOnlyOneReadyAtChainWorker() {
+    self.chainWorker.state = .complete
+    self.chainWorker.items.first?.state = .ready
+
+    XCTAssertEqual(self.chainWorker.isComplete, false)
+  }
+
+  /// ChainWorekr에서 LaunchState가 모두 Running인 경우 IsComplete 테스트
+  func testIsCompleteWhenAllRunningAtChainWorker() {
+    self.chainWorker.state = .running
+    self.chainWorker.items.first?.state = .running
+
+    XCTAssertEqual(self.chainWorker.isComplete, false)
+  }
+
+  /// ChainWorekr에서 LaunchState가 하나만 Running인 경우 IsComplete 테스트
+  func testIsCompleteWhenOnlyOneRunningAtChainWorker() {
+    self.chainWorker.state = .complete
+    self.chainWorker.items.first?.state = .running
+
+    XCTAssertEqual(self.chainWorker.isComplete, false)
+  }
+
+  /// ChainWorekr에서 LaunchState가 모두 Complete인 경우 IsComplete 테스트
+  func testIsCompleteWhenAllCompleteAtChainWorker() {
+    self.chainWorker.state = .complete
+    self.chainWorker.items.first?.state = .complete
+    
+    XCTAssertEqual(self.chainWorker.isComplete, true)
   }
 }
