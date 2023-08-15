@@ -7,3 +7,7 @@
 //
 
 import Foundation
+
+enum MockLaunchWorkerError: LocalizedError {
+  case runError
+}

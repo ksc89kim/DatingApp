@@ -52,15 +52,22 @@ public extension LaunchWorkable {
   }
 
   func run() async throws {
+    try Task.checkCancellation()
+
+    self.state = .running
     try await self.work()
     self.state = .complete
-    
+
+    try Task.checkCancellation()
+
     try await withThrowingTaskGroup(of: Void.self) { group in
-      try Task.checkCancellation()
       for item in self.items {
         group.addTask {
-          try await item.run()
+            try await item.run()
         }
+      }
+      
+      while let _ = try await group.next() {
       }
     }
   }
