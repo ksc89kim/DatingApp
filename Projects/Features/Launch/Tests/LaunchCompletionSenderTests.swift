@@ -16,6 +16,7 @@ final class LaunchCompletionSenderTests: XCTestCase {
     self.sender = .init()
   }
 
+  /// Sender Completion 호출 확인
   func testSetCompletion() async {
     let successString = "SUCCESS"
     var result = ""
@@ -26,40 +27,54 @@ final class LaunchCompletionSenderTests: XCTestCase {
     XCTAssertEqual(result, successString)
   }
 
-  func testSetData() async {
-    let originalData: LaunchCompletionUpdateCount = .init(
-      totalCount: 5,
-      completedCount: 4
+  /// Send 함수 동작 확인
+  func testSend() async {
+    let originalData: LaunchCompletionCount = .init(
+      totalCount: 10,
+      completedCount: 5
     )
+    var result: LaunchSendDataType?
+    await self.sender.setCompletion { data in
+      result = data
+    }
 
-    await self.sender.setData(originalData)
+    await self.sender.send(originalData)
 
-    if let count = await self.sender.data as? LaunchCompletionUpdateCount {
-      XCTAssertEqual(count.completedCount, originalData.completedCount)
-      XCTAssertEqual(count.totalCount, originalData.totalCount)
+    if let compareData = result as? LaunchCompletionCount {
+      XCTAssertEqual(compareData, originalData)
     } else {
       XCTFail()
     }
   }
 
-  func testSend() async {
-    let originalData: LaunchCompletionUpdateCount = .init(
-      totalCount: 10,
-      completedCount: 5
-    )
-    var result: LaunchCompletionSendData?
+  /// Send 함수를 Group Task에서 확인
+  func testSendToGroupTask() async {
+    let maxCount: Int = 5
+    var datas: [LaunchCompletionCount] = (1...maxCount).map { index in
+      return .init(totalCount: maxCount, completedCount: index)
+    }
 
-    await self.sender.setData(originalData)
+    var count: Int = 0
     await self.sender.setCompletion { data in
-      result = data
-    }
-    await self.sender.send()
+      guard let data = data as? LaunchCompletionCount else { return }
+      if datas.contains(data) {
+        count += 1
 
-    if let count = result as? LaunchCompletionUpdateCount {
-      XCTAssertEqual(count.completedCount, originalData.completedCount)
-      XCTAssertEqual(count.totalCount, originalData.totalCount)
-    } else {
-      XCTFail()
+        datas.removeAll { compareData in
+          compareData == data
+        }
+      }
     }
+
+    await withTaskGroup(of: Void.self) { group in
+      datas.forEach { data in
+        group.addTask {
+          await self.sender.send(data)
+        }
+      }
+    }
+
+    XCTAssertEqual(count, maxCount)
+    XCTAssertTrue(datas.isEmpty)
   }
 }

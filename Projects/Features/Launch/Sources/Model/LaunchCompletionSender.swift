@@ -8,22 +8,16 @@
 
 import Foundation
 
-actor LaunchCompletionSender: LaunchCompletionSendable {
+actor LaunchCompletionSender: LaunchSendable {
 
   // MARK: - Property
   
   var completion: Completion? = nil
 
-  var data: LaunchCompletionSendData? = nil
-
   // MARK: - Method
 
-  func send() {
-    self.completion?(self.data)
-  }
-
-  func setData(_ data: LaunchCompletionSendData) {
-    self.data = data
+  func send(_ data: LaunchSendDataType? = nil) {
+    self.completion?(data)
   }
   
   func setCompletion(_ completion: @escaping Completion) {

@@ -1,5 +1,5 @@
 //
-//  LaunchCompletionUpdateCount.swift
+//  LaunchCompletionCount.swift
 //  LaunchInterface
 //
 //  Created by kim sunchul on 2023/08/15.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct LaunchCompletionUpdateCount: LaunchCompletionSendData {
+struct LaunchCompletionCount: LaunchSendDataType, Equatable {
 
   // MARK: - Property
 

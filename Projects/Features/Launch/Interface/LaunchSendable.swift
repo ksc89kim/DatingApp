@@ -8,17 +8,15 @@
 
 import Foundation
 
-protocol LaunchCompletionSendable: Actor {
+public protocol LaunchSendable: Actor {
 
   // MARK: - Define
 
-  typealias Completion = (LaunchCompletionSendData?) -> Void
+  typealias Completion = (LaunchSendDataType?) -> Void
 
   // MARK: - Method
 
-  func send()
-
-  func setData(_ data: LaunchCompletionSendData)
+  func send(_ data: LaunchSendDataType?)
 
   func setCompletion(_ completion: @escaping Completion)
 }

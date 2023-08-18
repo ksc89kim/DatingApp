@@ -20,6 +20,10 @@ public protocol LaunchWorkable: AnyObject {
 
   var totalSize: Int { get }
 
+  var sender: LaunchSendable? { get set }
+
+  var completionSender: LaunchSendable? { get set }
+
   // MARK: - Method
 
   func push(item: LaunchWorkable)
@@ -57,6 +61,11 @@ public extension LaunchWorkable {
     self.state = .running
     try await self.work()
     self.state = .complete
+    let data: LaunchCompletionCount = .init(
+      totalCount: 1,
+      completedCount: 1
+    )
+    await self.completionSender?.send(data)
 
     try Task.checkCancellation()
 

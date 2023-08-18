@@ -15,6 +15,10 @@ final class MockLaunchWorker: LaunchWorkable {
 
   var workString = ""
 
+  var sender: LaunchSendable?
+
+  var completionSender: LaunchSendable?
+
   weak var parent: MockLaunchWorker?
 
   // MARK: - Method
