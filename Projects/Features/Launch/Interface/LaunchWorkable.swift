@@ -12,21 +12,19 @@ public protocol LaunchWorkable: AnyObject {
 
   // MARK: - Property
 
+  var parent: LaunchWorkable? { get set }
+
   var items: [LaunchWorkable] { get set }
 
   var state: LaunchState { get set }
 
-  var isComplete: Bool { get }
-
-  var totalSize: Int { get }
-
   var sender: LaunchSendable? { get set }
 
-  var completionSender: LaunchSendable? { get set }
+  var completionSender: LaunchCompletionSendable? { get set }
 
   // MARK: - Method
 
-  func push(item: LaunchWorkable)
+  func push(item: LaunchWorkable) async
   
   func run() async throws
 
@@ -44,15 +42,26 @@ public extension LaunchWorkable {
     }
   }
 
-  var totalSize: Int {
+  var totalCount: Int {
     guard !self.items.isEmpty else { return 1 }
     return self.items.reduce(1) { partialResult, item in
-      return partialResult + item.totalSize
+      return partialResult + item.totalCount
     }
   }
+  
+  var root: LaunchWorkable {
+    var rootWorkable: LaunchWorkable = self.parent ?? self
+    while let parent = rootWorkable.parent {
+      rootWorkable = parent
+    }
+    return rootWorkable
+  }
 
-  func push(item: LaunchWorkable) {
+  func push(item: LaunchWorkable) async {
+    item.parent = self
+    item.completionSender = self.completionSender
     self.items.append(item)
+    await self.completionSender?.setTotalCount(self.root.totalCount)
   }
 
   func run() async throws {
@@ -61,11 +70,8 @@ public extension LaunchWorkable {
     self.state = .running
     try await self.work()
     self.state = .complete
-    let data: LaunchCompletionCount = .init(
-      totalCount: 1,
-      completedCount: 1
-    )
-    await self.completionSender?.send(data)
+
+    await self.completionSender?.send()
 
     try Task.checkCancellation()
 

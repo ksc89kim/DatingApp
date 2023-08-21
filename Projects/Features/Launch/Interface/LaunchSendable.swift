@@ -16,7 +16,7 @@ public protocol LaunchSendable: Actor {
 
   // MARK: - Method
 
-  func send(_ data: LaunchSendDataType?)
+  func send()
 
   func setCompletion(_ completion: @escaping Completion)
 }

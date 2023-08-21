@@ -17,9 +17,9 @@ final class MockLaunchWorker: LaunchWorkable {
 
   var sender: LaunchSendable?
 
-  var completionSender: LaunchSendable?
+  var completionSender: LaunchCompletionSendable?
 
-  weak var parent: MockLaunchWorker?
+  weak var parent: LaunchWorkable?
 
   // MARK: - Method
 
@@ -27,8 +27,12 @@ final class MockLaunchWorker: LaunchWorkable {
     guard !self.isError else {
       throw MockLaunchWorkerError.runError
     }
-
-    let parentWorkString = self.parent?.workString ?? ""
-    self.workString = parentWorkString + "\(self.id)"
+    print("## \(self.id)")
+    if let parent = self.parent as? MockLaunchWorker {
+      let parentWorkString = parent.workString
+      self.workString = parentWorkString + "\(self.id)"
+    } else {
+      self.workString = "\(self.id)"
+    }
   }
 }

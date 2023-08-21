@@ -8,16 +8,31 @@
 
 import Foundation
 
-actor LaunchCompletionSender: LaunchSendable {
+actor LaunchCompletionSender: LaunchCompletionSendable {
 
   // MARK: - Property
   
   var completion: Completion? = nil
 
+  var counter: LaunchCompletionCounter = .init(totalCount: 1, completedCount: 0)
+
   // MARK: - Method
 
-  func send(_ data: LaunchSendDataType? = nil) {
-    self.completion?(data)
+  func setTotalCount(_ count: Int) {
+    self.counter.totalCount = count
+  }
+
+  func setCompletedCount(_ count: Int) {
+    self.counter.completedCount = count
+  }
+
+  func addCompletedCount() {
+    self.counter.completedCount += 1
+  }
+
+  func send() {
+    self.addCompletedCount()
+    self.completion?(self.counter)
   }
   
   func setCompletion(_ completion: @escaping Completion) {

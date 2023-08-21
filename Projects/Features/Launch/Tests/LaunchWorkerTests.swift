@@ -12,78 +12,31 @@ final class LaunchWorkerTests: XCTestCase {
 
   // MARK: - Tests
 
-  override func setUp() {
-    super.setUp()
+  override func setUp() async throws {
     self.singleWorker = .init()
+    self.singleWorker.completionSender = LaunchCompletionSender()
 
     self.chainWorker = .init()
+    self.chainWorker.completionSender = LaunchCompletionSender()
     let childWorker: MockLaunchWorker = .init()
-    self.chainWorker.push(item: childWorker)
-    childWorker.parent = self.chainWorker
+    await self.chainWorker.push(item: childWorker)
   }
 
-  /// 단일 워커 아이템 추가 테스트
-  func testPushItemAtSingleWorker() {
-    let firstWorker = MockLaunchWorker()
-    let secondWorker = MockLaunchWorker()
-    let thirdWorker = MockLaunchWorker()
-
-    self.singleWorker.push(item: firstWorker)
-    self.singleWorker.push(item: secondWorker)
-    self.singleWorker.push(item: thirdWorker)
-
-    XCTAssertEqual(self.singleWorker.items.count, 3)
-  }
-
-  /// 연쇄 워커 아이템 추가 테스트
-  func testPushItemAtChainWorker() {
-    let subWorker = self.chainWorker.items.first!
-    let firstWorker = MockLaunchWorker()
-    let secondWorker = MockLaunchWorker()
-
-    self.chainWorker.push(item: firstWorker)
-    subWorker.push(item: secondWorker)
-
-    XCTAssertEqual(self.chainWorker.items.count, 2)
-    XCTAssertEqual(subWorker.items.count, 1)
-  }
-
-  /// 싱글 워커 총 갯수 테스트
-  func testTotalSizeAtSingleWorker() {
-    let fristWorker  = MockLaunchWorker()
-    let secondWorker  = MockLaunchWorker()
-
-    self.singleWorker.push(item: fristWorker)
-    self.singleWorker.push(item: secondWorker)
-
-    XCTAssertEqual(singleWorker.totalSize, 3)
-  }
-
-  /// Chain Worker Total Size 테스트
-  func testTotalSizeAtChainWorker() {
-    let fristWorker  = MockLaunchWorker()
-    let secondWorker  = MockLaunchWorker()
-    self.chainWorker.push(item: fristWorker)
-    self.chainWorker.items.first?.push(item: secondWorker)
-
-    XCTAssertEqual(self.chainWorker.totalSize, 4)
-  }
-
-  /// 싱글 워커에서 LaunchState가 Ready인 경우 IsComplete 테스트
+  /// 단일 워커에서 LaunchState가 Ready인 경우 IsComplete 테스트
   func testIsCompleteWhenReadyAtSingleWorker() {
     self.singleWorker.state = .ready
 
     XCTAssertEqual(self.singleWorker.isComplete, false)
   }
 
-  /// 싱글 워커에서 LaunchState가 Running인 경우 IsComplete 테스트
+  /// 단일 워커에서 LaunchState가 Running인 경우 IsComplete 테스트
   func testIsCompleteWhenRunningAtSingleWorker() {
     self.singleWorker.state = .running
 
     XCTAssertEqual(self.singleWorker.isComplete, false)
   }
 
-  /// 싱글 워커에서 LaunchState가 Complete인 경우 IsComplete 테스트
+  /// 단일 워커에서 LaunchState가 Complete인 경우 IsComplete 테스트
   func testIsCompleteWhenCompleteAtSingleWorker() {
     self.singleWorker.state = .complete
 
@@ -126,11 +79,84 @@ final class LaunchWorkerTests: XCTestCase {
   func testIsCompleteWhenAllCompleteAtChainWorker() {
     self.chainWorker.state = .complete
     self.chainWorker.items.first?.state = .complete
-    
+
     XCTAssertEqual(self.chainWorker.isComplete, true)
   }
 
-  /// 싱글 워커 Run 함수 테스트
+  /// 단일 워커 아이템 추가 테스트
+  func testPushItemAtSingleWorker() async {
+    let firstWorker = MockLaunchWorker()
+    let secondWorker = MockLaunchWorker()
+    let thirdWorker = MockLaunchWorker()
+
+    await self.singleWorker.push(item: firstWorker)
+    await self.singleWorker.push(item: secondWorker)
+    await self.singleWorker.push(item: thirdWorker)
+
+    XCTAssertEqual(self.singleWorker.items.count, 3)
+  }
+
+  /// 연쇄 워커 아이템 추가 테스트
+  func testPushItemAtChainWorker() async {
+    let subWorker = self.chainWorker.items.first!
+    let firstWorker = MockLaunchWorker()
+    let secondWorker = MockLaunchWorker()
+
+    await self.chainWorker.push(item: firstWorker)
+    await subWorker.push(item: secondWorker)
+
+    XCTAssertEqual(self.chainWorker.items.count, 2)
+    XCTAssertEqual(subWorker.items.count, 1)
+  }
+
+  /// 단일 루트 워커 테스트
+  func testRootWorkerAtSingleWorker() {
+    if let root = self.singleWorker.root as? MockLaunchWorker {
+      XCTAssertEqual(root.id, self.singleWorker.id)
+    } else {
+      XCTFail()
+    }
+  }
+
+  /// 연쇄 루트 워커 테스트
+  func testRootWorkerAtChainWorker() {
+    guard let subWorker = self.chainWorker.items.first,
+          let subWorkerRoot = subWorker.root as? MockLaunchWorker else {
+      XCTFail()
+      return
+    }
+
+    XCTAssertEqual(subWorkerRoot.id, self.chainWorker.id)
+  }
+
+  /// 단일 워커 총 갯수 하나인 경우 테스트
+  func testTotalCountOneAtSingleWorker() {
+    XCTAssertEqual(self.singleWorker.totalCount, 1)
+  }
+
+  /// 단일 워커 총 갯수 테스트
+  func testTotalCountAtSingleWorker() async {
+    let worker  = MockLaunchWorker()
+
+    await self.singleWorker.push(item: worker)
+
+    XCTAssertEqual(self.singleWorker.totalCount, 2)
+    XCTAssertEqual(worker.root.totalCount, 2)
+  }
+
+  /// 연쇄 워커 총 갯수 테스트
+  func testTotalCountAtChainWorker() async {
+    let firstWorker  = MockLaunchWorker()
+    let secondWorker  = MockLaunchWorker()
+
+    await self.chainWorker.push(item: firstWorker)
+    await self.chainWorker.items.first?.push(item: secondWorker)
+
+    XCTAssertEqual(self.chainWorker.totalCount, 4)
+    XCTAssertEqual(secondWorker.root.totalCount, 4)
+  }
+
+  /// 단일 워커 Run 함수 테스트
   func testRunAtSingleWorker() async throws {
     try await self.singleWorker.run()
 
@@ -138,7 +164,7 @@ final class LaunchWorkerTests: XCTestCase {
     XCTAssertEqual(self.singleWorker.workString, "\(self.singleWorker.id)")
   }
 
-  /// 싱글 워커 Run 함수 오류 테스트
+  /// 단일 워커 Run 함수 오류 테스트
   func testRunErrorAtSingleWorker() async {
     self.singleWorker.isError = true
 
@@ -157,11 +183,8 @@ final class LaunchWorkerTests: XCTestCase {
     let secondSubWorker: MockLaunchWorker = .init()
     let thirdSubWorker: MockLaunchWorker = .init()
 
-    self.chainWorker.push(item: secondSubWorker)
-    secondSubWorker.parent = self.chainWorker
-
-    firstSubWorker.push(item: thirdSubWorker)
-    thirdSubWorker.parent = firstSubWorker
+    await self.chainWorker.push(item: secondSubWorker)
+    await firstSubWorker.push(item: thirdSubWorker)
 
     try await self.chainWorker.run()
 
@@ -183,8 +206,7 @@ final class LaunchWorkerTests: XCTestCase {
     firstSubWorker.isError = true
     let secondSubWorker: MockLaunchWorker = .init()
 
-    firstSubWorker.push(item: secondSubWorker)
-    secondSubWorker.parent = firstSubWorker
+    await firstSubWorker.push(item: secondSubWorker)
 
     do {
       try await self.chainWorker.run()
@@ -195,5 +217,52 @@ final class LaunchWorkerTests: XCTestCase {
       XCTAssertEqual(firstSubWorker.workString, "")
       XCTAssertEqual(secondSubWorker.workString, "")
     }
+  }
+
+  /// LaunchCompletionSender 단일 워커 테스트
+  func testCompletionCountAtSingleWorker() async throws {
+    var result: LaunchCompletionCounter?
+    await self.singleWorker.completionSender?.setCompletion { data in
+      result = data as? LaunchCompletionCounter
+    }
+
+    try await self.singleWorker.run()
+
+    if let result = result {
+      XCTAssertEqual(
+        result,
+        LaunchCompletionCounter(totalCount: 1, completedCount: 1)
+      )
+    } else {
+      XCTFail()
+    }
+  }
+
+  /// LaunchCompletionSender 연쇄 워커 테스트
+  func testCompletionCountAtChainWorker() async throws {
+    let secondWorker  = MockLaunchWorker()
+    let thirdWorker  = MockLaunchWorker()
+
+    await self.chainWorker.push(item: secondWorker)
+    await self.chainWorker.items.first?.push(item: thirdWorker)
+
+    var result: [LaunchCompletionCounter] = []
+    await self.chainWorker.completionSender?.setCompletion { data in
+      if let data = data as? LaunchCompletionCounter {
+        result.append(data)
+      }
+    }
+
+    try await self.chainWorker.run()
+
+    XCTAssertEqual(result.count, 4)
+    XCTAssertEqual(result[0].completedCount, 1)
+    XCTAssertEqual(result[0].totalCount, 4)
+    XCTAssertEqual(result[1].completedCount, 2)
+    XCTAssertEqual(result[1].totalCount, 4)
+    XCTAssertEqual(result[2].completedCount, 3)
+    XCTAssertEqual(result[2].totalCount, 4)
+    XCTAssertEqual(result[3].completedCount, 4)
+    XCTAssertEqual(result[3].totalCount, 4)
   }
 }

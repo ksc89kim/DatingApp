@@ -8,11 +8,11 @@
 
 import Foundation
 
-struct LaunchCompletionCount: LaunchSendDataType, Equatable {
+struct LaunchCompletionCounter: LaunchSendDataType, Equatable {
 
   // MARK: - Property
 
-  let totalCount: Int
+  var totalCount: Int
 
-  let completedCount: Int
+  var completedCount: Int
 }
