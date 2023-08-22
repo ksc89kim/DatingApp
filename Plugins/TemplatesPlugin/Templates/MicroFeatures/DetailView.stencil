@@ -14,4 +14,3 @@ struct {{ name }}DetailView_Previews: PreviewProvider {
     {{ name }}DetailView(name: "테스트 예제")
   }
 }
-

@@ -1,4 +1,3 @@
-
 import SwiftUI
 
 struct {{ name }}ContentView: View {
@@ -38,4 +37,3 @@ struct {{ name }}ContentView_Previews: PreviewProvider {
     {{ name }}ContentView()
   }
 }
-

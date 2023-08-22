@@ -5,5 +5,5 @@ enum LaunchExampleItem: String, CaseIterable, Identifiable {
 
   // MARK: - Property
 
-  var id : UUID { .init() }
+  var id: UUID { .init() }
 }

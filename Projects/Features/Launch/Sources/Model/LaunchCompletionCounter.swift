@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import LaunchInterface
 
 struct LaunchCompletionCounter: LaunchSendDataType, Equatable {
 

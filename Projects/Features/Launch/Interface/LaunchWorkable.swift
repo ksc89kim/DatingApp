@@ -82,7 +82,7 @@ public extension LaunchWorkable {
         }
       }
       
-      while let _ = try await group.next() {
+      while try await group.next() != nil {
       }
     }
   }

@@ -17,6 +17,7 @@ func targets() -> [Target] {
     .dependencies([
       .di
     ])
+    .scripts([.swiftLint])
     .build()
   ]
 }

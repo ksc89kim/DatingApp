@@ -1,4 +1,3 @@
-
 import Foundation
 
 struct LaunchExampleSection: Identifiable {
@@ -22,4 +21,3 @@ extension LaunchExampleSection {
     items: [.launchView]
   )
 }
-

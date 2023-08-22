@@ -18,4 +18,3 @@ struct LaunchDetailView_Previews: PreviewProvider {
     LaunchDetailView(name: "테스트 예제")
   }
 }
-

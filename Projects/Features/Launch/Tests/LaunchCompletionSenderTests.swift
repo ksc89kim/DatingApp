@@ -1,4 +1,5 @@
 import XCTest
+@testable import Launch
 @testable import LaunchInterface
 @testable import LaunchTesting
 

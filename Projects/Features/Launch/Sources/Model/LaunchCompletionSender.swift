@@ -7,12 +7,13 @@
 //
 
 import Foundation
+import LaunchInterface
 
 actor LaunchCompletionSender: LaunchCompletionSendable {
 
-  // MARK: - Property
+ // MARK: - Property
   
-  var completion: Completion? = nil
+  var completion: Completion?
 
   var counter: LaunchCompletionCounter = .init(totalCount: 1, completedCount: 0)
 

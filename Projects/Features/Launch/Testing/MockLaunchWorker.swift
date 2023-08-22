@@ -27,7 +27,6 @@ final class MockLaunchWorker: LaunchWorkable {
     guard !self.isError else {
       throw MockLaunchWorkerError.runError
     }
-    print("## \(self.id)")
     if let parent = self.parent as? MockLaunchWorker {
       let parentWorkString = parent.workString
       self.workString = parentWorkString + "\(self.id)"

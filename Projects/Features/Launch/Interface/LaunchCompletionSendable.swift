@@ -8,7 +8,6 @@
 
 import Foundation
 
-
 public protocol LaunchCompletionSendable: LaunchSendable {
 
   // MARK: - Method

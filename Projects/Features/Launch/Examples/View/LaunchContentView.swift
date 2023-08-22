@@ -1,4 +1,3 @@
-
 import SwiftUI
 import Launch
 
@@ -39,4 +38,3 @@ struct LaunchContentView_Previews: PreviewProvider {
     LaunchContentView()
   }
 }
-

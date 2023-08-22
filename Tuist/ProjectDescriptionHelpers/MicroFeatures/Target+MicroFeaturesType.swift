@@ -79,6 +79,7 @@ public extension Target {
       builder.builder(baseBuilder)
     }
     builder
+      .scripts([.swiftLint])
       .sources(type.sourceFileList)
       .resources(type.resources)
       .name(type.name(target))
