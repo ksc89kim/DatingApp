@@ -58,6 +58,30 @@ do {
     exit(1)
 }
 
+manager.path = URL(fileURLWithPath: "Scripts/SwiftLint/SwiftLintSync.swift")
+
+do {
+    try manager.updateFile(
+        finding: "paths: [String] = [",
+        inserting: "\n    \"Projects/Features/" + featureName + "/.swiftlint.yml\","
+    )
+} catch {
+    Logger.instance.errorLog(error.localizedDescription)
+    exit(1)
+}
+
+Logger.instance.ingLog("SwiftLintSync script 파일에 경로를 추가했습니다.")
+
+do {
+    let _ = try bash.run(
+            commandName: "swift", 
+            arguments: ["Scripts/SwiftLint/SwiftLintSync.swift"]
+        )
+} catch {
+    Logger.instance.errorLog(error.localizedDescription)
+    exit(1)
+}
+
 Logger.instance.successLog()
 
 enum FRBError: LocalizedError {
