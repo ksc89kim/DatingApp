@@ -35,5 +35,3 @@ let project: Project = .init(
   ),
   targets: targets()
 )
-
-
