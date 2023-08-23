@@ -7,6 +7,7 @@ let workspace = Workspace(
     projects: [
       "\(ProjectPathType.features(.launch).path)",
       "\(ProjectPathType.di.path)",
+      "\(ProjectPathType.core.path)",
       "\(ProjectPathType.app.path)"
     ]
 )

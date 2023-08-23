@@ -13,7 +13,12 @@ func targets() -> [Target] {
     .product(.app)
     .infoPlist("Support/Info.plist")
     .resources("Resources/**")
-    .settings(.settings(base: env.baseSetting, configurations: configurations))
+    .settings(
+      .settings(
+        base: env.baseSetting,
+        configurations: configurations
+      )
+    )
     .dependencies([
       .di
     ])

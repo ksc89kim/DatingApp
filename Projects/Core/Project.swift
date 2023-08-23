@@ -2,9 +2,10 @@ import ProjectDescription
 import ProjectDescriptionHelpers
 import ConfigurationPlugin
 import EnvironmentPlugin
+import ProjectPathPlugin
 
 let configurations: [Configuration] = .default
-let name = "DI"
+let name = "Core"
 
 func targets() -> [Target] {
   return [
@@ -17,6 +18,10 @@ func targets() -> [Target] {
         configurations: configurations
       )
     )
+    .dependencies([
+      .moya
+    ])
+    .scripts([.swiftLint])
     .build()
   ]
 }

@@ -16,4 +16,8 @@ public extension TargetDependency {
       path: .relativeToPathType(.di)
     )
   }
+
+  static var moya: Self {
+    return .external(name: "Moya")
+  }
 }
