@@ -1,0 +1,17 @@
+disabled_rules: # rule identifiers to exclude from running
+  - force_cast
+  - trailing_whitespace
+  - xctfail_message
+  - identifier_name
+  - vertical_whitespace
+line_length: 100
+excluded:
+  - Tuist
+  - Derived
+  - Plugins
+  - Config
+  - Scripts
+# parameterized rules are first parameterized as a warning level, then error level.
+type_body_length:
+  - 300 # warning
+reporter: "xcode" # reporter type (xcode, json, csv)

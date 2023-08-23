@@ -3,7 +3,8 @@ import Foundation
 
 let paths: [String] = [
     "Projects/Features/Launch/.swiftlint.yml",
-    "Projects/DI/.swiftlint.yml"
+    "Projects/DI/.swiftlint.yml",
+    "Projects/Core/.swiftlint.yml"
 ]
 
 let bash = Bash()
