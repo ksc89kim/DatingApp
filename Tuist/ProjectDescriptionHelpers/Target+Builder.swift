@@ -312,29 +312,24 @@ public extension Target {
       return .init().featuresDependencies(featuresDependencies)
     }
 
-    public static func makeSource(name: String) -> Self {
+    public static func makeSource(
+      name: String,
+      settings: Settings = .base
+    ) -> Self {
       return .init()
         .name(name)
-        .settings(
-          .settings(
-            base: env.baseSetting,
-            configurations: .default
-          )
-        )
+        .settings(settings)
         .scripts([.swiftLint])
     }
 
-    public static func makeTests(name: String) -> Self {
+    public static func makeTests(
+      name: String,
+      settings: Settings = .base
+    ) -> Self {
       return .init()
         .name(name + "Tests")
         .sources("Tests/**")
-        .settings(
-          .settings(
-            base: env.baseSetting,
-            configurations: .default,
-            defaultSettings: .recommended
-          )
-        )
+        .settings(settings)
         .dependencies([.xctest])
         .scripts([.swiftLint])
     }

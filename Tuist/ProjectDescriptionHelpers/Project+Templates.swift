@@ -8,10 +8,7 @@ public extension Project {
   static func feature(
     type: ProjectPathType.Features,
     targets: [Target] = [],
-    settings: Settings? = .settings(
-      base: env.baseSetting,
-      configurations: .default
-    )
+    settings: Settings? = .base
   ) -> Project {
 
     return .init(

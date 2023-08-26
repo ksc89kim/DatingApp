@@ -6,23 +6,24 @@ import ProjectPathPlugin
 
 let configurations: [Configuration] = .default
 
+let settings: Settings = .settings(
+  base: env.baseSetting,
+  configurations: configurations,
+  defaultSettings: .recommended
+)
+
 func targets() -> [Target] {
   return [
-    .Builder()
-    .name(env.name)
+    .Builder.makeSource(
+      name: env.name,
+      settings: settings
+    )
     .product(.app)
     .infoPlist("Support/Info.plist")
     .resources("Resources/**")
-    .settings(
-      .settings(
-        base: env.baseSetting,
-        configurations: configurations
-      )
-    )
-    .dependencies([
+    .appendDependenciess([
       .di
     ])
-    .scripts([.swiftLint])
     .build()
   ]
 }
@@ -30,10 +31,7 @@ func targets() -> [Target] {
 let project: Project = .init(
   name: env.name,
   organizationName: env.organizationName,
-  settings: .settings(
-    base: env.baseSetting,
-    configurations: configurations
-  ),
+  settings: settings,
   targets: targets(),
   schemes: configurations.schems(name: env.name)
 )

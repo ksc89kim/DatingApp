@@ -3,7 +3,6 @@ import ProjectDescriptionHelpers
 import ConfigurationPlugin
 import EnvironmentPlugin
 
-let configurations: [Configuration] = .default
 let name = "Core"
 
 func targets() -> [Target] {
@@ -33,9 +32,6 @@ func testsTarget() -> Target {
 let project: Project = .init(
   name: name,
   organizationName: env.organizationName,
-  settings: .settings(
-    base: env.baseSetting,
-    configurations: configurations
-  ),
+  settings: .base,
   targets: targets()
 )
