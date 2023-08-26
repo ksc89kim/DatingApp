@@ -1,5 +1,5 @@
-import Moya
 import Foundation
+import Moya
 
 final class Networking<Target: TargetType>: MoyaProvider<Target> {
 

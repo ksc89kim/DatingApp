@@ -11,6 +11,8 @@ import ConfigurationPlugin
 
 public extension Target {
 
+  // MARK: - Builder
+
   final class Builder {
 
     // MARK: - Property
@@ -223,6 +225,12 @@ public extension Target {
     }
 
     @discardableResult
+    public func appendDependenciess(_ dependencies: [TargetDependency]) -> Self {
+      self.dependencies.append(contentsOf: dependencies)
+      return self
+    }
+
+    @discardableResult
     public func dependencies(_ dependencies: [TargetDependency]) -> Self {
       self.dependencies = dependencies
       return self
@@ -302,6 +310,33 @@ public extension Target {
 
     public static func make(featuresDependencies: MicroFeaturesDependencies) -> Self {
       return .init().featuresDependencies(featuresDependencies)
+    }
+
+    public static func makeSource(name: String) -> Self {
+      return .init()
+        .name(name)
+        .settings(
+          .settings(
+            base: env.baseSetting,
+            configurations: .default
+          )
+        )
+        .scripts([.swiftLint])
+    }
+
+    public static func makeTests(name: String) -> Self {
+      return .init()
+        .name(name + "Tests")
+        .sources("Tests/**")
+        .settings(
+          .settings(
+            base: env.baseSetting,
+            configurations: .default,
+            defaultSettings: .recommended
+          )
+        )
+        .dependencies([.xctest])
+        .scripts([.swiftLint])
     }
   }
 }

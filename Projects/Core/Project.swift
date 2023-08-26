@@ -2,28 +2,32 @@ import ProjectDescription
 import ProjectDescriptionHelpers
 import ConfigurationPlugin
 import EnvironmentPlugin
-import ProjectPathPlugin
 
 let configurations: [Configuration] = .default
 let name = "Core"
 
 func targets() -> [Target] {
   return [
-    .Builder()
-    .name(name)
+    sourceTarget(),
+    testsTarget()
+  ]
+}
+
+func sourceTarget() -> Target {
+  return .Builder.makeSource(name: name)
     .product(.framework)
-    .settings(
-      .settings(
-        base: env.baseSetting,
-        configurations: configurations
-      )
-    )
-    .dependencies([
+    .appendDependenciess([
       .moya
     ])
-    .scripts([.swiftLint])
     .build()
-  ]
+}
+
+func testsTarget() -> Target {
+  return .Builder.makeTests(name: name)
+    .appendDependenciess([
+      .target(name: name)
+    ])
+    .build()
 }
 
 let project: Project = .init(
