@@ -1,11 +1,11 @@
 import Foundation
 import Moya
 
-final class Networking<Target: TargetType>: MoyaProvider<Target> {
+public final class Networking<Target: NetworkTargetType>: MoyaProvider<Target> {
 
   // MARK: - Method
 
-  override func request(
+  public override func request(
     _ target: Target,
     callbackQueue: DispatchQueue? = .none,
     progress: ProgressBlock? = .none,
@@ -46,6 +46,22 @@ final class Networking<Target: TargetType>: MoyaProvider<Target> {
       log += "\n📡📡📡📡📡📡📡📡📡📡📡📡📡📡📡"
       print(log)
       completion(result)
+    }
+  }
+
+  public func request(
+    _ target: Target,
+    callbackQueue: DispatchQueue? = .none,
+    progress: ProgressBlock? = .none
+  ) async -> Result<NetworkResponse, NetworkError> {
+    return await withCheckedContinuation { continuation in
+       _ = self.request(
+        target,
+        callbackQueue: callbackQueue,
+        progress: progress
+      ) { result in
+        continuation.resume(returning: result)
+      }
     }
   }
 }

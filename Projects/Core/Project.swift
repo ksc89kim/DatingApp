@@ -23,6 +23,7 @@ func sourceTarget() -> Target {
 
 func testsTarget() -> Target {
   return .Builder.makeTests(name: name)
+    .product(.unitTests)
     .appendDependenciess([
       .target(name: name)
     ])
