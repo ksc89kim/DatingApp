@@ -22,6 +22,7 @@ public enum ProjectPathType {
 public extension ProjectPathType {
 
   enum Features: String {
+    case version = "Version"
     case launch = "Launch"
   }
 }
