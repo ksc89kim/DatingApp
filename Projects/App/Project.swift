@@ -22,7 +22,8 @@ func targets() -> [Target] {
     .infoPlist("Support/Info.plist")
     .resources("Resources/**")
     .appendDependenciess([
-      .di
+      .di,
+      .core
     ])
     .build()
   ]

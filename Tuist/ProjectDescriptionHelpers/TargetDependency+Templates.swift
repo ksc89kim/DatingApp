@@ -17,6 +17,13 @@ public extension TargetDependency {
     )
   }
 
+  static var core: Self {
+    return .project(
+      target: "Core",
+      path: .relativeToPathType(.core)
+    )
+  }
+
   static var moya: Self {
     return .external(name: "Moya")
   }
