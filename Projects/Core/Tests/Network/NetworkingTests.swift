@@ -3,15 +3,25 @@ import XCTest
 
 final class NetworkingTests: XCTestCase {
 
+  // MARK: - Property
+
+  private var networking: Networking<MockNetorkAPI>!
+
   // MARK: - Tests
 
-  func testRequestForCompletion() {
-    let networking: Networking<MockNetorkAPI> = .init(
+  override func setUp() {
+    super.setUp()
+
+    self.networking = .init(
       stubClosure: Networking<MockNetorkAPI>.immediatelyStub
     )
+  }
+
+  func testRequestForCompletion() {
+
     let expectation = XCTestExpectation(description: "Request Completion Expectation")
 
-    _ = networking.request(.test) { result in
+    _ = self.networking.request(.test) { result in
       if case .failure = result {
         XCTFail()
       }
@@ -22,11 +32,7 @@ final class NetworkingTests: XCTestCase {
   }
 
   func testRequestForAsync() async throws {
-    let networking: Networking<MockNetorkAPI> = .init(
-      stubClosure: Networking<MockNetorkAPI>.immediatelyStub
-    )
-
-    let result = try await networking.request(
+    let result = try await self.networking.request(
       MockNetworkResponse.self,
       target: .test
     )
@@ -36,12 +42,8 @@ final class NetworkingTests: XCTestCase {
   }
 
   func testParseErrorForAsync() async {
-    let networking: Networking<MockNetorkAPI> = .init(
-      stubClosure: Networking<MockNetorkAPI>.immediatelyStub
-    )
-
     do {
-      _ = try await networking.request(
+      _ = try await self.networking.request(
         MockNetworkResponse.self,
         target: .parseError
       )
@@ -51,11 +53,7 @@ final class NetworkingTests: XCTestCase {
   }
 
   func testEmptyResponseForAsync() async throws {
-    let networking: Networking<MockNetorkAPI> = .init(
-      stubClosure: Networking<MockNetorkAPI>.immediatelyStub
-    )
-
-    let result = try await networking.request(
+    let result = try await self.networking.request(
       EmptyResponse.self,
       target: .empty
     )
