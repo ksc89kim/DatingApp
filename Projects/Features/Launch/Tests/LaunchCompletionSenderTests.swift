@@ -7,7 +7,7 @@ final class LaunchCompletionSenderTests: XCTestCase {
 
   // MARK: - Property
 
-  var sender: LaunchCompletionSender!
+  private var sender: LaunchCompletionSender!
 
   // MARK: - Tests
 

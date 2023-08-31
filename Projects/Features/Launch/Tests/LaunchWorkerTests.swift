@@ -7,9 +7,9 @@ final class LaunchWorkerTests: XCTestCase {
 
   // MARK: - Property
 
-  var singleWorker: MockLaunchWorker!
+  private var singleWorker: MockLaunchWorker!
 
-  var chainWorker: MockLaunchWorker!
+  private var chainWorker: MockLaunchWorker!
 
   // MARK: - Tests
 
