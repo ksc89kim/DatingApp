@@ -10,7 +10,9 @@ import Foundation
 import Core
 
 enum MockNetorkAPI {
-  case testAPI
+  case test
+  case parseError
+  case empty
 }
 
 
@@ -28,7 +30,7 @@ extension MockNetorkAPI: NetworkTargetType {
   }
 
   var baseURL: URL {
-    return .init(string: "https://jsonplaceholder.typicode.com")!
+    return .init(string: API.EndPoint.baseURL)!
   }
 
   var path: String {
@@ -36,13 +38,45 @@ extension MockNetorkAPI: NetworkTargetType {
   }
 
   var headers: [String: String]? {
-    return ["Accept": "application/json"]
+    return API.baseHeaders
   }
 
   var sampleData: Data {
+    switch self {
+    case .test: return self.testSampleData
+    case .parseError: return self.parseErrorSampleData
+    case .empty: return self.emptySampleData
+    }
+  }
+
+  private var testSampleData: Data {
     return """
     {
-      code: 200
+      "code": 201,
+      "message": "테스트",
+      "data": {
+          "isNeedUpdate": true
+      }
+    }
+    """.data(using: .utf8)!
+  }
+
+  private var parseErrorSampleData: Data {
+    return """
+    {
+      "code": 404,
+      "message": "파싱 에러 데이터"
+    }
+    """.data(using: .utf8)!
+  }
+
+  private var emptySampleData: Data {
+    return """
+    {
+      "code": 201,
+      "message": "빈 데이터 테스트",
+      "data": {
+      }
     }
     """.data(using: .utf8)!
   }

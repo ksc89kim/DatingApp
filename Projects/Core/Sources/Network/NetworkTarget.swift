@@ -10,6 +10,8 @@ import Moya
 
 public protocol NetworkTargetType: TargetType {
 
+  // MARK: - Property
+
   var method: Method { get }
 
   var task: Task { get }

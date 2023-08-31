@@ -49,18 +49,32 @@ public final class Networking<Target: NetworkTargetType>: MoyaProvider<Target> {
     }
   }
 
-  public func request(
-    _ target: Target,
+  public func request<T: Codable>(
+    _ type: T.Type,
+    target: Target,
     callbackQueue: DispatchQueue? = .none,
     progress: ProgressBlock? = .none
-  ) async -> Result<NetworkResponse, NetworkError> {
-    return await withCheckedContinuation { continuation in
+  ) async throws -> NetworkResponse<T> {
+    return try await withCheckedThrowingContinuation { continuation in
        _ = self.request(
         target,
         callbackQueue: callbackQueue,
         progress: progress
       ) { result in
-        continuation.resume(returning: result)
+        switch result {
+        case .success(let response):
+          do {
+            let response = try JSONDecoder().decode(
+              NetworkResponse<T>.self,
+              from: response.data
+            )
+            continuation.resume(returning: response)
+          } catch {
+            continuation.resume(throwing: error)
+          }
+        case .failure(let error):
+          continuation.resume(throwing: error)
+        }
       }
     }
   }
