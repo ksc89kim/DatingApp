@@ -61,6 +61,6 @@ final class NetworkingTests: XCTestCase {
     )
 
     XCTAssertEqual(result.code, 201)
-    XCTAssertEqual(result.message, "빈 데이터 테스트")
+    XCTAssertNil(result.message)
   }
 }

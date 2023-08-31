@@ -12,9 +12,9 @@ public struct NetworkResponse<T: Codable>: Codable {
 
   // MARK: - Property
 
-  let code: Int
+  public let code: Int
 
-  let message: String
+  public let message: String?
 
-  let data: T
+  public let data: T
 }

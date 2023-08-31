@@ -74,7 +74,7 @@ extension MockNetorkAPI: NetworkTargetType {
     return """
     {
       "code": 201,
-      "message": "빈 데이터 테스트",
+      "message": null,
       "data": {
       }
     }
