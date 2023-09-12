@@ -1,13 +1,13 @@
 import Foundation
 import LaunchInterface
 
-final class MockLaunchWorker: LaunchWorkable {
+public final class MockLaunchWorker: LaunchWorkable {
 
   // MARK: - Property
 
-  var items: [LaunchWorkable] = []
+  public var items: [LaunchWorkable] = []
 
-  var state: LaunchState = .ready
+  public var state: LaunchState = .ready
 
   let id: UUID = .init()
 
@@ -15,15 +15,20 @@ final class MockLaunchWorker: LaunchWorkable {
 
   var workString = ""
 
-  var sender: LaunchSendable?
+  public var sender: LaunchSendable?
 
-  var completionSender: LaunchCompletionSendable?
+  public var completionSender: LaunchCompletionSendable?
 
-  weak var parent: LaunchWorkable?
+  public weak var parent: LaunchWorkable?
+
+  // MARK: - Init
+
+  public init() {
+  }
 
   // MARK: - Method
 
-  func work() async throws {
+  public func work() async throws {
     guard !self.isError else {
       throw MockLaunchWorkerError.runError
     }

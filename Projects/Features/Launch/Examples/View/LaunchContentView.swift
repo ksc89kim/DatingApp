@@ -1,5 +1,6 @@
 import SwiftUI
 import Launch
+import LaunchTesting
 
 struct LaunchContentView: View {
 
@@ -25,7 +26,8 @@ struct LaunchContentView: View {
       .navigationTitle("데모")
       .navigationDestination(for: LaunchExampleItem.self) { item in
         switch item {
-        case .launchView: LaunchView()
+        case .launchView:
+          LaunchView(viewModel: .init(rootWorkable: MockLaunchWorker()))
         }
       }
       .listStyle(.sidebar)

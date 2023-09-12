@@ -12,27 +12,40 @@ public struct LaunchView: View {
 
   // MARK: - Property
 
+  private let viewModel: LaunchViewModel
+
   public var body: some View {
-    VStack(
-      alignment: .center,
-      spacing: 24
-    ) {
-      Image(systemName: "highlighter")
-        .resizable()
-        .frame(width: 100, height: 100)
-      Text("Food Blog Review")
-        .font(.system(size: 26, weight: .bold))
+    ZStack {
+      VStack(
+        alignment: .center,
+        spacing: 24
+      ) {
+        Image(systemName: "highlighter")
+          .resizable()
+          .frame(width: 100, height: 100)
+        Text("Food Blog Review")
+          .font(.system(size: 26, weight: .bold))
+      }
+      VStack {
+        Spacer()
+        Text(self.viewModel.completionCount)
+          .font(.system(size: 16, weight: .bold))
+        Spacer().frame(height: 16)
+      }
     }
   }
 
   // MARK: - Init
 
-  public init() {
+  public init(viewModel: LaunchViewModel) {
+    self.viewModel = viewModel
   }
 }
 
 struct LaunchView_Previews: PreviewProvider {
   static var previews: some View {
-    LaunchView()
+    var viewModel: LaunchViewModel = .init(rootWorkable: nil)
+    viewModel.completionCount = "1/1"
+    return LaunchView(viewModel: viewModel)
   }
 }
