@@ -12,7 +12,7 @@ public struct LaunchView: View {
 
   // MARK: - Property
 
-  private let viewModel: LaunchViewModel
+  @ObservedObject private var viewModel: LaunchViewModel
 
   public var body: some View {
     ZStack {
@@ -33,6 +33,9 @@ public struct LaunchView: View {
         Spacer().frame(height: 16)
       }
     }
+    .onAppear {
+      self.viewModel.run()
+    }
   }
 
   // MARK: - Init
@@ -43,8 +46,9 @@ public struct LaunchView: View {
 }
 
 struct LaunchView_Previews: PreviewProvider {
+  
   static var previews: some View {
-    var viewModel: LaunchViewModel = .init(rootWorkable: nil)
+    let viewModel: LaunchViewModel = .init(builder: nil)
     viewModel.completionCount = "1/1"
     return LaunchView(viewModel: viewModel)
   }

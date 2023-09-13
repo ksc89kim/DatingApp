@@ -8,7 +8,11 @@ func targets() -> [Target] {
     types: .all,
     baseBuilder: .make(
       featuresDependencies: .init(
-        source: [.core]
+        source: [
+          .core,
+          .di,
+          .feature(target: .version, type: .interface)
+        ]
       )
     )
   )

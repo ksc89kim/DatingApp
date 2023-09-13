@@ -18,10 +18,9 @@ public final class LaunchViewModel: ObservableObject {
   @Published public var completionCount: String = ""
 
   // MARK: - Init
-
-  public init(rootWorkable: LaunchWorkable?) {
-    self.rootWorkable = rootWorkable
-    
+  
+  public init(builder: LaunchWorkerBuildable?) {
+    self.rootWorkable = builder?.build()
     self.bindWorkableCompletion()
   }
 
@@ -30,6 +29,10 @@ public final class LaunchViewModel: ObservableObject {
   func run() {
     Task {
       do {
+        await self.setCompletionCount(
+          completedCount: 0,
+          totalCount: self.rootWorkable?.totalCount ?? 0
+        )
         try await self.rootWorkable?.run()
       } catch {
       }
@@ -40,8 +43,20 @@ public final class LaunchViewModel: ObservableObject {
     Task {
       await self.rootWorkable?.completionSender?.setCompletion { [weak self] data in
         guard let counter = data as? LaunchCompletionCounter else { return }
-        self?.completionCount = "\(counter.completedCount)/\(counter.totalCount)"
+         self?.setCompletionCount(
+          completedCount: counter.completedCount,
+          totalCount: counter.totalCount
+        )
       }
     }
+  }
+
+  @MainActor
+  private func setCompletionCount(completedCount: Int, totalCount: Int) {
+    guard totalCount > 0 else {
+      self.completionCount = ""
+      return
+    }
+    self.completionCount = "\(completedCount)/\(totalCount)"
   }
 }

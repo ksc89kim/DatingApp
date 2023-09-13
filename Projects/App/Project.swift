@@ -36,5 +36,3 @@ let project: Project = .init(
   targets: targets(),
   schemes: configurations.schems(name: env.name)
 )
-
-

@@ -16,7 +16,7 @@ public protocol LaunchSendable: Actor {
 
   // MARK: - Method
 
-  func send()
+  func send() async
 
   func setCompletion(_ completion: @escaping Completion)
 }

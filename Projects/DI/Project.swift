@@ -19,5 +19,3 @@ let project: Project = .init(
   settings: .base,
   targets: targets()
 )
-
-

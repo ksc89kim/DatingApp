@@ -27,7 +27,11 @@ struct LaunchContentView: View {
       .navigationDestination(for: LaunchExampleItem.self) { item in
         switch item {
         case .launchView:
-          LaunchView(viewModel: .init(rootWorkable: MockLaunchWorker()))
+          let builder: MockLaunchWorkerBuilder = .init(
+            completionSendable: LaunchCompletionSender(),
+            isSleep: true
+          )
+          LaunchView(viewModel: .init(builder: builder))
         }
       }
       .listStyle(.sidebar)

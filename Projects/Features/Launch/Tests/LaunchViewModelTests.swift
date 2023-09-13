@@ -17,7 +17,7 @@ final class LaunchViewModelTests: XCTestCase {
 
   private var cancellables: Set<AnyCancellable>!
 
-  private var rootWork: MockLaunchWorker!
+  private var builder: MockLaunchWorkerBuilder!
 
   private var viewModel: LaunchViewModel!
 
@@ -27,17 +27,17 @@ final class LaunchViewModelTests: XCTestCase {
     try await super.setUp()
 
     self.cancellables = .init()
-    self.rootWork = .init()
-    self.rootWork.completionSender = LaunchCompletionSender()
-    await rootWork.push(item: MockLaunchWorker())
-    self.viewModel = .init(rootWorkable: self.rootWork)
+
+    self.builder = MockLaunchWorkerBuilder(completionSendable: LaunchCompletionSender())
+    self.viewModel = .init(builder: self.builder)
   }
 
+  /// (완료한 갯수 / 총 갯수) 테스트
   func testCompletionCount() {
     let expectation: XCTestExpectation = .init(
       description: "CompletionCountExpectaion"
     )
-    let results: [String] = ["", "1/2", "2/2"]
+    let results: [String] = ["", "0/2", "1/2", "2/2"]
     var index = 0
 
     self.viewModel.run()
@@ -51,6 +51,6 @@ final class LaunchViewModelTests: XCTestCase {
     }
     .store(in: &self.cancellables)
 
-    wait(for: [expectation])
+    wait(for: [expectation], timeout: 5.0)
   }
 }

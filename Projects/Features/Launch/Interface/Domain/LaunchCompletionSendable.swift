@@ -8,9 +8,17 @@
 
 import Foundation
 
-public protocol LaunchCompletionSendable: LaunchSendable {
+public protocol LaunchCompletionSendable: Actor {
+
+  // MARK: - Define
+
+  typealias Completion = @MainActor (LaunchSendDataType?) -> Void
 
   // MARK: - Method
+
+  func send() async
+
+  func setCompletion(_ completion: @escaping Completion)
 
   func setTotalCount(_ count: Int)
 

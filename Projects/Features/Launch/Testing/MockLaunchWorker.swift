@@ -13,6 +13,8 @@ public final class MockLaunchWorker: LaunchWorkable {
 
   var isError: Bool = false
 
+  var isSleep: Bool = false
+
   var workString = ""
 
   public var sender: LaunchSendable?
@@ -32,6 +34,11 @@ public final class MockLaunchWorker: LaunchWorkable {
     guard !self.isError else {
       throw MockLaunchWorkerError.runError
     }
+
+    if self.isSleep {
+      try await Task.sleep(nanoseconds: 2000000000)
+    }
+    
     if let parent = self.parent as? MockLaunchWorker {
       let parentWorkString = parent.workString
       self.workString = parentWorkString + "\(self.id)"

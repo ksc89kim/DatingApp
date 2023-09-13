@@ -9,8 +9,9 @@
 import Foundation
 import LaunchInterface
 import VersionInterface
+import DI
 
-public final class CheckVersionLaunchWorker: LaunchWorkable {
+public final class CheckVersionLaunchWorker: LaunchWorkable, Injectable {
 
   // MARK: - Property
 
