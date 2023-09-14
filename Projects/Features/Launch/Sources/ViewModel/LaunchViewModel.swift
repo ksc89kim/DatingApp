@@ -21,10 +21,6 @@ public final class LaunchViewModel: ObservableObject {
     static let confirm = "확인"
   }
 
-  enum Constant {
-    static let limitRetry = 3
-  }
-
   private enum TaskKey {
     static let runAfterBuild = "runAfterBuildKey"
     static let bindWorkableCompletion = "bindWorkableCompletionKey"
@@ -39,6 +35,8 @@ public final class LaunchViewModel: ObservableObject {
   private var rootWorkable: LaunchWorkable?
 
   private(set) var alert: BaseAlert = .empty
+
+  var limitRetryCount: Int = .max
 
   private(set) var retryCount = 0
 
@@ -96,7 +94,7 @@ public final class LaunchViewModel: ObservableObject {
   }
 
   func run() async {
-    guard self.retryCount < Constant.limitRetry,
+    guard self.retryCount < self.limitRetryCount,
           !(self.rootWorkable?.isComplete ?? false) else {
       return
     }

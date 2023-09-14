@@ -42,9 +42,11 @@ final class LaunchViewModelTests: XCTestCase {
   }
 
   /// 한계 수치까지만 재시도 하는지 테스트
-  func testLimitRetry() async {
+  func testLimitRetryCount() async {
     self.builder.error = MockLaunchWorkerError.runError
     let viewModel: LaunchViewModel = .init(builder: self.builder)
+    let limitRetryCount = 3
+    viewModel.limitRetryCount = limitRetryCount
 
     await viewModel.build()
     await viewModel.run()
@@ -52,7 +54,7 @@ final class LaunchViewModelTests: XCTestCase {
     await viewModel.run()
     await viewModel.run()
 
-    XCTAssertEqual(viewModel.retryCount, LaunchViewModel.Constant.limitRetry)
+    XCTAssertEqual(viewModel.retryCount, limitRetryCount)
   }
 
   /// (완료한 갯수 / 총 갯수) 테스트
