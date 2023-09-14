@@ -11,9 +11,9 @@ import DI
 import LaunchInterface
 import VersionInterface
 
-struct LaunchWorkerBuilder: LaunchWorkerBuildable {
+public struct LaunchWorkerBuilder: LaunchWorkerBuildable {
 
-  func build() -> LaunchWorkable {
+  public func build() async -> LaunchWorkable {
     let rootWorker: LaunchWorkable = DIContainer.resolve(for: CheckVersionLaunchWorkerKey.self)
     rootWorker.completionSender = LaunchCompletionSender()
 

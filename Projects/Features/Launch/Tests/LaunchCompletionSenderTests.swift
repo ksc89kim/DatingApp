@@ -71,7 +71,7 @@ final class LaunchCompletionSenderTests: XCTestCase {
   func testSend() async {
     var result: LaunchCompletionCounter?
     await self.sender.setCompletion { data in
-      result = data as? LaunchCompletionCounter
+      result = data
     }
     let completedCount = 10
     let totalCount = 20
@@ -89,8 +89,10 @@ final class LaunchCompletionSenderTests: XCTestCase {
     let totalCount = 5
     await self.sender.setTotalCount(totalCount)
     var results: [LaunchCompletionCounter] = []
-    await self.sender.setCompletion { data in
-      results.append(data as! LaunchCompletionCounter)
+    await self.sender.setCompletion { counter in
+      if let counter = counter {
+        results.append(counter)
+      }
     }
 
     await withTaskGroup(of: Void.self) { group in

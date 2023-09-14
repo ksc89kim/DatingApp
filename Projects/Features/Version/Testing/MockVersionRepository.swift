@@ -18,11 +18,11 @@ public final class MockVersionRepository: VersionRepositoryType {
 
   // MARK: - Method
 
-  public func checkVersion() async throws -> VersionInterface.CheckVersionEntity {
+  public func checkVersion() async throws -> VersionInterface.CheckVersionEntity? {
     return .init(
       isNeedUpdate: self.isNeedUpdate,
       message: "업데이트가 필요합니다.",
-      linkURL: .init(string: "http://itunes.apple.com/kr/app/")
+      linkURL: .init(string: "http://itunes.apple.com/kr/app/")!
     )
   }
 }

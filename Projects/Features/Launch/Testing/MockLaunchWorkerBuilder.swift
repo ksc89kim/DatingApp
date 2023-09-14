@@ -13,31 +13,30 @@ public struct MockLaunchWorkerBuilder: LaunchWorkerBuildable {
 
   // MARK: - Property
 
-  private let completionSendable: LaunchCompletionSendable?
-
   private let isSleep: Bool
+
+  var error: Error?
 
   // MARK: - Init
 
   public init(
-    completionSendable: LaunchCompletionSendable? = nil,
-    isSleep: Bool = false
+    isSleep: Bool = false,
+    error: Error? = nil
   ) {
-    self.completionSendable = completionSendable
     self.isSleep = isSleep
+    self.error = error
   }
 
   // MARK: - Method
 
-  public func build() -> LaunchWorkable {
+  public func build() async -> LaunchWorkable {
     let rootWorker: MockLaunchWorker = .init()
-    rootWorker.completionSender = self.completionSendable
+    rootWorker.completionSender = LaunchCompletionSender()
 
-    Task {
-      let childWorker: MockLaunchWorker = .init()
-      childWorker.isSleep = self.isSleep
-      await rootWorker.push(item: childWorker)
-    }
+    let childWorker: MockLaunchWorker = .init()
+    childWorker.isSleep = self.isSleep
+    childWorker.error = self.error
+    await rootWorker.push(item: childWorker)
 
     return rootWorker
   }

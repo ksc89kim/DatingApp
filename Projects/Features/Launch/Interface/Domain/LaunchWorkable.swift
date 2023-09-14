@@ -20,7 +20,7 @@ public protocol LaunchWorkable: AnyObject {
 
   var sender: LaunchSendable? { get set }
 
-  var completionSender: LaunchCompletionSendable? { get set }
+  var completionSender: LaunchCompletionSender? { get set }
 
   // MARK: - Method
 
@@ -67,11 +67,14 @@ public extension LaunchWorkable {
   func run() async throws {
     try Task.checkCancellation()
 
-    self.state = .running
-    try await self.work()
-    self.state = .complete
-
-    await self.completionSender?.send()
+    switch self.state {
+    case .ready, .running:
+      self.state = .running
+      try await self.work()
+      self.state = .complete
+      await self.completionSender?.send()
+    case .complete: break
+    }
 
     try Task.checkCancellation()
 

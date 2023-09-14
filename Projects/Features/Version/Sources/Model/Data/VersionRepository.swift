@@ -24,7 +24,7 @@ public final class VersionRepository: VersionRepositoryType {
 
   // MARK: - Method
 
-  public func checkVersion() async throws -> CheckVersionEntity {
+  public func checkVersion() async throws -> CheckVersionEntity? {
     let response = try await self.networking.request(
       CheckVersionResponse.self,
       target: .checkVersion

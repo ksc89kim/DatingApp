@@ -8,6 +8,6 @@
 
 import Foundation
 
-enum MockLaunchWorkerError: LocalizedError {
+public enum MockLaunchWorkerError: LocalizedError {
   case runError
 }

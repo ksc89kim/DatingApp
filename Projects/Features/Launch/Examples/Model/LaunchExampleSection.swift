@@ -18,6 +18,10 @@ extension LaunchExampleSection {
 
   static let examples: LaunchExampleSection = .init(
     name: "런치",
-    items: [.launchView]
+    items: [
+      .launchViewForWork,
+      .launchViewForAlert,
+      .launchViewForNeedUpdate
+    ]
   )
 }

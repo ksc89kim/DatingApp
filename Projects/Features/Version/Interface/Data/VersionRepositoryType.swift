@@ -12,5 +12,5 @@ public protocol VersionRepositoryType {
 
   // MARK: - Method
 
-  func checkVersion() async throws -> CheckVersionEntity
+  func checkVersion() async throws -> CheckVersionEntity?
 }

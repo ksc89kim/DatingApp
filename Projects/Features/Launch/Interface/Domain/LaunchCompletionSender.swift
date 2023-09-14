@@ -7,15 +7,18 @@
 //
 
 import Foundation
-import LaunchInterface
 
-public actor LaunchCompletionSender: LaunchCompletionSendable {
+public actor LaunchCompletionSender {
 
- // MARK: - Property
+  // MARK: - Define
+
+  public typealias Completion = @MainActor (LaunchCompletionCounter?) -> Void
+
+  // MARK: - Property
   
-  var completion: Completion?
+  private(set) var completion: Completion?
 
-  var counter: LaunchCompletionCounter
+  private(set) var counter: LaunchCompletionCounter
   
   // MARK: - Init
 
@@ -30,15 +33,19 @@ public actor LaunchCompletionSender: LaunchCompletionSendable {
     self.counter.totalCount = count
   }
 
+  func addTotalCount() {
+    self.counter.totalCount += 1
+  }
+
   public func setCompletedCount(_ count: Int) {
     self.counter.completedCount = count
   }
 
-  public func addCompletedCount() {
+  func addCompletedCount() {
     self.counter.completedCount += 1
   }
 
-  public func send() async {
+  func send() async {
     self.addCompletedCount()
     await self.completion?(self.counter)
   }

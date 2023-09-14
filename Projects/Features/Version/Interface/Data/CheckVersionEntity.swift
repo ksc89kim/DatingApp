@@ -16,11 +16,11 @@ public struct CheckVersionEntity {
 
   public let message: String
 
-  public let linkURL: URL?
+  public let linkURL: URL
 
   // MARK: - Init
 
-  public init(isNeedUpdate: Bool, message: String, linkURL: URL?) {
+  public init(isNeedUpdate: Bool, message: String, linkURL: URL) {
     self.isNeedUpdate = isNeedUpdate
     self.message = message
     self.linkURL = linkURL

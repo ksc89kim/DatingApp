@@ -11,7 +11,7 @@ public final class MockLaunchWorker: LaunchWorkable {
 
   let id: UUID = .init()
 
-  var isError: Bool = false
+  var error: Error?
 
   var isSleep: Bool = false
 
@@ -19,7 +19,7 @@ public final class MockLaunchWorker: LaunchWorkable {
 
   public var sender: LaunchSendable?
 
-  public var completionSender: LaunchCompletionSendable?
+  public var completionSender: LaunchCompletionSender?
 
   public weak var parent: LaunchWorkable?
 
@@ -31,8 +31,9 @@ public final class MockLaunchWorker: LaunchWorkable {
   // MARK: - Method
 
   public func work() async throws {
-    guard !self.isError else {
-      throw MockLaunchWorkerError.runError
+    if let error = self.error {
+      self.state = .ready
+      throw error
     }
 
     if self.isSleep {

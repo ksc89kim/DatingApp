@@ -12,5 +12,5 @@ public protocol LaunchWorkerBuildable {
 
   // MARK: - Method
 
-  func build() -> LaunchWorkable
+  func build() async -> LaunchWorkable
 }

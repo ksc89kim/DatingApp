@@ -35,7 +35,7 @@ final class CheckVersionLaunchWorkerTests: XCTestCase {
          case .needUpdate(let entity) = error {
         XCTAssertEqual(entity.isNeedUpdate, true)
         XCTAssertEqual(entity.message, "업데이트가 필요합니다.")
-        XCTAssertEqual(entity.linkURL?.absoluteString, "http://itunes.apple.com/kr/app/")
+        XCTAssertEqual(entity.linkURL.absoluteString, "http://itunes.apple.com/kr/app/")
       } else {
         XCTFail()
       }

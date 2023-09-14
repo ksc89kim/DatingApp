@@ -9,5 +9,6 @@
 import Foundation
 
 public enum CheckVersionLaunchWorkError: LocalizedError {
+  case emptyEntity
   case needUpdate(CheckVersionEntity)
 }

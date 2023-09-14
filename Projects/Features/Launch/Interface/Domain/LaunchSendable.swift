@@ -1,5 +1,5 @@
 //
-//  LaunchCompletionSendable.swift
+//  LaunchSendable.swift
 //  LaunchInterface
 //
 //  Created by kim sunchul on 2023/08/15.

@@ -38,11 +38,12 @@ struct CheckVersionResponse: Codable {
 
   // MARK: - Method
 
-  func toEntity() -> CheckVersionEntity {
+  func toEntity() -> CheckVersionEntity? {
+    guard let url = self.linkURL else { return nil }
     return .init(
       isNeedUpdate: self.isNeedUpdate,
       message: self.message,
-      linkURL: self.linkURL
+      linkURL: url
     )
   }
 }

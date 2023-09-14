@@ -7,13 +7,12 @@
 //
 
 import Foundation
-import LaunchInterface
 
-struct LaunchCompletionCounter: LaunchSendDataType, Equatable {
+public struct LaunchCompletionCounter: Equatable {
 
   // MARK: - Property
 
-  var totalCount: Int
+  public var totalCount: Int
 
-  var completedCount: Int
+  public var completedCount: Int
 }

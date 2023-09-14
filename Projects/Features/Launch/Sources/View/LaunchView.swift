@@ -7,12 +7,15 @@
 //
 
 import SwiftUI
+import LaunchInterface
 
 public struct LaunchView: View {
 
   // MARK: - Property
 
-  @ObservedObject private var viewModel: LaunchViewModel
+  @StateObject private var viewModel: LaunchViewModel
+
+  @Environment(\.openURL) private var openURL
 
   public var body: some View {
     ZStack {
@@ -33,23 +36,61 @@ public struct LaunchView: View {
         Spacer().frame(height: 16)
       }
     }
+    .alert(isPresented: self.$viewModel.isPresentAlert) {
+      self.makeAlert(self.viewModel.alert)
+    }
     .onAppear {
-      self.viewModel.run()
+      self.viewModel.runAfterBuild()
+    }
+    .onDisappear {
+      self.viewModel.clearCount()
     }
   }
 
   // MARK: - Init
 
-  public init(viewModel: LaunchViewModel) {
-    self.viewModel = viewModel
+  public init(bulider: LaunchWorkerBuildable?) {
+    _viewModel = StateObject(wrappedValue: { LaunchViewModel(builder: bulider) }())
+  }
+
+  // MARK: - Method
+
+  private func makeAlert(_ alert: LaunchAlert) -> Alert {
+    if let secondaryAction = alert.secondaryAction {
+      return Alert(
+        title: Text(alert.title),
+        message: Text(alert.message),
+        primaryButton: self.makeButton(alert.primaryAction),
+        secondaryButton: self.makeButton(secondaryAction)
+      )
+    } else {
+      return Alert(
+        title: Text(alert.title),
+        message: Text(alert.message),
+        dismissButton: self.makeButton(alert.primaryAction)
+      )
+    }
+  }
+
+  private func makeButton(_ action: LaunchAlert.Action) -> Alert.Button {
+    switch action.type {
+    case .cancel:
+      return .cancel(Text(action.title), action: action.completion)
+    case .default:
+      return .default(Text(action.title), action: action.completion)
+    case .openURL(let url):
+      return .default(Text(action.title)) {
+        action.completion?()
+        self.openURL(url)
+      }
+    }
   }
 }
+
 
 struct LaunchView_Previews: PreviewProvider {
   
   static var previews: some View {
-    let viewModel: LaunchViewModel = .init(builder: nil)
-    viewModel.completionCount = "1/1"
-    return LaunchView(viewModel: viewModel)
+    return LaunchView(bulider: nil)
   }
 }

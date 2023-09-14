@@ -23,7 +23,7 @@ public final class CheckVersionLaunchWorker: LaunchWorkable, Injectable {
 
   public var sender: LaunchSendable?
 
-  public var completionSender: LaunchCompletionSendable?
+  public var completionSender: LaunchCompletionSender?
 
   private let repository: VersionRepositoryType
 
@@ -37,6 +37,9 @@ public final class CheckVersionLaunchWorker: LaunchWorkable, Injectable {
 
   public func work() async throws {
     let entity = try await self.repository.checkVersion()
+    guard let entity = entity else {
+      throw CheckVersionLaunchWorkError.emptyEntity
+    }
     guard !entity.isNeedUpdate else {
       throw CheckVersionLaunchWorkError.needUpdate(entity)
     }

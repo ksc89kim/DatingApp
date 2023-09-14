@@ -167,7 +167,7 @@ final class LaunchWorkerTests: XCTestCase {
 
   /// 단일 워커 Run 함수 오류 테스트
   func testRunErrorAtSingleWorker() async {
-    self.singleWorker.isError = true
+    self.singleWorker.error = MockLaunchWorkerError.runError
 
     do {
       try await self.singleWorker.run()
@@ -204,7 +204,7 @@ final class LaunchWorkerTests: XCTestCase {
   /// 연쇄 워커 Run 함수 오류 테스트
   func testRunErrorAtChainWorker() async {
     let firstSubWorker = self.chainWorker.items.first as! MockLaunchWorker
-    firstSubWorker.isError = true
+    firstSubWorker.error = MockLaunchWorkerError.runError
     let secondSubWorker: MockLaunchWorker = .init()
 
     await firstSubWorker.push(item: secondSubWorker)
@@ -223,8 +223,8 @@ final class LaunchWorkerTests: XCTestCase {
   /// LaunchCompletionSender 단일 워커 테스트
   func testCompletionCountAtSingleWorker() async throws {
     var result: LaunchCompletionCounter?
-    await self.singleWorker.completionSender?.setCompletion { data in
-      result = data as? LaunchCompletionCounter
+    await self.singleWorker.completionSender?.setCompletion { counter in
+      result = counter
     }
 
     try await self.singleWorker.run()
@@ -248,9 +248,9 @@ final class LaunchWorkerTests: XCTestCase {
     await self.chainWorker.items.first?.push(item: thirdWorker)
 
     var result: [LaunchCompletionCounter] = []
-    await self.chainWorker.completionSender?.setCompletion { data in
-      if let data = data as? LaunchCompletionCounter {
-        result.append(data)
+    await self.chainWorker.completionSender?.setCompletion { counter in
+      if let counter = counter {
+        result.append(counter)
       }
     }
 
@@ -265,5 +265,31 @@ final class LaunchWorkerTests: XCTestCase {
     XCTAssertEqual(result[2].totalCount, 4)
     XCTAssertEqual(result[3].completedCount, 4)
     XCTAssertEqual(result[3].totalCount, 4)
+  }
+
+  /// 연쇄 워커 재시작 테스트
+  func testRetryRunAtChainWorker() async {
+    let firstSubWorker = self.chainWorker.items.first as! MockLaunchWorker
+    firstSubWorker.error = MockLaunchWorkerError.runError
+
+    do {
+      try await self.chainWorker.run()
+    } catch {
+      XCTAssertEqual(self.chainWorker.isComplete, false)
+      XCTAssertEqual(self.chainWorker.state, .complete)
+      XCTAssertEqual(firstSubWorker.state, .ready)
+      XCTAssertEqual(self.chainWorker.workString, "\(self.chainWorker.id)")
+
+      firstSubWorker.error = nil
+
+      do {
+        try await self.chainWorker.run()
+      } catch {
+        XCTAssertEqual(self.chainWorker.isComplete, true)
+        XCTAssertEqual(self.chainWorker.state, .complete)
+        XCTAssertEqual(firstSubWorker.state, .complete)
+        XCTAssertEqual(self.chainWorker.workString, "\(self.chainWorker.id)\(firstSubWorker.id)")
+      }
+    }
   }
 }
