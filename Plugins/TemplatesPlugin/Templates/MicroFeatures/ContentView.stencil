@@ -11,22 +11,19 @@ struct {{ name }}ContentView: View {
   // MARK: - Body
 
   var body: some View {
-    NavigationStack {
+    NavigationView {
       List {
         ForEach(self.sections) { section in
           Section(section.name) {
             ForEach(section.items) { item in
-              NavigationLink(item.rawValue, value: item)
+              NavigationLink(item.rawValue) {
+                {{ name }}DetailView(name: item.rawValue)
+              }
             }
           }
         }
       }
       .navigationTitle("데모")
-      .navigationDestination(for: {{ name }}ExampleItem.self) { item in
-        switch item {
-        case .demoExample: {{ name }}DetailView(name: item.rawValue)
-        }
-      }
       .listStyle(.sidebar)
     }
   }
