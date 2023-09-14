@@ -16,7 +16,7 @@ public enum VersionAPI {
 
 extension VersionAPI: NetworkTargetType {
 
-  public var method: Core.Method {
+  public var method: Core.NetworkMethod {
     return .get
   }
 
@@ -34,7 +34,7 @@ extension VersionAPI: NetworkTargetType {
     return API.baseHeaders
   }
 
-  public var task: Core.Task {
+  public var task: Core.NetworkTask {
     return .requestParameters(
       parameters: [:],
       encoding: URLEncoding.default

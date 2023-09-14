@@ -18,11 +18,11 @@ enum MockNetorkAPI {
 
 extension MockNetorkAPI: NetworkTargetType {
 
-  var method: Core.Method {
+  var method: Core.NetworkMethod {
     return .post
   }
 
-  var task: Core.Task {
+  var task: Core.NetworkTask {
     return .requestParameters(
       parameters: [:],
       encoding: URLEncoding.default

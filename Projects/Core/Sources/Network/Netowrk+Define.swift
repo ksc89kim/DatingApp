@@ -8,8 +8,8 @@
 
 import Moya
 
-public typealias Task = Moya.Task
-public typealias Method = Moya.Method
+public typealias NetworkTask = Moya.Task
+public typealias NetworkMethod = Moya.Method
 public typealias Response = Moya.Response
 public typealias NetworkError = Moya.MoyaError
 public typealias ProgressBlock = Moya.ProgressBlock
