@@ -9,6 +9,7 @@
 import Foundation
 import LaunchInterface
 import VersionInterface
+import Core
 
 public final class LaunchViewModel: ObservableObject {
 
@@ -21,6 +22,13 @@ public final class LaunchViewModel: ObservableObject {
 
   enum Constant {
     static let limitRetry = 3
+  }
+
+  private enum TaskKey {
+    static let runAfterBuild = "runAfterBuildKey"
+    static let bindWorkableCompletion = "bindWorkableCompletionKey"
+    static let run = "runKey"
+    static let clearCount = "clearCountKey"
   }
 
   // MARK: - Property
@@ -37,6 +45,8 @@ public final class LaunchViewModel: ObservableObject {
 
   @Published var isPresentAlert: Bool = false
 
+  private let taskBag: AnyCancelTaskDictionaryBag = .init()
+
   // MARK: - Init
   
   public init(builder: LaunchWorkerBuildable?) {
@@ -46,6 +56,8 @@ public final class LaunchViewModel: ObservableObject {
   // MARK: - Methods
 
   private func bindWorkableCompletion() {
+    self.taskBag[TaskKey.bindWorkableCompletion]?.cancel()
+
     Task { [weak self] in
       await self?.rootWorkable?.completionSender?.setCompletion { [weak self] counter in
         guard let counter = counter else { return }
@@ -55,13 +67,17 @@ public final class LaunchViewModel: ObservableObject {
         )
       }
     }
+    .store(in: self.taskBag, for: TaskKey.bindWorkableCompletion)
   }
 
   func runAfterBuild() {
+    self.taskBag[TaskKey.runAfterBuild]?.cancel()
+
     Task { [weak self] in
       await self?.build()
       await self?.run()
     }
+    .store(in: self.taskBag, for: TaskKey.runAfterBuild)
   }
 
   func build() async {
@@ -70,9 +86,12 @@ public final class LaunchViewModel: ObservableObject {
   }
 
   func run() {
+    self.taskBag[TaskKey.run]?.cancel()
+
     Task { [weak self] in
       await self?.run()
     }
+    .store(in: self.taskBag, for: TaskKey.run)
   }
 
   func run() async {
@@ -149,9 +168,12 @@ public final class LaunchViewModel: ObservableObject {
   }
 
   func clearCount() {
+    self.taskBag[TaskKey.clearCount]?.cancel()
+    
     Task { [weak self] in
       self?.clearCount
     }
+    .store(in: self.taskBag, for: TaskKey.clearCount)
   }
 
   private func clearCount() async {
