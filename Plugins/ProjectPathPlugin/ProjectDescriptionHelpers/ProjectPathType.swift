@@ -4,6 +4,7 @@ public enum ProjectPathType {
   case app
   case di
   case core
+  case util
   case features(Features)
 
   public var path: String {
@@ -11,6 +12,7 @@ public enum ProjectPathType {
     case .app: return "Projects/App"
     case .core: return "Projects/Core"
     case .di: return "Projects/DI"
+    case .util: return "Projects/Util"
     case .features(let feature): return "Projects/Features/" + feature.rawValue
     }
   }

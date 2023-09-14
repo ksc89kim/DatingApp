@@ -11,6 +11,7 @@ func targets() -> [Target] {
         source: [
           .core,
           .di,
+          .util,
           .feature(target: .version, type: .interface)
         ]
       )

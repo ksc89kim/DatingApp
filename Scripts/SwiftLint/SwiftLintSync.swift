@@ -5,6 +5,7 @@ let paths: [String] = [
     "Projects/Features/Version/.swiftlint.yml",
     "Projects/Features/Launch/.swiftlint.yml",
     "Projects/DI/.swiftlint.yml",
+    "Projects/Util/.swiftlint.yml",
     "Projects/Core/.swiftlint.yml"
 ]
 
