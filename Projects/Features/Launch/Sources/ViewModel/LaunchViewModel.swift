@@ -10,6 +10,7 @@ import Foundation
 import LaunchInterface
 import VersionInterface
 import Core
+import Util
 
 public final class LaunchViewModel: ObservableObject {
 
@@ -37,7 +38,7 @@ public final class LaunchViewModel: ObservableObject {
 
   private var rootWorkable: LaunchWorkable?
 
-  private(set) var alert: LaunchAlert = .empty
+  private(set) var alert: BaseAlert = .empty
 
   private(set) var retryCount = 0
 
@@ -152,7 +153,7 @@ public final class LaunchViewModel: ObservableObject {
     }
   }
 
-  private func retryAlert(message: String) -> LaunchAlert {
+  private func retryAlert(message: String) -> BaseAlert {
     return .init(
       title: "",
       message: message,
