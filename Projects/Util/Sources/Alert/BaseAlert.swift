@@ -23,11 +23,11 @@ public struct BaseAlert {
 
     // MARK: - Property
 
-    let title: String
+    public let title: String
 
-    let type: ActionType
+    public let type: ActionType
 
-    let completion: (() -> Void)?
+    public let completion: (() -> Void)?
 
     public init(
       title: String,
@@ -42,13 +42,13 @@ public struct BaseAlert {
 
   // MARK: - Property
 
-  let title: String
+  public let title: String
 
-  let message: String
+  public let message: String
 
-  let primaryAction: Action
+  public let primaryAction: Action
 
-  let secondaryAction: Action?
+  public let secondaryAction: Action?
 
   // MARK: - Init
 
