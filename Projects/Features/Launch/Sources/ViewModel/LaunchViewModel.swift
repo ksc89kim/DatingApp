@@ -36,7 +36,7 @@ public final class LaunchViewModel: ObservableObject {
 
   private(set) var alert: BaseAlert = .empty
 
-  var limitRetryCount: Int = .max
+  var limitRetryCount: Int = 3
 
   private(set) var retryCount = 0
 
