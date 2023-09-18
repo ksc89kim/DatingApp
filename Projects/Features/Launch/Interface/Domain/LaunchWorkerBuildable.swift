@@ -7,8 +7,9 @@
 //
 
 import Foundation
+import DI
 
-public protocol LaunchWorkerBuildable {
+public protocol LaunchWorkerBuildable: Injectable {
 
   // MARK: - Method
 

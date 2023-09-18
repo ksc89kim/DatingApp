@@ -10,11 +10,13 @@ public final class DIContainer {
 
   // MARK: - Method
   
-  public static func resolve<T>(for type: Any.Type?) -> T {
-    let name = type.map { (type: Any.Type) -> String in
-      return String(describing: type)
-    } ?? String(describing: T.self)
+  public static func resolve<T>(for type: Any.Type?) -> T? {
+    let name = self.name(for: type) ?? String(describing: T.self)
+    return self.instance.items[name]?.resolve() as? T
+  }
 
+  public static func resolve<T>(for type: Any.Type?) -> T {
+    let name = self.name(for: type) ?? String(describing: T.self)
     guard let injectable = self.instance.items[name]?.resolve() as? T else {
       fatalError("Dependency \(T.self) not resolved")
     }
@@ -33,5 +35,11 @@ public final class DIContainer {
 
   public func add(_ item: InjectItem) {
     self.items[item.name] = item
+  }
+
+  private static func name(for type: Any.Type?) -> String? {
+    return type.map { (type: Any.Type) -> String in
+      return String(describing: type)
+    }
   }
 }

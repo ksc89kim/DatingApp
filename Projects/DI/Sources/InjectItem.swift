@@ -6,13 +6,13 @@ public struct InjectItem {
 
   public let name: String
   
-  public let resolve: () -> Injectable
+  public let resolve: () -> Injectable?
 
   // MARK: - Init
 
   public init<T: InjectionKey>(
     _ name: T.Type,
-    resolve: @escaping () -> Injectable
+    resolve: @escaping () -> Injectable?
   ) {
     self.name = String(describing: name)
     self.resolve = resolve

@@ -24,7 +24,7 @@ public final class Inject<Value> {
 
   // MARK: - Init
 
-  init<Key: InjectionKey>(_ key: Key.Type) where Value == Key.Value {
+  public init<Key: InjectionKey>(_ key: Key.Type) where Value == Key.Value {
     self.lazyValue = {
       key.currentValue
     }

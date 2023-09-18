@@ -7,12 +7,13 @@
 //
 
 import Foundation
-import LaunchInterface
 import VersionInterface
+import LaunchInterface
 import Core
 import Util
+import DI
 
-public final class LaunchViewModel: ViewModelType {
+public final class LaunchViewModel: ViewModelType, Injectable {
 
   // MARK: - Define
 
@@ -30,22 +31,23 @@ public final class LaunchViewModel: ViewModelType {
 
   // MARK: - Property
 
-  private let builder: LaunchWorkerBuildable?
+  @Published
+  public var state: LaunchState = .init()
+
+  @Inject(LaunchWorkerBuilderKey.self)
+  private var builder: LaunchWorkerBuildable?
 
   private var rootWorkable: LaunchWorkable?
 
-  var limitRetryCount: Int = 3
+  public var limitRetryCount: Int = .max
 
   private(set) var retryCount = 0
-
-  @Published public var state: LaunchState = .init()
 
   private let taskBag: AnyCancelTaskDictionaryBag = .init()
 
   // MARK: - Init
   
-  public init(builder: LaunchWorkerBuildable?) {
-    self.builder = builder
+  public init() {
   }
 
   // MARK: - Trigger Methods
@@ -130,20 +132,11 @@ public final class LaunchViewModel: ViewModelType {
   }
 
   @MainActor
-  private func setCompletionCount(completedCount: Int, totalCount: Int) {
-    guard totalCount > 0 else {
-      self.state.completionCountMessage = ""
-      return
-    }
-    self.state.completionCountMessage = "\(completedCount)/\(totalCount)"
-  }
-
-  @MainActor
   private func handleError(_ error: Error) {
     if let versionError = error as? CheckVersionLaunchWorkError {
       self.handleCheckVersionError(versionError)
     } else {
-      self.state.alert = self.retryAlert(message: error.localizedDescription)
+      self.state.alert = self.makeRetryAlert(message: error.localizedDescription)
     }
     self.state.isPresentAlert = true
   }
@@ -151,23 +144,13 @@ public final class LaunchViewModel: ViewModelType {
   private func handleCheckVersionError(_ error: CheckVersionLaunchWorkError) {
     switch error {
     case .needUpdate(let entity):
-      self.state.alert = .init(
-        title: "",
-        message: entity.message,
-        primaryAction: .init(
-          title: TextConstant.confirm,
-          type: .openURL(url: entity.linkURL),
-          completion: { [weak self] in
-            self?.state.isPresentAlert = false
-          }
-        )
-      )
+      self.state.alert = self.makeForceUpdateAlert(entity: entity)
     case .emptyEntity:
-      self.state.alert = self.retryAlert(message: error.localizedDescription)
+      self.state.alert = self.makeRetryAlert(message: error.localizedDescription)
     }
   }
 
-  private func retryAlert(message: String) -> BaseAlert {
+  private func makeRetryAlert(message: String) -> BaseAlert {
     return .init(
       title: "",
       message: message,
@@ -182,9 +165,23 @@ public final class LaunchViewModel: ViewModelType {
     )
   }
 
+  private func makeForceUpdateAlert(entity: CheckVersionEntity) -> BaseAlert {
+    return .init(
+      title: "",
+      message: entity.message,
+      primaryAction: .init(
+        title: TextConstant.confirm,
+        type: .openURL(url: entity.linkURL),
+        completion: { [weak self] in
+          self?.state.isPresentAlert = false
+        }
+      )
+    )
+  }
+
   private func clearCount() {
     self.taskBag[TaskKey.clearCount]?.cancel()
-    
+
     Task { [weak self] in
       await self?.clearCount()
     }
@@ -196,5 +193,14 @@ public final class LaunchViewModel: ViewModelType {
     await sender?.setCompletedCount(0)
     await sender?.setTotalCount(0)
     await self.setCompletionCount(completedCount: 0, totalCount: 0)
+  }
+
+  @MainActor
+  private func setCompletionCount(completedCount: Int, totalCount: Int) {
+    guard totalCount > 0 else {
+      self.state.completionCountMessage = ""
+      return
+    }
+    self.state.completionCountMessage = "\(completedCount)/\(totalCount)"
   }
 }

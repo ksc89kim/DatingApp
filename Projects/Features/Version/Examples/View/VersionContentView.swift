@@ -11,23 +11,26 @@ struct VersionContentView: View {
   // MARK: - Body
 
   var body: some View {
-    NavigationView {
+    NavigationStack {
       List {
         ForEach(self.sections) { section in
           Section(section.name) {
             ForEach(section.items) { item in
-              NavigationLink(item.rawValue) {
-                VersionDetailView(name: item.rawValue)
-              }
+              NavigationLink(item.rawValue, value: item)
             }
           }
         }
       }
       .navigationTitle("데모")
-      .listStyle(.sidebar)
+      .navigationDestination(for: VersionExampleItem.self) { item in
+        switch item {
+        case .demoExample: VersionDetailView(name: item.rawValue)
+        }
+      }
     }
   }
 }
+
 
 struct VersionContentView_Previews: PreviewProvider {
 

@@ -8,9 +8,11 @@
 
 import XCTest
 import Combine
+@testable import LaunchInterface
 @testable import Launch
 @testable import LaunchTesting
 @testable import VersionInterface
+@testable import DI
 
 final class LaunchViewModelTests: XCTestCase {
 
@@ -18,21 +20,25 @@ final class LaunchViewModelTests: XCTestCase {
 
   private var cancellables: Set<AnyCancellable>!
 
-  private var builder: MockLaunchWorkerBuilder!
-
   // MARK: - Tests
 
   override func setUp() async throws {
     try await super.setUp()
 
     self.cancellables = .init()
-    self.builder = .init()
   }
 
   /// 재시도 테스트
   func testRetry() async {
-    self.builder.error = MockLaunchWorkerError.runError
-    let viewModel: LaunchViewModel = .init(builder: self.builder)
+    DIContainer.register {
+      InjectItem(LaunchWorkerBuilderKey.self) {
+        var builder = MockLaunchWorkerBuilder()
+        builder.error = MockLaunchWorkerError.runError
+        return builder
+      }
+    }
+
+    let viewModel: LaunchViewModel = .init()
 
     await viewModel.trigger(.buildForWorker)
     await viewModel.trigger(.runAsync)
@@ -43,8 +49,14 @@ final class LaunchViewModelTests: XCTestCase {
 
   /// 한계 수치까지만 재시도 하는지 테스트
   func testLimitRetryCount() async {
-    self.builder.error = MockLaunchWorkerError.runError
-    let viewModel: LaunchViewModel = .init(builder: self.builder)
+    DIContainer.register {
+      InjectItem(LaunchWorkerBuilderKey.self) {
+        var builder = MockLaunchWorkerBuilder()
+        builder.error = MockLaunchWorkerError.runError
+        return builder
+      }
+    }
+    let viewModel: LaunchViewModel = .init()
     let limitRetryCount = 3
     viewModel.limitRetryCount = limitRetryCount
 
@@ -62,9 +74,14 @@ final class LaunchViewModelTests: XCTestCase {
       description: "CompletionCountExpectaion"
     )
     let results: [String] = ["0/2", "1/2", "2/2"]
+    DIContainer.register {
+      InjectItem(LaunchWorkerBuilderKey.self) {
+        return MockLaunchWorkerBuilder()
+      }
+    }
+    let viewModel: LaunchViewModel = .init()
     var index = 0
-    let viewModel: LaunchViewModel = .init(builder: self.builder)
-    
+
     viewModel.trigger(.runAfterBuildForWoker)
 
     viewModel.$state
@@ -83,7 +100,12 @@ final class LaunchViewModelTests: XCTestCase {
 
   /// (완료한 갯수 / 총 갯수) 클리어
   func testClearCount() async {
-    let viewModel: LaunchViewModel = .init(builder: self.builder)
+    DIContainer.register {
+      InjectItem(LaunchWorkerBuilderKey.self) {
+        return MockLaunchWorkerBuilder()
+      }
+    }
+    let viewModel: LaunchViewModel = .init()
 
     await viewModel.trigger(.buildForWorker)
     await viewModel.trigger(.runAsync)
@@ -100,8 +122,14 @@ final class LaunchViewModelTests: XCTestCase {
     let expectation: XCTestExpectation = .init(
       description: "NeedUpdateExpectation"
     )
-    self.builder.error = MockLaunchWorkerError.runError
-    let viewModel: LaunchViewModel = .init(builder: self.builder)
+    DIContainer.register {
+      InjectItem(LaunchWorkerBuilderKey.self) {
+        var builder = MockLaunchWorkerBuilder()
+        builder.error = MockLaunchWorkerError.runError
+        return builder
+      }
+    }
+    let viewModel: LaunchViewModel = .init()
 
     viewModel.trigger(.runAfterBuildForWoker)
 
@@ -129,7 +157,7 @@ final class LaunchViewModelTests: XCTestCase {
   }
 
   /// 강제 업데이트 알럿 테스트
-  func testPresentNeedUpdateAlert() {
+  func testPresentForceUpdateAlert() {
     let expectation: XCTestExpectation = .init(
       description: "NeedUpdateExpectation"
     )
@@ -138,8 +166,14 @@ final class LaunchViewModelTests: XCTestCase {
       message: "업데이트가 필요합니다.",
       linkURL: .init(fileURLWithPath: "")
     )
-    self.builder.error = CheckVersionLaunchWorkError.needUpdate(entity)
-    let viewModel: LaunchViewModel = .init(builder: self.builder)
+    DIContainer.register {
+      InjectItem(LaunchWorkerBuilderKey.self) {
+        var builder = MockLaunchWorkerBuilder()
+        builder.error = CheckVersionLaunchWorkError.needUpdate(entity)
+        return builder
+      }
+    }
+    let viewModel: LaunchViewModel = .init()
 
     viewModel.trigger(.runAfterBuildForWoker)
 

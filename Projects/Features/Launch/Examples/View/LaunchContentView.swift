@@ -1,4 +1,6 @@
 import SwiftUI
+import DI
+import LaunchInterface
 import Launch
 import LaunchTesting
 import VersionInterface
@@ -14,45 +16,63 @@ struct LaunchContentView: View {
   // MARK: - Body
 
   var body: some View {
-    NavigationView {
+    NavigationStack {
       List {
         ForEach(self.sections) { section in
           Section(section.name) {
             ForEach(section.items) { item in
-              self.makeLaunchView(item: item)
+              NavigationLink(item.rawValue, value: item)
             }
           }
         }
       }
       .navigationTitle("데모")
-      .listStyle(.sidebar)
+      .navigationDestination(for: LaunchExampleItem.self) { item in
+        self.makeLaunchView(item: item)
+      }
     }
   }
 
-  func makeLaunchView(item: LaunchExampleItem) -> NavigationLink<Text, some View> {
-    let builder: MockLaunchWorkerBuilder
+  func makeLaunchView(item: LaunchExampleItem) -> LaunchView {
+    DIContainer.register {
+      InjectItem(LaunchViewModelKey.self) {
+        let viewModel = LaunchViewModel()
+        viewModel.limitRetryCount = 3
+        return viewModel
+      }
+    }
     switch item {
     case .launchViewForWork:
-      builder = .init(
-        isSleep: true
-      )
+      DIContainer.register {
+        InjectItem(LaunchWorkerBuilderKey.self) {
+          return MockLaunchWorkerBuilder(
+            isSleep: true
+          )
+        }
+      }
     case .launchViewForAlert:
-      builder = .init(
-        error: MockLaunchWorkerError.runError
-      )
+      DIContainer.register {
+        InjectItem(LaunchWorkerBuilderKey.self) {
+          return MockLaunchWorkerBuilder(
+            error: MockLaunchWorkerError.runError
+          )
+        }
+      }
     case .launchViewForNeedUpdate:
-      let entity: CheckVersionEntity = .init(
-        isNeedUpdate: true,
-        message: "업데이트가 필요합니다.",
-        linkURL: .init(string: "https://www.naver.com")!
-      )
-      builder = .init(
-        error: CheckVersionLaunchWorkError.needUpdate(entity)
-      )
+      DIContainer.register {
+        InjectItem(LaunchWorkerBuilderKey.self) {
+          let entity: CheckVersionEntity = .init(
+            isNeedUpdate: true,
+            message: "업데이트가 필요합니다.",
+            linkURL: .init(string: "https://www.naver.com")!
+          )
+          return MockLaunchWorkerBuilder(
+            error: CheckVersionLaunchWorkError.needUpdate(entity)
+          )
+        }
+      }
     }
-    return NavigationLink(item.rawValue) {
-      LaunchView(bulider: builder)
-    }
+    return LaunchView()
   }
 }
 

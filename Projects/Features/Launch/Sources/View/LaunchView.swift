@@ -15,7 +15,9 @@ public struct LaunchView: View {
 
   // MARK: - Property
 
-  @StateObject private var viewModel: LaunchViewModel
+  @StateObject private var viewModel: LaunchViewModel = DIContainer.resolve(
+    for: LaunchViewModelKey.self
+  )
 
   @Environment(\.openURL) private var openURL
 
@@ -54,8 +56,7 @@ public struct LaunchView: View {
 
   // MARK: - Init
 
-  public init(bulider: LaunchWorkerBuildable?) {
-    _viewModel = StateObject(wrappedValue: { LaunchViewModel(builder: bulider) }())
+  public init() {
   }
 }
 
@@ -71,6 +72,14 @@ extension LaunchView: AlertBuildable {
 struct LaunchView_Previews: PreviewProvider {
   
   static var previews: some View {
-    return LaunchView(bulider: nil)
+    DIContainer.register {
+      InjectItem(LaunchWorkerBuilderKey.self) {
+        return nil
+      }
+      InjectItem(LaunchViewModelKey.self) {
+        return LaunchViewModel()
+      }
+    }
+    return LaunchView()
   }
 }
