@@ -12,7 +12,7 @@ import VersionInterface
 import Core
 import Util
 
-public final class LaunchViewModel: ObservableObject {
+public final class LaunchViewModel: ViewModelType {
 
   // MARK: - Define
 
@@ -34,15 +34,11 @@ public final class LaunchViewModel: ObservableObject {
 
   private var rootWorkable: LaunchWorkable?
 
-  private(set) var alert: BaseAlert = .empty
-
   var limitRetryCount: Int = 3
 
   private(set) var retryCount = 0
 
-  @Published var completionCount: String = ""
-
-  @Published var isPresentAlert: Bool = false
+  @Published public var state: LaunchState = .init()
 
   private let taskBag: AnyCancelTaskDictionaryBag = .init()
 
@@ -52,8 +48,43 @@ public final class LaunchViewModel: ObservableObject {
     self.builder = builder
   }
 
-  // MARK: - Methods
+  // MARK: - Trigger Methods
 
+  public func trigger(_ action: LaunchAction) {
+    switch action {
+    case .run: self.run()
+    case .runAfterBuildForWoker: self.runAfterBuildForWoker()
+    case .clearCount: self.clearCount()
+    case .buildForWorker, .runAsync, .clearCountAsync: break
+    }
+  }
+
+  public func trigger(_ action: LaunchAction) async {
+    switch action {
+    case .buildForWorker: await self.buildForWorker()
+    case .runAsync: await self.run()
+    case .clearCountAsync: await self.clearCount()
+    case .run, .runAfterBuildForWoker, .clearCount: break
+    }
+  }
+
+  // MARK: - Private Methods
+
+  private func runAfterBuildForWoker() {
+    self.taskBag[TaskKey.runAfterBuild]?.cancel()
+
+    Task { [weak self] in
+      await self?.buildForWorker()
+      await self?.run()
+    }
+    .store(in: self.taskBag, for: TaskKey.runAfterBuild)
+  }
+
+  private func buildForWorker() async {
+    self.rootWorkable = await self.builder?.build()
+    self.bindWorkableCompletion()
+  }
+  
   private func bindWorkableCompletion() {
     self.taskBag[TaskKey.bindWorkableCompletion]?.cancel()
 
@@ -69,22 +100,7 @@ public final class LaunchViewModel: ObservableObject {
     .store(in: self.taskBag, for: TaskKey.bindWorkableCompletion)
   }
 
-  func runAfterBuild() {
-    self.taskBag[TaskKey.runAfterBuild]?.cancel()
-
-    Task { [weak self] in
-      await self?.build()
-      await self?.run()
-    }
-    .store(in: self.taskBag, for: TaskKey.runAfterBuild)
-  }
-
-  func build() async {
-    self.rootWorkable = await self.builder?.build()
-    self.bindWorkableCompletion()
-  }
-
-  func run() {
+  private func run() {
     self.taskBag[TaskKey.run]?.cancel()
 
     Task { [weak self] in
@@ -93,7 +109,7 @@ public final class LaunchViewModel: ObservableObject {
     .store(in: self.taskBag, for: TaskKey.run)
   }
 
-  func run() async {
+  private func run() async {
     guard self.retryCount < self.limitRetryCount,
           !(self.rootWorkable?.isComplete ?? false) else {
       return
@@ -116,10 +132,10 @@ public final class LaunchViewModel: ObservableObject {
   @MainActor
   private func setCompletionCount(completedCount: Int, totalCount: Int) {
     guard totalCount > 0 else {
-      self.completionCount = ""
+      self.state.completionCountMessage = ""
       return
     }
-    self.completionCount = "\(completedCount)/\(totalCount)"
+    self.state.completionCountMessage = "\(completedCount)/\(totalCount)"
   }
 
   @MainActor
@@ -127,27 +143,27 @@ public final class LaunchViewModel: ObservableObject {
     if let versionError = error as? CheckVersionLaunchWorkError {
       self.handleCheckVersionError(versionError)
     } else {
-      self.alert = self.retryAlert(message: error.localizedDescription)
+      self.state.alert = self.retryAlert(message: error.localizedDescription)
     }
-    self.isPresentAlert = true
+    self.state.isPresentAlert = true
   }
 
   private func handleCheckVersionError(_ error: CheckVersionLaunchWorkError) {
     switch error {
     case .needUpdate(let entity):
-      self.alert = .init(
+      self.state.alert = .init(
         title: "",
         message: entity.message,
         primaryAction: .init(
           title: TextConstant.confirm,
           type: .openURL(url: entity.linkURL),
           completion: { [weak self] in
-            self?.alert = .empty
+            self?.state.isPresentAlert = false
           }
         )
       )
     case .emptyEntity:
-      self.alert = self.retryAlert(message: error.localizedDescription)
+      self.state.alert = self.retryAlert(message: error.localizedDescription)
     }
   }
 
@@ -158,19 +174,19 @@ public final class LaunchViewModel: ObservableObject {
       primaryAction: .init(
         title: TextConstant.retry,
         type: .default,
-        completion: {
-          self.alert = .empty
-          self.run()
+        completion: { [weak self] in
+          self?.state.isPresentAlert = false
+          self?.run()
         }
       )
     )
   }
 
-  func clearCount() {
+  private func clearCount() {
     self.taskBag[TaskKey.clearCount]?.cancel()
     
     Task { [weak self] in
-      self?.clearCount
+      await self?.clearCount()
     }
     .store(in: self.taskBag, for: TaskKey.clearCount)
   }
@@ -179,5 +195,6 @@ public final class LaunchViewModel: ObservableObject {
     let sender = self.rootWorkable?.completionSender
     await sender?.setCompletedCount(0)
     await sender?.setTotalCount(0)
+    await self.setCompletionCount(completedCount: 0, totalCount: 0)
   }
 }

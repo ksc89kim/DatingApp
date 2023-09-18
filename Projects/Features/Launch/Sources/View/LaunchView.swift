@@ -8,6 +8,7 @@
 
 import SwiftUI
 import LaunchInterface
+import DI
 import Util
 
 public struct LaunchView: View {
@@ -32,19 +33,22 @@ public struct LaunchView: View {
       }
       VStack {
         Spacer()
-        Text(self.viewModel.completionCount)
+        Text(self.viewModel.state.completionCountMessage)
           .font(.system(size: 16, weight: .bold))
         Spacer().frame(height: 16)
       }
     }
-    .alert(isPresented: self.$viewModel.isPresentAlert) {
-      self.buildAlert(self.viewModel.alert)
+    .alert(isPresented: Binding(
+      get: { self.viewModel.state.isPresentAlert },
+      set: { _ in }
+    )) {
+      return self.buildAlert(self.viewModel.state.alert)
     }
     .onAppear {
-      self.viewModel.runAfterBuild()
+      self.viewModel.trigger(.runAfterBuildForWoker)
     }
     .onDisappear {
-      self.viewModel.clearCount()
+      self.viewModel.trigger(.clearCount)
     }
   }
 

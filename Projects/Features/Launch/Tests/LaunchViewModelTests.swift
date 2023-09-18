@@ -34,9 +34,9 @@ final class LaunchViewModelTests: XCTestCase {
     self.builder.error = MockLaunchWorkerError.runError
     let viewModel: LaunchViewModel = .init(builder: self.builder)
 
-    await viewModel.build()
-    await viewModel.run()
-    await viewModel.run()
+    await viewModel.trigger(.buildForWorker)
+    await viewModel.trigger(.runAsync)
+    await viewModel.trigger(.runAsync)
 
     XCTAssertEqual(viewModel.retryCount, 2)
   }
@@ -48,11 +48,10 @@ final class LaunchViewModelTests: XCTestCase {
     let limitRetryCount = 3
     viewModel.limitRetryCount = limitRetryCount
 
-    await viewModel.build()
-    await viewModel.run()
-    await viewModel.run()
-    await viewModel.run()
-    await viewModel.run()
+    await viewModel.trigger(.buildForWorker)
+    await viewModel.trigger(.runAsync)
+    await viewModel.trigger(.runAsync)
+    await viewModel.trigger(.runAsync)
 
     XCTAssertEqual(viewModel.retryCount, limitRetryCount)
   }
@@ -66,12 +65,12 @@ final class LaunchViewModelTests: XCTestCase {
     var index = 0
     let viewModel: LaunchViewModel = .init(builder: self.builder)
     
-    viewModel.runAfterBuild()
+    viewModel.trigger(.runAfterBuildForWoker)
 
-    viewModel.$completionCount
+    viewModel.$state
       .dropFirst()
-      .sink { completionCount in
-        XCTAssertEqual(results[index], completionCount)
+      .sink { state in
+        XCTAssertEqual(results[index], state.completionCountMessage)
         index += 1
         if index >= results.count {
           expectation.fulfill()
@@ -82,6 +81,20 @@ final class LaunchViewModelTests: XCTestCase {
     wait(for: [expectation], timeout: 5.0)
   }
 
+  /// (완료한 갯수 / 총 갯수) 클리어
+  func testClearCount() async {
+    let viewModel: LaunchViewModel = .init(builder: self.builder)
+
+    await viewModel.trigger(.buildForWorker)
+    await viewModel.trigger(.runAsync)
+
+    XCTAssertEqual(viewModel.state.completionCountMessage, "2/2")
+
+    await viewModel.trigger(.clearCountAsync)
+
+    XCTAssertEqual(viewModel.state.completionCountMessage, "")
+  }
+
   /// 알럿 테스트
   func testPresentAlert() {
     let expectation: XCTestExpectation = .init(
@@ -90,23 +103,24 @@ final class LaunchViewModelTests: XCTestCase {
     self.builder.error = MockLaunchWorkerError.runError
     let viewModel: LaunchViewModel = .init(builder: self.builder)
 
-    viewModel.runAfterBuild()
+    viewModel.trigger(.runAfterBuildForWoker)
 
-    viewModel.$isPresentAlert
-      .dropFirst()
-      .sink { isPresentAlert in
-        XCTAssertTrue(isPresentAlert)
-        XCTAssertEqual(viewModel.alert.title, "")
+    viewModel.$state
+      .filter { state in state.alert != .empty }
+      .sink { state in
         XCTAssertEqual(
-          viewModel.alert.message,
-          "작업을 완료할 수 없습니다.(LaunchTesting.MockLaunchWorkerError 오류 0.)"
+          state.alert,
+            .init(
+              title: "",
+              message: "작업을 완료할 수 없습니다.(LaunchTesting.MockLaunchWorkerError 오류 0.)",
+              primaryAction: .init(
+                title: LaunchViewModel.TextConstant.retry,
+                type: .default,
+                completion: nil
+              ),
+              secondaryAction: nil
+            )
         )
-        XCTAssertEqual(viewModel.alert.primaryAction.type, .default)
-        XCTAssertEqual(
-          viewModel.alert.primaryAction.title,
-          LaunchViewModel.TextConstant.retry
-        )
-        XCTAssertNil(viewModel.alert.secondaryAction)
         expectation.fulfill()
       }
       .store(in: &self.cancellables)
@@ -127,26 +141,24 @@ final class LaunchViewModelTests: XCTestCase {
     self.builder.error = CheckVersionLaunchWorkError.needUpdate(entity)
     let viewModel: LaunchViewModel = .init(builder: self.builder)
 
-    viewModel.runAfterBuild()
+    viewModel.trigger(.runAfterBuildForWoker)
 
-    viewModel.$isPresentAlert
-      .dropFirst()
-      .sink { isPresentAlert in
-        XCTAssertTrue(isPresentAlert)
-        XCTAssertEqual(viewModel.alert.title, "")
+    viewModel.$state
+      .filter { state in state.alert != .empty }
+      .sink { state in
         XCTAssertEqual(
-          viewModel.alert.message,
-          entity.message
+          state.alert,
+            .init(
+              title: "",
+              message: entity.message,
+              primaryAction: .init(
+                title: LaunchViewModel.TextConstant.confirm,
+                type: .openURL(url: entity.linkURL),
+                completion: nil
+              ),
+              secondaryAction: nil
+            )
         )
-        XCTAssertEqual(
-          viewModel.alert.primaryAction.type,
-            .openURL(url: entity.linkURL)
-        )
-        XCTAssertEqual(
-          viewModel.alert.primaryAction.title,
-          LaunchViewModel.TextConstant.confirm
-        )
-        XCTAssertNil(viewModel.alert.secondaryAction)
         expectation.fulfill()
       }
       .store(in: &self.cancellables)

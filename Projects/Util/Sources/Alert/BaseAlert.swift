@@ -75,6 +75,10 @@ extension BaseAlert {
 }
 
 
+extension BaseAlert: Equatable {
+}
+
+
 extension BaseAlert.Action {
 
   public static let confirm: BaseAlert.Action = .init(
@@ -88,4 +92,12 @@ extension BaseAlert.Action {
     type: .cancel,
     completion: nil
   )
+}
+
+
+extension BaseAlert.Action: Equatable {
+
+  public static func == (lhs: BaseAlert.Action, rhs: BaseAlert.Action) -> Bool {
+    return lhs.title == rhs.title && lhs.type == rhs.type
+  }
 }
