@@ -39,9 +39,12 @@ public final class LaunchViewModel: ViewModelType, Injectable {
 
   private var rootWorkable: LaunchWorkable?
 
-  public var limitRetryCount: Int = .max
+  public var limitRetryCount: Int {
+    get { self.retry.limit }
+    set { self.retry.limit = newValue }
+  }
 
-  private(set) var retryCount = 0
+  private(set) var retry: LaunchRetry = .init()
 
   private let taskBag: AnyCancelTaskDictionaryBag = .init()
 
@@ -112,19 +115,19 @@ public final class LaunchViewModel: ViewModelType, Injectable {
   }
 
   private func run() async {
-    guard self.retryCount < self.limitRetryCount,
+    guard self.retry.isRetryPossible,
           !(self.rootWorkable?.isComplete ?? false) else {
       return
     }
     
     do {
-      if self.retryCount == 0 {
+      if self.retry.isNotRetry {
         await self.setCompletionCount(
           completedCount: 0,
           totalCount: self.rootWorkable?.totalCount ?? 0
         )
       }
-      self.retryCount += 1
+      self.retry.add()
       try await self.rootWorkable?.run()
     } catch {
       await self.handleError(error)
@@ -193,6 +196,7 @@ public final class LaunchViewModel: ViewModelType, Injectable {
     await sender?.setCompletedCount(0)
     await sender?.setTotalCount(0)
     await self.setCompletionCount(completedCount: 0, totalCount: 0)
+    self.retry.clear()
   }
 
   @MainActor

@@ -44,7 +44,7 @@ final class LaunchViewModelTests: XCTestCase {
     await viewModel.trigger(.runAsync)
     await viewModel.trigger(.runAsync)
 
-    XCTAssertEqual(viewModel.retryCount, 2)
+    XCTAssertEqual(viewModel.retry.count, 2)
   }
 
   /// 한계 수치까지만 재시도 하는지 테스트
@@ -65,7 +65,7 @@ final class LaunchViewModelTests: XCTestCase {
     await viewModel.trigger(.runAsync)
     await viewModel.trigger(.runAsync)
 
-    XCTAssertEqual(viewModel.retryCount, limitRetryCount)
+    XCTAssertEqual(viewModel.retry.count, limitRetryCount)
   }
 
   /// (완료한 갯수 / 총 갯수) 테스트
