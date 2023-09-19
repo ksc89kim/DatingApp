@@ -7,7 +7,7 @@ public final class MockLaunchWorker: LaunchWorkable {
 
   public var items: [LaunchWorkable] = []
 
-  public var state: LaunchState = .ready
+  public var state: LaunchWorkerState = .ready
 
   let id: UUID = .init()
 

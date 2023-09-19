@@ -19,7 +19,7 @@ public final class CheckVersionLaunchWorker: LaunchWorkable, Injectable {
 
   public var items: [LaunchWorkable] = []
 
-  public var state: LaunchState = .ready
+  public var state: LaunchWorkerState = .ready
 
   public var sender: LaunchSendable?
 

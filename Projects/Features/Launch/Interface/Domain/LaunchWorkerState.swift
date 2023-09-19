@@ -1,5 +1,5 @@
 //
-//  LaunchState.swift
+//  LaunchWorkerState.swift
 //  LaunchInterface
 //
 //  Created by kim sunchul on 2023/08/10.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-public enum LaunchState {
+public enum LaunchWorkerState {
   case ready
   case running
   case complete

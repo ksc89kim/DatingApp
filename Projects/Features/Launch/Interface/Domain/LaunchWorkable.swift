@@ -16,7 +16,7 @@ public protocol LaunchWorkable: AnyObject {
 
   var items: [LaunchWorkable] { get set }
 
-  var state: LaunchState { get set }
+  var state: LaunchWorkerState { get set }
 
   var sender: LaunchSendable? { get set }
 
