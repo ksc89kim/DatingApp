@@ -162,14 +162,14 @@ final class LaunchViewModelTests: XCTestCase {
       description: "NeedUpdateExpectation"
     )
     let entity = CheckVersionEntity(
-      isNeedUpdate: true,
+      isForceUpdate: true,
       message: "업데이트가 필요합니다.",
       linkURL: .init(fileURLWithPath: "")
     )
     DIContainer.register {
       InjectItem(LaunchWorkerBuilderKey.self) {
         var builder = MockLaunchWorkerBuilder()
-        builder.error = CheckVersionLaunchWorkError.needUpdate(entity)
+        builder.error = CheckVersionLaunchWorkError.forceUpdate(entity)
         return builder
       }
     }
@@ -198,5 +198,22 @@ final class LaunchViewModelTests: XCTestCase {
       .store(in: &self.cancellables)
 
     wait(for: [expectation], timeout: 5.0)
+  }
+
+  /// 강제 업데이트 확인 테스트
+  func testCheckForceUpdate() {
+    DIContainer.register {
+      InjectItem(LaunchWorkerBuilderKey.self) {
+        return MockLaunchWorkerBuilder()
+      }
+    }
+    let viewModel: LaunchViewModel = .init()
+    viewModel.isForceUpdate = true
+
+    XCTAssertFalse(viewModel.state.isPresentAlert)
+
+    viewModel.trigger(.checkForceUpdate)
+
+    XCTAssertTrue(viewModel.state.isPresentAlert)
   }
 }

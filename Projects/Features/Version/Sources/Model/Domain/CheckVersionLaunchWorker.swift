@@ -40,8 +40,8 @@ public final class CheckVersionLaunchWorker: LaunchWorkable, Injectable {
     guard let entity = entity else {
       throw CheckVersionLaunchWorkError.emptyEntity
     }
-    guard !entity.isNeedUpdate else {
-      throw CheckVersionLaunchWorkError.needUpdate(entity)
+    guard !entity.isForceUpdate else {
+      throw CheckVersionLaunchWorkError.forceUpdate(entity)
     }
   }
 }

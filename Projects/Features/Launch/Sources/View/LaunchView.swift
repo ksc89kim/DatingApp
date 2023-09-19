@@ -19,6 +19,8 @@ public struct LaunchView: View {
     for: LaunchViewModelKey.self
   )
 
+  @Environment(\.scenePhase) var scenePhase
+
   @Environment(\.openURL) private var openURL
 
   public var body: some View {
@@ -51,6 +53,11 @@ public struct LaunchView: View {
     }
     .onDisappear {
       self.viewModel.trigger(.clearCount)
+    }
+    .onChange(of: self.scenePhase) { newPhase in
+      if newPhase == .active {
+        self.viewModel.trigger(.checkForceUpdate)
+      }
     }
   }
 

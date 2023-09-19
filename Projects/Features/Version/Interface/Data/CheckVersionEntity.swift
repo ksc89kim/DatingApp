@@ -12,7 +12,7 @@ public struct CheckVersionEntity {
 
   // MARK: - Property
 
-  public let isNeedUpdate: Bool
+  public let isForceUpdate: Bool
 
   public let message: String
 
@@ -20,8 +20,8 @@ public struct CheckVersionEntity {
 
   // MARK: - Init
 
-  public init(isNeedUpdate: Bool, message: String, linkURL: URL) {
-    self.isNeedUpdate = isNeedUpdate
+  public init(isForceUpdate: Bool, message: String, linkURL: URL) {
+    self.isForceUpdate = isForceUpdate
     self.message = message
     self.linkURL = linkURL
   }

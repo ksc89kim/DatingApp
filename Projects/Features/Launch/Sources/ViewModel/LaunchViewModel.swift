@@ -48,6 +48,8 @@ public final class LaunchViewModel: ViewModelType, Injectable {
 
   private let taskBag: AnyCancelTaskDictionaryBag = .init()
 
+  var isForceUpdate: Bool = false
+
   // MARK: - Init
   
   public init() {
@@ -60,7 +62,9 @@ public final class LaunchViewModel: ViewModelType, Injectable {
     case .run: self.run()
     case .runAfterBuildForWoker: self.runAfterBuildForWoker()
     case .clearCount: self.clearCount()
-    case .buildForWorker, .runAsync, .clearCountAsync: break
+    case .checkForceUpdate: self.checkForceUpdate()
+    case .buildForWorker, .runAsync, .clearCountAsync:
+      break
     }
   }
 
@@ -69,7 +73,8 @@ public final class LaunchViewModel: ViewModelType, Injectable {
     case .buildForWorker: await self.buildForWorker()
     case .runAsync: await self.run()
     case .clearCountAsync: await self.clearCount()
-    case .run, .runAfterBuildForWoker, .clearCount: break
+    case .run, .runAfterBuildForWoker, .clearCount, .checkForceUpdate:
+      break
     }
   }
 
@@ -146,8 +151,9 @@ public final class LaunchViewModel: ViewModelType, Injectable {
 
   private func handleCheckVersionError(_ error: CheckVersionLaunchWorkError) {
     switch error {
-    case .needUpdate(let entity):
+    case .forceUpdate(let entity):
       self.state.alert = self.makeForceUpdateAlert(entity: entity)
+      self.isForceUpdate = entity.isForceUpdate
     case .emptyEntity:
       self.state.alert = self.makeRetryAlert(message: error.localizedDescription)
     }
@@ -206,5 +212,11 @@ public final class LaunchViewModel: ViewModelType, Injectable {
       return
     }
     self.state.completionCountMessage = "\(completedCount)/\(totalCount)"
+  }
+
+  private func checkForceUpdate() {
+    if self.isForceUpdate {
+      self.state.isPresentAlert = true
+    }
   }
 }

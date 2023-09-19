@@ -14,13 +14,13 @@ public final class MockVersionRepository: VersionRepositoryType {
 
   // MARK: - Property
 
-  var isNeedUpdate: Bool = false
+  var isForceUpdate: Bool = false
 
   // MARK: - Method
 
   public func checkVersion() async throws -> VersionInterface.CheckVersionEntity? {
     return .init(
-      isNeedUpdate: self.isNeedUpdate,
+      isForceUpdate: self.isForceUpdate,
       message: "업데이트가 필요합니다.",
       linkURL: .init(string: "http://itunes.apple.com/kr/app/")!
     )

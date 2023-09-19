@@ -14,14 +14,14 @@ struct CheckVersionResponse: Codable {
   // MARK: - CodingKey
 
   private enum Keys: String, CodingKey {
-    case isNeedUpdate = "is_need_update"
+    case isForceUpdate = "is_force_update"
     case message
     case linkURL = "link_url"
   }
 
   // MARK: - Property
   
-  private let isNeedUpdate: Bool
+  private let isForceUpdate: Bool
 
   private let message: String
 
@@ -31,7 +31,7 @@ struct CheckVersionResponse: Codable {
 
   init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: Keys.self)
-    self.isNeedUpdate = try container.decode(Bool.self, forKey: .isNeedUpdate)
+    self.isForceUpdate = try container.decode(Bool.self, forKey: .isForceUpdate)
     self.message = try container.decode(String.self, forKey: .message)
     self.linkURL = try container.decodeIfPresent(URL.self, forKey: .linkURL)
   }
@@ -41,7 +41,7 @@ struct CheckVersionResponse: Codable {
   func toEntity() -> CheckVersionEntity? {
     guard let url = self.linkURL else { return nil }
     return .init(
-      isNeedUpdate: self.isNeedUpdate,
+      isForceUpdate: self.isForceUpdate,
       message: self.message,
       linkURL: url
     )

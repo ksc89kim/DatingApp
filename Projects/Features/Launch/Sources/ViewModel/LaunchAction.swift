@@ -15,4 +15,5 @@ public enum LaunchAction {
   case buildForWorker
   case clearCount
   case clearCountAsync
+  case checkForceUpdate
 }
