@@ -20,7 +20,7 @@ public struct LaunchWorkerBuilder: LaunchWorkerBuildable {
     let checkVersionWorker: LaunchWorkable = DIContainer.resolve(
       for: CheckVersionLaunchWorkerKey.self
     )
-    await checkVersionWorker.push(item: checkVersionWorker)
+    await rootWorker.push(item: checkVersionWorker)
 
     return rootWorker
   }

@@ -21,7 +21,7 @@ final class LaunchRootWorker: LaunchWorkable {
 
   var sender: LaunchSendable?
 
-  var completionSender: LaunchCompletionSender?
+  var completionSender: LaunchCompletionSender? = LaunchCompletionSender()
 
   // MARK: - Method
 
