@@ -8,6 +8,7 @@
 
 import DI
 import Core
+import SwiftUI
 
 public enum LaunchViewModelKey: InjectionKey {
   public typealias Value = ViewModelType
@@ -15,4 +16,8 @@ public enum LaunchViewModelKey: InjectionKey {
 
 public enum LaunchWorkerBuilderKey: InjectionKey {
   public typealias Value = LaunchWorkerBuildable?
+}
+
+public enum LaunchViewKey: InjectionKey {
+  public typealias Value = View
 }

@@ -11,7 +11,7 @@ import LaunchInterface
 import DI
 import Util
 
-public struct LaunchView: View {
+public struct LaunchView: View, Injectable {
 
   // MARK: - Property
 

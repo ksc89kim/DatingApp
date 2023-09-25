@@ -17,13 +17,24 @@ import Version
 struct DIRegister {
 
   static func register() {
+
+    // MARK: - Launch
+
     DIContainer.register {
       InjectItem(LaunchViewModelKey.self) {
-        return LaunchViewModel()
+        LaunchViewModel()
       }
       InjectItem(LaunchWorkerBuilderKey.self) {
-        return LaunchWorkerBuilder()
+        LaunchWorkerBuilder()
       }
+      InjectItem(LaunchViewKey.self) {
+        LaunchView()
+      }
+    }
+
+    // MARK: - Version
+
+    DIContainer.register {
       InjectItem(CheckVersionLaunchWorkerKey.self) {
         let repository = VersionRepository(
           networking: .init(stubClosure: Networking<VersionAPI>.immediatelyStub)
