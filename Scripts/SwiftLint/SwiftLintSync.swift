@@ -6,7 +6,8 @@ let paths: [String] = [
     "Projects/Features/Launch/.swiftlint.yml",
     "Projects/DI/.swiftlint.yml",
     "Projects/Util/.swiftlint.yml",
-    "Projects/Core/.swiftlint.yml"
+    "Projects/Core/.swiftlint.yml",
+    "Projects/App/.swiftlint.yml"
 ]
 
 let bash = Bash()

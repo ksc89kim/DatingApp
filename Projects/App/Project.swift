@@ -23,7 +23,9 @@ func targets() -> [Target] {
     .resources("Resources/**")
     .appendDependenciess([
       .di,
-      .core
+      .core,
+      .feature(target: .launch, type: .source),
+      .feature(target: .version, type: .source)
     ])
     .build()
   ]

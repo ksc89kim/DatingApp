@@ -1,4 +1,5 @@
 import SwiftUI
+import Launch
 
 @main
 struct FoodReviewBlogApp: App {
@@ -7,7 +8,13 @@ struct FoodReviewBlogApp: App {
 
   var body: some Scene {
     WindowGroup {
-      Text("Hellow World")
+      Text("")
     }
+  }
+
+  // MARK: - Init
+
+  init() {
+    DIRegister.register()
   }
 }
