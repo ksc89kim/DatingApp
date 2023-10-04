@@ -17,16 +17,19 @@ import AppStateInterface
 
 struct DIRegister {
 
-  static func register() {
+  func register() {
+    self.registerForAppState()
+    self.registerForLaunch()
+    self.registerForVersion()
+  }
 
-    // MARK: - AppState
-    
+  private func registerForAppState() {
     DIContainer.register {
       InjectItem(AppStateKey.self) { AppState.instance }
     }
+  }
 
-    // MARK: - Launch
-
+  private func registerForLaunch() {
     DIContainer.register {
       InjectItem(LaunchViewModelKey.self) {
         LaunchViewModel()
@@ -38,9 +41,9 @@ struct DIRegister {
         LaunchView()
       }
     }
+  }
 
-    // MARK: - Version
-
+  private func registerForVersion() {
     DIContainer.register {
       InjectItem(CheckVersionLaunchWorkerKey.self) {
         let repository = VersionRepository(
