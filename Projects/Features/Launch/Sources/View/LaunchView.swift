@@ -42,6 +42,7 @@ public struct LaunchView: View, Injectable {
         Spacer().frame(height: 16)
       }
     }
+    .toolbar(.hidden, for: .navigationBar)
     .alert(isPresented: Binding(
       get: { self.viewModel.state.isPresentAlert },
       set: { _ in }

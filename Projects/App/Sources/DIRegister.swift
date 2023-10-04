@@ -13,10 +13,17 @@ import LaunchInterface
 import Launch
 import VersionInterface
 import Version
+import AppStateInterface
 
 struct DIRegister {
 
   static func register() {
+
+    // MARK: - AppState
+
+    DIContainer.register {
+      InjectItem(AppStateKey.self) { AppState.instance }
+    }
 
     // MARK: - Launch
 

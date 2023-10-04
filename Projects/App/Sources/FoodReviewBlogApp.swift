@@ -8,7 +8,7 @@ struct FoodReviewBlogApp: App {
 
   var body: some Scene {
     WindowGroup {
-      Text("")
+      ContentView()
     }
   }
 
