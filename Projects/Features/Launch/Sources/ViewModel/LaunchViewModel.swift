@@ -9,6 +9,7 @@
 import Foundation
 import VersionInterface
 import LaunchInterface
+import AppStateInterface
 import Core
 import Util
 import DI
@@ -36,6 +37,9 @@ public final class LaunchViewModel: ViewModelType, Injectable {
 
   @Inject(LaunchWorkerBuilderKey.self)
   private var builder: LaunchWorkerBuildable?
+
+  @Inject(AppStateKey.self)
+  private var appState: AppState
 
   private var rootWorkable: LaunchWorkable?
 
