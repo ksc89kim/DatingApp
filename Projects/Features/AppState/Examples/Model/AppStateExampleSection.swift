@@ -20,8 +20,8 @@ extension AppStateExampleSection {
   static let routers: AppStateExampleSection = .init(
     name: "Main Router Examples",
     items: [
-      .init(title: "런치 페이지 이동 - Stack 1", paths: [.launch]),
-      .init(title: "런치 페이지 이동 - Stack 2", paths: [.launch, .launch])
+      .init(title: "런치 페이지 이동", paths: [.launch]),
+      .init(title: "런치 페이지 중첩 이동", paths: [.launch, .launch])
     ]
   )
 }

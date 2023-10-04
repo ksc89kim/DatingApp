@@ -27,7 +27,7 @@ struct AppStateContentView: View {
         }
       }
       .navigationTitle("데모")
-      .navigationDestination(for: MainRouterPath.self) { item in
+      .navigationDestination(for: MainRoutePath.self) { item in
         switch item {
         case .launch: AppStateDetailView(name: "런치 페이지")
         }

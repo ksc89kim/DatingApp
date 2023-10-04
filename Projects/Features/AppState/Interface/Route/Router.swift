@@ -1,6 +1,6 @@
 //
-//  Routers.swift
-//  Core
+//  Router.swift
+//  AppState
 //
 //  Created by kim sunchul on 2023/10/03.
 //  Copyright © 2023 com.tronplay. All rights reserved.
@@ -16,11 +16,11 @@ public struct Router {
 
   // MARK: - Property
 
-  public var main: [MainRouterPath]
+  public var main: [MainRoutePath]
 
   // MARK: - Init
 
-  init(main: [MainRouterPath] = []) {
+  init(main: [MainRoutePath] = []) {
     self.main = main
   }
 

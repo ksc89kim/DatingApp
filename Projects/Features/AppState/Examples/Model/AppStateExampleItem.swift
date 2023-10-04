@@ -9,5 +9,5 @@ struct AppStateExampleItem: Identifiable {
 
   let title: String
 
-  let paths: [MainRouterPath]
+  let paths: [MainRoutePath]
 }

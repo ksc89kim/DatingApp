@@ -7,7 +7,7 @@ final class RouterTests: XCTestCase {
   func testAppendForMainRouterPath() {
     var router = Router()
 
-    router.append(value: MainRouterPath.launch, for: .main)
+    router.append(value: MainRoutePath.launch, for: .main)
 
     XCTAssertEqual(router.main.count, 1)
   }
@@ -17,7 +17,7 @@ final class RouterTests: XCTestCase {
     var router = Router()
     router.main = [.launch, .launch]
 
-    router.remove(value: MainRouterPath.launch, for: .main)
+    router.remove(value: MainRoutePath.launch, for: .main)
 
     XCTAssertTrue(router.main.isEmpty)
   }
