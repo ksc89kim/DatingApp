@@ -15,7 +15,7 @@ public struct BaseAlert {
   public enum ActionType: Equatable {
     case `default`
     case cancel
-    case openURL(url: URL)
+    case openURL(url: URL?)
     case destructive
   }
 

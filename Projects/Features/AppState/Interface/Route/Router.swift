@@ -20,7 +20,7 @@ public struct Router {
 
   // MARK: - Init
 
-  init(main: [MainRoutePath] = [.launch]) {
+  init(main: [MainRoutePath] = []) {
     self.main = main
   }
 

@@ -1,5 +1,5 @@
 import SwiftUI
-import Launch
+import AppStateInterface
 
 @main
 struct FoodReviewBlogApp: App {
@@ -15,6 +15,11 @@ struct FoodReviewBlogApp: App {
   // MARK: - Init
 
   init() {
+    AppState.instance.router.append(
+      value: MainRoutePath.launch,
+      for: .main
+    )
+
     DIRegister.register()
   }
 }

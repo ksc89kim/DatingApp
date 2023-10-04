@@ -14,7 +14,7 @@ public protocol AlertBuildable {
 
   func buildAlertButton(_ action: BaseAlert.Action) -> Alert.Button
 
-  func openURL(url: URL)
+  func openURL(url: URL?)
 }
 
 
@@ -53,5 +53,5 @@ extension AlertBuildable {
     }
   }
 
-  public func openURL(url: URL) { }
+  public func openURL(url: URL?) { }
 }

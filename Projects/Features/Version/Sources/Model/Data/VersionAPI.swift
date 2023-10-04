@@ -40,4 +40,18 @@ extension VersionAPI: NetworkTargetType {
       encoding: URLEncoding.default
     )
   }
+
+  public var sampleData: Data {
+    return """
+    {
+      "code": 201,
+      "message": "",
+      "data": {
+        "is_force_update": false,
+        "message": "",
+        "link_url": null
+      }
+    }
+    """.data(using: .utf16)!
+  }
 }
