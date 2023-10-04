@@ -6,10 +6,10 @@ public final class DIContainer {
 
   public static var instance: DIContainer = .init()
   
-  private var items: [String: InjectItem] = [:]
+  var items: [String: InjectItem] = [:]
 
   // MARK: - Method
-  
+
   public static func resolve<T>(for type: Any.Type?) -> T? {
     let name = self.name(for: type) ?? String(describing: T.self)
     return self.instance.items[name]?.resolve() as? T
@@ -37,7 +37,7 @@ public final class DIContainer {
     self.items[item.name] = item
   }
 
-  private static func name(for type: Any.Type?) -> String? {
+  static func name(for type: Any.Type?) -> String? {
     return type.map { (type: Any.Type) -> String in
       return String(describing: type)
     }
