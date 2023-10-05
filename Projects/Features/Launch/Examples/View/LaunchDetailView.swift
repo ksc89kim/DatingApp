@@ -13,9 +13,7 @@ struct LaunchDetailView: View {
   }
 }
 
-struct LaunchDetailView_Previews: PreviewProvider {
-  
-  static var previews: some View {
-    LaunchDetailView(name: "테스트 예제")
-  }
+
+#Preview {
+  LaunchDetailView(name: "테스트 예제")
 }

@@ -8,9 +8,7 @@ struct VersionDetailView: View {
   }
 }
 
-struct VersionDetailView_Previews: PreviewProvider {
 
-  static var previews: some View {
-    VersionDetailView(name: "테스트 예제")
-  }
+#Preview {
+  VersionDetailView(name: "테스트 예제")
 }

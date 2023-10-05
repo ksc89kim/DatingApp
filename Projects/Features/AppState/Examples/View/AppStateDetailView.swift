@@ -8,9 +8,7 @@ struct AppStateDetailView: View {
   }
 }
 
-struct AppStateDetailView_Previews: PreviewProvider {
 
-  static var previews: some View {
-    AppStateDetailView(name: "테스트 예제")
-  }
+#Preview {
+  AppStateDetailView(name: "테스트 예제")
 }

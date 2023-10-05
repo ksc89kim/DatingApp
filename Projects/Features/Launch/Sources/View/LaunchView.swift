@@ -71,23 +71,21 @@ public struct LaunchView: View, Injectable {
 
 extension LaunchView: AlertBuildable {
 
-  public func openURL(url: URL) {
+  public func openURL(url: URL?) {
+    guard let url = url else { return }
     self.openURL(url)
   }
 }
 
 
-struct LaunchView_Previews: PreviewProvider {
-  
-  static var previews: some View {
-    DIContainer.register {
-      InjectItem(LaunchWorkerBuilderKey.self) {
-        return nil
-      }
-      InjectItem(LaunchViewModelKey.self) {
-        return LaunchViewModel()
-      }
+#Preview {
+  DIContainer.register {
+    InjectItem(LaunchWorkerBuilderKey.self) {
+      return nil
     }
-    return LaunchView()
+    InjectItem(LaunchViewModelKey.self) {
+      return LaunchViewModel()
+    }
   }
+  return LaunchView()
 }

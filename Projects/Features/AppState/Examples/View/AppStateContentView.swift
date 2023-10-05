@@ -45,16 +45,13 @@ struct AppStateContentView: View {
   }
 }
 
-struct AppStateContentView_Previews: PreviewProvider {
-  
-  public static var previews: some View {
-    DIContainer.register {
-      InjectItem(RouteInjectionKey.self) {
-        MockRouter()
-      }
+
+#Preview {
+  DIContainer.register {
+    InjectItem(RouteInjectionKey.self) {
+      MockRouter()
     }
-    
-    return AppStateContentView()
-      .environmentObject(AppState.instance)
   }
+  return AppStateContentView()
+    .environmentObject(AppState.instance)
 }

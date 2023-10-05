@@ -32,9 +32,6 @@ struct VersionContentView: View {
 }
 
 
-struct VersionContentView_Previews: PreviewProvider {
-
-  public static var previews: some View {
-    VersionContentView()
-  }
+#Preview {
+  VersionContentView()
 }

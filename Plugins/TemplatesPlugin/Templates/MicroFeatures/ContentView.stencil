@@ -32,8 +32,9 @@ struct {{ name }}ContentView: View {
   }
 }
 
-struct {{ name }}ContentView_Previews: PreviewProvider {
-  public static var previews: some View {
-    {{ name }}ContentView()
-  }
+
+#Preview {
+  {{ name }}ContentView()
 }
+
+

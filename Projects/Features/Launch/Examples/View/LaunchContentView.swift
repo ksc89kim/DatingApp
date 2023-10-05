@@ -77,9 +77,6 @@ struct LaunchContentView: View {
 }
 
 
-struct LaunchContentView_Previews: PreviewProvider {
-
-  public static var previews: some View {
-    LaunchContentView()
-  }
+#Preview {
+  LaunchContentView()
 }
