@@ -1,5 +1,5 @@
 import Foundation
-import AppStateInterface
+import AppStateTesting
 
 struct AppStateExampleItem: Identifiable {
 
@@ -9,5 +9,5 @@ struct AppStateExampleItem: Identifiable {
 
   let title: String
 
-  let paths: [MainRoutePath]
+  let paths: [MockRoutePath]
 }

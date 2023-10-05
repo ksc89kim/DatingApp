@@ -1,5 +1,7 @@
 import SwiftUI
+import DI
 import AppStateInterface
+import AppStateTesting
 
 struct AppStateContentView: View {
 
@@ -11,25 +13,31 @@ struct AppStateContentView: View {
 
   @EnvironmentObject var appState: AppState
 
+  @State var router: MockRouter = .init()
+
   // MARK: - Body
 
   var body: some View {
-    NavigationStack(path: self.$appState.router.main) {
+    NavigationStack(path: self.$router.mock) {
       List {
         ForEach(self.sections) { section in
           Section(section.name) {
             ForEach(section.items) { item in
               Button(item.title) {
-                self.appState.router.main = item.paths
+                self.router.mock = item.paths
               }
             }
           }
         }
       }
       .navigationTitle("데모")
-      .navigationDestination(for: MainRoutePath.self) { item in
+      .navigationDestination(for: MockRoutePath.self) { item in
         switch item {
         case .launch: AppStateDetailView(name: "런치 페이지")
+        case .onboarding: AppStateDetailView(name: "온보딩 페이지")
+        case .singUp: AppStateDetailView(name: "가입 화면 페이지")
+        case .signIn: AppStateDetailView(name: "로그인 페이지")
+        case .main: AppStateDetailView(name: "메인 페이지")
         }
       }
       .listStyle(.sidebar)
@@ -38,8 +46,15 @@ struct AppStateContentView: View {
 }
 
 struct AppStateContentView_Previews: PreviewProvider {
+  
   public static var previews: some View {
-    AppStateContentView()
+    DIContainer.register {
+      InjectItem(RouteInjectionKey.self) {
+        MockRouter()
+      }
+    }
+    
+    return AppStateContentView()
       .environmentObject(AppState.instance)
   }
 }

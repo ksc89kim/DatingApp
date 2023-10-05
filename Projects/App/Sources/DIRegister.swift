@@ -14,6 +14,7 @@ import Launch
 import VersionInterface
 import Version
 import AppStateInterface
+import AppState
 
 struct DIRegister {
 
@@ -25,6 +26,7 @@ struct DIRegister {
 
   private func registerForAppState() {
     DIContainer.register {
+      InjectItem(RouteInjectionKey.self) { Router() }
       InjectItem(AppStateKey.self) { AppState.instance }
     }
   }

@@ -1,5 +1,7 @@
 import SwiftUI
+import DI
 import AppStateInterface
+import AppStateTesting
 
 @main
 struct AppStateExampleApp: App {
@@ -10,6 +12,16 @@ struct AppStateExampleApp: App {
     WindowGroup {
       AppStateContentView()
         .environmentObject(AppState.instance)
+    }
+  }
+
+  // MARK: - Init
+  
+  init() {
+    DIContainer.register {
+      InjectItem(RouteInjectionKey.self) {
+        MockRouter()
+      }
     }
   }
 }

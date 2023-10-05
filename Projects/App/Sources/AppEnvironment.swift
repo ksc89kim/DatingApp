@@ -15,12 +15,12 @@ struct AppEnvironment {
 
   static func bootstrap() {
 
-    AppState.instance.router.append(
-      value: MainRoutePath.launch,
-      for: .main
-    )
-
     let diRegister: DIRegister = .init()
     diRegister.register()
+
+    AppState.instance.router.append(
+      value: MainRoutePath.launch,
+      for: RouteKey.main
+    )
   }
 }
