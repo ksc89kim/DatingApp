@@ -1,10 +1,10 @@
 import SwiftUI
 
-struct {{ name }}ContentView: View {
+struct UserContentView: View {
 
   // MARK: - Property
 
-  let sections: [{{ name }}ExampleSection] = [
+  let sections: [UserExampleSection] = [
     .examples
   ]
 
@@ -22,9 +22,9 @@ struct {{ name }}ContentView: View {
         }
       }
       .navigationTitle("데모")
-      .navigationDestination(for: {{ name }}ExampleItem.self) { item in
+      .navigationDestination(for: UserExampleItem.self) { item in
         switch item {
-        case .demoExample: {{ name }}DetailView(name: item.rawValue)
+        case .demoExample: UserDetailView(name: item.rawValue)
         }
       }
       .listStyle(.sidebar)
@@ -34,5 +34,5 @@ struct {{ name }}ContentView: View {
 
 
 #Preview {
-  {{ name }}ContentView()
+  UserContentView()
 }

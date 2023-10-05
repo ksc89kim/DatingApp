@@ -5,6 +5,7 @@ import ProjectPathPlugin
 let workspace = Workspace(
   name: env.name,
     projects: [
+      "\(ProjectPathType.features(.user).path)",
       "\(ProjectPathType.features(.appState).path)",
       "\(ProjectPathType.features(.version).path)",
       "\(ProjectPathType.features(.launch).path)",
