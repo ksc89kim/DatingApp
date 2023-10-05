@@ -6,7 +6,9 @@ func targets() -> [Target] {
   return Target.features(
     target: .appState,
     types: .all,
-    baseBuilder: .make(dependencies: [.di])
+    baseBuilder: .make(
+      featuresDependencies: .init(interface: [.di])
+    )
   )
 }
 
