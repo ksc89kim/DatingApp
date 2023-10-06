@@ -18,6 +18,7 @@ public struct API {
   }
 
   public static let baseHeaders: [String: String] = [
-    "Accept": "application/json"
+    "Accept": "application/json",
+    "Authorization": TokenManager.instance.accessToken() ?? ""
   ]
 }

@@ -13,7 +13,8 @@ func targets() -> [Target] {
         ],
         source: [
           .core,
-          .di
+          .di,
+          .feature(target: .appState, type: .interface)
         ]
       )
     )
