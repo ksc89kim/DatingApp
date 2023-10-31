@@ -39,7 +39,7 @@ public extension Target {
 
     private var headers: Headers?
 
-    private var entitlements: Path? = nil
+    private var entitlements: Entitlements? = nil
 
     private var scripts: [TargetScript]
 
@@ -51,13 +51,17 @@ public extension Target {
 
     private var coreDataModels: [CoreDataModel]
 
-    private var environment: [String : String]
+    private var environmentVariables: [String: EnvironmentVariable]
 
     private var launchArguments: [LaunchArgument]
 
     private var additionalFiles: [FileElement]
 
     private var buildRules: [BuildRule]
+
+    private var mergedBinaryType: MergedBinaryType
+
+    private var mergeable: Bool
 
     // MARK: - Init
 
@@ -73,7 +77,7 @@ public extension Target {
       resources: ResourceFileElements? = nil,
       copyFiles: [CopyFilesAction]? = nil,
       headers: Headers? = nil,
-      entitlements: Path? = nil,
+      entitlements: Entitlements? = nil,
       scripts: [TargetScript] = [],
       dependencies: [TargetDependency] = [],
       featuresDependencies: MicroFeaturesDependencies = .init(),
@@ -82,10 +86,12 @@ public extension Target {
         configurations: .default
       ),
       coreDataModels: [CoreDataModel] = [],
-      environment: [String : String] = [:],
+      environmentVariables: [String: EnvironmentVariable] = [:],
       launchArguments: [LaunchArgument] = [],
       additionalFiles: [FileElement] = [],
-      buildRules: [BuildRule] = []
+      buildRules: [BuildRule] = [],
+      mergedBinaryType: MergedBinaryType = .disabled,
+      mergeable: Bool = false
     ) {
       self.name = name
       self.platform = platform
@@ -104,10 +110,12 @@ public extension Target {
       self.featuresDependencies = featuresDependencies
       self.settings = settings
       self.coreDataModels = coreDataModels
-      self.environment = environment
+      self.environmentVariables = environmentVariables
       self.launchArguments = launchArguments
       self.additionalFiles = additionalFiles
       self.buildRules = buildRules
+      self.mergedBinaryType = mergedBinaryType
+      self.mergeable = mergeable
     }
 
     // MARK: - Build Methods
@@ -131,17 +139,17 @@ public extension Target {
         infoPlist: self.infoPlist,
         sources: self.sources,
         resources: self.resources,
-        copyFiles: self.copyFiles,
-        headers: self.headers,
         entitlements: self.entitlements,
         scripts: self.scripts,
         dependencies: targetDependencies,
         settings: self.settings,
         coreDataModels: self.coreDataModels,
-        environment: self.environment,
+        environmentVariables: self.environmentVariables,
         launchArguments: self.launchArguments,
         additionalFiles: self.additionalFiles,
-        buildRules: self.buildRules
+        buildRules: self.buildRules,
+        mergedBinaryType: self.mergedBinaryType,
+        mergeable: self.mergeable
       )
     }
 
@@ -214,7 +222,7 @@ public extension Target {
     }
 
     @discardableResult
-    public func entitlements(_ entitlements: Path) -> Self {
+    public func entitlements(_ entitlements: Entitlements) -> Self {
       self.entitlements = entitlements
       return self
     }
@@ -255,8 +263,8 @@ public extension Target {
     }
 
     @discardableResult
-    public func environment(_ environment: [String: String]) -> Self {
-      self.environment = environment
+    public func environmentVariables(_ environmentVariables: [String: EnvironmentVariable]) -> Self {
+      self.environmentVariables = environmentVariables
       return self
     }
 
@@ -279,6 +287,18 @@ public extension Target {
     }
 
     @discardableResult
+    public func mergedBinaryType(_ mergedBinaryType: MergedBinaryType) -> Self {
+      self.mergedBinaryType = mergedBinaryType
+      return self
+    }
+
+    @discardableResult
+    public func mergeable(_ mergeable: Bool) -> Self {
+      self.mergeable = mergeable
+      return self
+    }
+
+    @discardableResult
     public func builder(_ builder: Builder) -> Self {
       self.name = builder.name
       self.platform = builder.platform
@@ -297,10 +317,12 @@ public extension Target {
       self.featuresDependencies = builder.featuresDependencies
       self.settings = builder.settings
       self.coreDataModels = builder.coreDataModels
-      self.environment = builder.environment
+      self.environmentVariables = builder.environmentVariables
       self.launchArguments = builder.launchArguments
       self.additionalFiles = builder.additionalFiles
       self.buildRules = builder.buildRules
+      self.mergedBinaryType = builder.mergedBinaryType
+      self.mergeable = builder.mergeable
       return self
     }
 

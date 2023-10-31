@@ -15,7 +15,7 @@ public enum LaunchViewModelKey: InjectionKey {
 }
 
 public enum LaunchWorkerBuilderKey: InjectionKey {
-  public typealias Value = LaunchWorkerBuildable?
+  public typealias Value = LaunchWorkerBuildable
 }
 
 public enum LaunchViewKey: InjectionKey {

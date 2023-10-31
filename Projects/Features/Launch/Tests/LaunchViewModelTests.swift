@@ -105,6 +105,7 @@ final class LaunchViewModelTests: XCTestCase {
         return MockLaunchWorkerBuilder()
       }
     }
+
     let viewModel: LaunchViewModel = .init()
 
     await viewModel.trigger(.buildForWorker)
