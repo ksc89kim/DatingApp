@@ -8,13 +8,11 @@
 
 import Foundation
 
-public final class TokenManager {
+public final class TokenManager: TokenManagerType {
 
   // MARK: - Property
 
   private static let Key = "access_token"
-
-  public static let instance: TokenManager = .init()
 
   // MARK: - Method
 

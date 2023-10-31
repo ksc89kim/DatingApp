@@ -20,10 +20,12 @@ final class CheckVersionLaunchWorkerTests: XCTestCase {
     self.worker = .init(repository: self.mockRepository)
   }
 
+  /// Work 기본 테스트
   func testWork() async throws {
     try await self.worker.work()
   }
 
+  /// 강제 업데이트 테스트
   func testForceUpdateFromWork() async {
     self.mockRepository.isForceUpdate = true
 

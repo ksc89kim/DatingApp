@@ -24,8 +24,5 @@ public final class AppState: ObservableObject, Injectable {
     for: RouteInjectionKey.self
   )
 
-  @Published
-  public var me: UserEntity?
-
   public static let instance: AppState = .init()
 }

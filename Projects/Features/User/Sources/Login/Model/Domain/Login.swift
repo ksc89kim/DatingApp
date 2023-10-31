@@ -10,7 +10,6 @@ import Foundation
 import DI
 import Core
 import UserInterface
-import AppStateInterface
 
 final class Login: Loginable {
 
@@ -18,24 +17,26 @@ final class Login: Loginable {
 
   private let repository: LoginRepositoryType
 
-  @Inject(AppStateKey.self)
-  private var appState: AppState
+  private let tokenManager: TokenManagerType
 
   // MARK: - Init
 
-  init(repository: LoginRepositoryType) {
+  init(
+    repository: LoginRepositoryType,
+    tokenManager: TokenManagerType
+  ) {
     self.repository = repository
+    self.tokenManager = tokenManager
   }
 
   // MARK: - Method
 
   func login() async throws {
-    guard TokenManager.instance.accessToken() != nil else {
+    guard self.tokenManager.accessToken() != nil else {
       throw LoginTokenError.notExist
     }
 
     let entity = try await self.repository.login()
-    TokenManager.instance.save(token: entity.token)
-    self.appState.me = entity.user
+    self.tokenManager.save(token: entity.token)
   }
 }

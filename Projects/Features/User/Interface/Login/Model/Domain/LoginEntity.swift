@@ -14,15 +14,9 @@ public struct LoginEntity {
 
   public let token: String
 
-  public let user: UserEntity
-
   // MARK: - Init
   
-  public init(
-    token: String,
-    user: UserEntity
-  ) {
+  public init(token: String) {
     self.token = token
-    self.user = user
   }
 }
