@@ -9,20 +9,21 @@
 import Foundation
 import LaunchInterface
 import UserInterface
+import DI
 
-final class LoginLaunchWorker: LaunchWorkable {
-  
+public final class LoginLaunchWorker: LaunchWorkable, Injectable {
+
   // MARK: - Property
 
-  var parent: LaunchWorkable?
+  public var parent: LaunchWorkable?
   
-  var items: [LaunchWorkable] = []
+  public var items: [LaunchWorkable] = []
   
-  var state: LaunchWorkerState = .ready
+  public var state: LaunchWorkerState = .ready
 
-  var sender: LaunchSendable?
-  
-  var completionSender: LaunchCompletionSender?
+  public var sender: LaunchSendable?
+
+  public var completionSender: LaunchCompletionSender?
 
   private let loginable: Loginable
 
@@ -34,7 +35,7 @@ final class LoginLaunchWorker: LaunchWorkable {
 
   // MARK: - Method
 
-  func work() async throws {
+  public func work() async throws {
     do {
       try await self.loginable.login()
     } catch {

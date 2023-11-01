@@ -11,7 +11,7 @@ import DI
 import Core
 import UserInterface
 
-final class Login: Loginable {
+public final class Login: Loginable, Injectable {
 
   // MARK: - Property
 
@@ -21,7 +21,7 @@ final class Login: Loginable {
 
   // MARK: - Init
 
-  init(
+  public init(
     repository: LoginRepositoryType,
     tokenManager: TokenManagerType
   ) {
@@ -31,7 +31,7 @@ final class Login: Loginable {
 
   // MARK: - Method
 
-  func login() async throws {
+  public func login() async throws {
     guard self.tokenManager.accessToken() != nil else {
       throw LoginTokenError.notExist
     }

@@ -15,6 +15,8 @@ import VersionInterface
 import Version
 import AppStateInterface
 import AppState
+import UserInterface
+import User
 
 struct DIRegister {
 
@@ -52,6 +54,22 @@ struct DIRegister {
           networking: .init(stubClosure: Networking<VersionAPI>.immediatelyStub)
         )
         return CheckVersionLaunchWorker(repository: repository)
+      }
+    }
+  }
+
+  private func registerForUser() {
+    DIContainer.register {
+      InjectItem(LoginKey.self) {
+        let repository = LoginRepository(
+          networking: .init(stubClosure: Networking<UserAPI>.immediatelyStub)
+        )
+        let tokenManager = TokenManager()
+        return Login(repository: repository, tokenManager: tokenManager)
+      }
+      InjectItem(LoginLaunchWorkerKey.self) {
+        let login: Loginable = DIContainer.resolve(for: LoginKey.self)
+        return LoginLaunchWorker(loginable: login)
       }
     }
   }

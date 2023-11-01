@@ -10,22 +10,22 @@ import Foundation
 import UserInterface
 import Core
 
-final class LoginRepository: LoginRepositoryType {
+public final class LoginRepository: LoginRepositoryType {
 
   // MARK: - Property
 
-  private let network: Networking<UserAPI>
+  private let networking: Networking<UserAPI>
 
   // MARK: - Init
 
-  init(network: Networking<UserAPI>) {
-    self.network = network
+  public init(networking: Networking<UserAPI>) {
+    self.networking = networking
   }
 
   // MARK: - Method
   
-  func login() async throws -> LoginEntity {
-    let response = try await self.network.request(
+  public func login() async throws -> LoginEntity {
+    let response = try await self.networking.request(
       LoginResponse.self,
       target: .login
     ).data

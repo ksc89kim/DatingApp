@@ -14,6 +14,10 @@ public final class TokenManager: TokenManagerType {
 
   private static let Key = "access_token"
 
+  // MARK: - Init
+  
+  public init() { }
+
   // MARK: - Method
 
   public func save(token: String) {

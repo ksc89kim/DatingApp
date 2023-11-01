@@ -8,7 +8,13 @@
 
 import Foundation
 import DI
+import LaunchInterface
+
+public enum LoginKey: InjectionKey {
+  public typealias Value = Loginable
+}
+
 
 public enum LoginLaunchWorkerKey: InjectionKey {
-  public typealias Value = Loginable
+  public typealias Value = LaunchWorkable
 }

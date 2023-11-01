@@ -7,9 +7,8 @@
 //
 
 import Foundation
-import DI
 
-public protocol Loginable: Injectable {
+public protocol Loginable {
 
   // MARK: - Method
 
