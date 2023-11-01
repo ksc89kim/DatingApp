@@ -39,8 +39,8 @@ final class LoginTests: XCTestCase {
     }
   }
 
-  /// 로그인 통신 에러 확인
-  func testNetworkError() async {
+  /// 로그인 Repository 에러 (통신 도중 에러가 발새할 경우를 대비)
+  func testRepositoryError() async {
     let repository = MockLoginRepository()
     repository.error = MockNetworkError.networkError
     let tokenManager = MockTokenManager()
