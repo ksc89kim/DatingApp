@@ -7,9 +7,10 @@
 //
 
 import Foundation
+import DI
 
-public protocol Loginable {
-  
+public protocol Loginable: Injectable {
+
   // MARK: - Method
 
   func login() async throws
