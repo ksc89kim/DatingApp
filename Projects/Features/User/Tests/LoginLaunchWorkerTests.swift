@@ -49,6 +49,6 @@ final class LoginLaunchWorkerTests: XCTestCase {
 
     try await worker.work()
 
-    XCTAssertEqual(tokenManager.accessToken(), "START")
+    XCTAssertNil(tokenManager.accessToken())
   }
 }
