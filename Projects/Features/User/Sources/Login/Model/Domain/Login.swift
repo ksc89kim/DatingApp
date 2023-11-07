@@ -36,7 +36,12 @@ public final class Login: Loginable, Injectable {
       throw LoginTokenError.notExist
     }
 
-    let entity = try await self.repository.login()
-    self.tokenManager.save(token: entity.token)
+    do {
+      let entity = try await self.repository.login()
+      self.tokenManager.save(token: entity.token)
+    } catch {
+      self.tokenManager.save(token: nil)
+      throw error
+    }
   }
 }

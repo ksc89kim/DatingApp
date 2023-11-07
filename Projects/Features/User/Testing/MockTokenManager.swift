@@ -17,7 +17,7 @@ final class MockTokenManager: TokenManagerType {
 
   // MARK: - Method
 
-  func save(token: String) {
+  func save(token: String?) {
     self.token = token
   }
   

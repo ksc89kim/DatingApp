@@ -52,6 +52,7 @@ final class LoginTests: XCTestCase {
       XCTFail()
     } catch {
       if let error = error as? MockNetworkError {
+        XCTAssertEqual(tokenManager.accessToken(), nil)
         XCTAssertEqual(error, MockNetworkError.networkError)
       } else {
         XCTFail()

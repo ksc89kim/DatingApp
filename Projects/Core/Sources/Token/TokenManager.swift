@@ -20,7 +20,7 @@ public final class TokenManager: TokenManagerType {
 
   // MARK: - Method
 
-  public func save(token: String) {
+  public func save(token: String?) {
     UserDefaults.standard.setValue(token, forKey: TokenManager.Key)
   }
 

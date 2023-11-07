@@ -12,7 +12,7 @@ public protocol TokenManagerType {
   
   // MARK: - Method
 
-  func save(token: String)
+  func save(token: String?)
 
   func accessToken() -> String?
 }
