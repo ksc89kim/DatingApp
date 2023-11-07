@@ -10,6 +10,7 @@ import Foundation
 import DI
 import LaunchInterface
 import VersionInterface
+import UserInterface
 
 public struct LaunchWorkerBuilder: LaunchWorkerBuildable {
 
@@ -30,6 +31,11 @@ public struct LaunchWorkerBuilder: LaunchWorkerBuildable {
       for: CheckVersionLaunchWorkerKey.self
     )
     await rootWorker.push(item: checkVersionWorker)
+
+    let loginWorker: LaunchWorkable = DIContainer.resolve(
+      for: LoginLaunchWorkerKey.self
+    )
+    await checkVersionWorker.push(item: loginWorker)
 
     return rootWorker
   }

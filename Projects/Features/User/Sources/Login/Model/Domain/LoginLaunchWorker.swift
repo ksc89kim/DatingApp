@@ -39,7 +39,6 @@ public final class LoginLaunchWorker: LaunchWorkable, Injectable {
     do {
       try await self.loginable.login()
     } catch {
-
     }
   }
 }

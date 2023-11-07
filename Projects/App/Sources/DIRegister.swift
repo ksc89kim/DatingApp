@@ -24,6 +24,7 @@ struct DIRegister {
     self.registerForAppState()
     self.registerForLaunch()
     self.registerForVersion()
+    self.registerForUser()
   }
 
   private func registerForAppState() {

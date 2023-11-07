@@ -17,7 +17,8 @@ func targets() -> [Target] {
           .di,
           .util,
           .feature(target: .appState, type: .interface),
-          .feature(target: .version, type: .interface)
+          .feature(target: .version, type: .interface),
+          .feature(target: .user, type: .interface)
         ]
       )
     )
