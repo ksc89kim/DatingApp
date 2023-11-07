@@ -40,4 +40,16 @@ extension UserAPI: NetworkTargetType {
       encoding: URLEncoding.default
     )
   }
+
+  public var sampleData: Data {
+    return """
+    {
+      "code": 201,
+      "message": "",
+      "data": {
+        "token": "TEST_TOKEN"
+      }
+    }
+    """.data(using: .utf16)!
+  }
 }
