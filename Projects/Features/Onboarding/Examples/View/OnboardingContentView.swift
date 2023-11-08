@@ -1,4 +1,5 @@
 import SwiftUI
+import Onboarding
 
 struct OnboardingContentView: View {
 
@@ -24,7 +25,7 @@ struct OnboardingContentView: View {
       .navigationTitle("데모")
       .navigationDestination(for: OnboardingExampleItem.self) { item in
         switch item {
-        case .demoExample: OnboardingDetailView(name: item.rawValue)
+        case .onboardingView: OnboardingView()
         }
       }
       .listStyle(.sidebar)

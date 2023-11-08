@@ -1,7 +1,7 @@
 import Foundation
 
 enum OnboardingExampleItem: String, CaseIterable, Identifiable {
-  case demoExample = "데모 예제1"
+  case onboardingView = "온보딩"
 
   // MARK: - Property
 

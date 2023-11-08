@@ -17,7 +17,7 @@ struct OnboardingExampleSection: Identifiable {
 extension OnboardingExampleSection {
 
   static let examples: OnboardingExampleSection = .init(
-    name: "예시1",
-    items: [.demoExample]
+    name: "온보딩 화면",
+    items: [.onboardingView]
   )
 }

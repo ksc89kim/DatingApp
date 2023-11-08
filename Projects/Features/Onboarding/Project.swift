@@ -13,6 +13,7 @@ func targets() -> [Target] {
         ],
         source: [
           .core,
+          .util,
           .di
         ]
       )
