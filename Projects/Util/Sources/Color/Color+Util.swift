@@ -21,14 +21,6 @@ public extension Color {
   }
 
   enum Main {
-//
-//    public static let background: Color = .init(hex: 0x800080)
-//
-//    public static let primary: Color = .init(hex: 0xFF1493)
-//
-//    public static let accent: Color = .init(hex: 0xFFA500)
-//
-//    public static let text: Color = .init(hex: 0xFFFFFF)
 
     public static let background: Color = .init(hex: 0x6A5ACD)
 
