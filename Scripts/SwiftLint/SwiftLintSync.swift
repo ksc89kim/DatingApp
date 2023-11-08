@@ -2,6 +2,7 @@
 import Foundation
 
 let paths: [String] = [
+    "Projects/Features/Onboarding/.swiftlint.yml",
     "Projects/Features/User/.swiftlint.yml",
     "Projects/Features/AppState/.swiftlint.yml",
     "Projects/Features/Version/.swiftlint.yml",
