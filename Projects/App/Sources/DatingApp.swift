@@ -1,7 +1,7 @@
 import SwiftUI
 
 @main
-struct FoodReviewBlogApp: App {
+struct DatingApp: App {
 
   // MARK: - Property
 
