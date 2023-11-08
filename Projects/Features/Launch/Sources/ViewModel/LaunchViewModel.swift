@@ -36,7 +36,7 @@ public final class LaunchViewModel: ViewModelType, Injectable {
   public var state: LaunchState = .init()
 
   @Inject(LaunchWorkerBuilderKey.self)
-  private var builder: LaunchWorkerBuildable
+  private var builder: LaunchWorkerBuildable?
 
   @Inject(AppStateKey.self)
   private var appState: AppState
@@ -95,7 +95,7 @@ public final class LaunchViewModel: ViewModelType, Injectable {
   }
 
   private func buildForWorker() async {
-    self.rootWorkable = await self.builder.build()
+    self.rootWorkable = await self.builder?.build()
     self.bindWorkableCompletion()
   }
   

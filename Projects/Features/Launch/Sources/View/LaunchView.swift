@@ -23,26 +23,33 @@ public struct LaunchView: View, Injectable {
 
   @Environment(\.openURL) private var openURL
 
+  @State private var animate = false
+
   public var body: some View {
     ZStack {
+      Color.Main.background.ignoresSafeArea()
       VStack(
         alignment: .center,
         spacing: 24
       ) {
-        Image(systemName: "highlighter")
+        Image(systemName: "heart")
           .resizable()
-          .frame(width: 100, height: 100)
-        Text("Food Blog Review")
+          .frame(width: 70, height: 60)
+          .foregroundStyle(Color.Main.accent)
+          .symbolEffect(.bounce, value: self.animate)
+        Text("Love Game")
+          .foregroundStyle(Color.Main.text)
           .font(.system(size: 26, weight: .bold))
       }
       VStack {
         Spacer()
         Text(self.viewModel.state.completionCountMessage)
           .font(.system(size: 16, weight: .bold))
+          .foregroundStyle(Color.Main.text)
         Spacer().frame(height: 16)
       }
     }
-    .toolbar(.hidden, for: .navigationBar)
+    .background()
     .alert(isPresented: Binding(
       get: { self.viewModel.state.isPresentAlert },
       set: { _ in }
@@ -51,12 +58,13 @@ public struct LaunchView: View, Injectable {
     }
     .onAppear {
       self.viewModel.trigger(.runAfterBuildForWoker)
+      self.animate = true
     }
     .onDisappear {
       self.viewModel.trigger(.clearCount)
     }
-    .onChange(of: self.scenePhase) { newPhase in
-      if newPhase == .active {
+    .onChange(of: self.scenePhase) { _, newValue in
+      if newValue == .active {
         self.viewModel.trigger(.checkForceUpdate)
       }
     }

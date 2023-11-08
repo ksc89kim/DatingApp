@@ -25,6 +25,7 @@ struct ContentView: View {
       .navigationDestination(for: MainRoutePath.self) { path in
         switch path {
         case .launch: DIContainer.resolveView(for: LaunchViewKey.self)
+            .toolbar(.hidden, for: .navigationBar)
         }
       }
     }
