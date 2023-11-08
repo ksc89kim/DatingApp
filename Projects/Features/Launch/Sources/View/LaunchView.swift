@@ -28,19 +28,7 @@ public struct LaunchView: View, Injectable {
   public var body: some View {
     ZStack {
       Color.Main.background.ignoresSafeArea()
-      VStack(
-        alignment: .center,
-        spacing: 24
-      ) {
-        Image(systemName: "heart")
-          .resizable()
-          .frame(width: 70, height: 60)
-          .foregroundStyle(Color.Main.accent)
-          .symbolEffect(.bounce, value: self.animate)
-        Text("Love Game")
-          .foregroundStyle(Color.Main.text)
-          .font(.system(size: 26, weight: .bold))
-      }
+      LogoView(animate: self.$animate)
       VStack {
         Spacer()
         Text(self.viewModel.state.completionCountMessage)

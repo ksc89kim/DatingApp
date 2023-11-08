@@ -24,7 +24,7 @@ public extension Color {
 
     public static let background: Color = .init(hex: 0x6A5ACD)
 
-    public static let primary: Color = .init(hex: 0x90EE90)
+    public static let primary: Color = .init(hex: 0x556B2F)
 
     public static let accent: Color = .init(hex: 0xFFB6C1)
 
