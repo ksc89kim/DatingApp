@@ -13,7 +13,7 @@ final class LaunchRootWorker: LaunchWorkable {
 
   // MARK: - Property
 
-  var parent: LaunchWorkable?
+  weak var parent: LaunchWorkable?
 
   var items: [LaunchWorkable] = []
 

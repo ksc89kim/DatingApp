@@ -15,7 +15,7 @@ public final class CheckVersionLaunchWorker: LaunchWorkable, Injectable {
 
   // MARK: - Property
 
-  public var parent: LaunchWorkable?
+  public weak var parent: LaunchWorkable?
 
   public var items: [LaunchWorkable] = []
 
