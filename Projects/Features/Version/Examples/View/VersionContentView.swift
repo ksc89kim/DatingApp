@@ -21,7 +21,7 @@ struct VersionContentView: View {
           }
         }
       }
-      .navigationTitle("데모")
+      .navigationBarTitle("데모", displayMode: .inline)
       .navigationDestination(for: VersionExampleItem.self) { item in
         switch item {
         case .demoExample: VersionDetailView(name: item.rawValue)

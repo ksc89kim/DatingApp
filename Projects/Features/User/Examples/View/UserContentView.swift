@@ -21,7 +21,7 @@ struct UserContentView: View {
           }
         }
       }
-      .navigationTitle("데모")
+      .navigationBarTitle("데모", displayMode: .inline)
       .navigationDestination(for: UserExampleItem.self) { item in
         switch item {
         case .demoExample: UserDetailView(name: item.rawValue)

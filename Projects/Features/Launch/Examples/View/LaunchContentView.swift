@@ -25,7 +25,7 @@ struct LaunchContentView: View {
           }
         }
       }
-      .navigationTitle("데모")
+      .navigationBarTitle("데모", displayMode: .inline)
       .navigationDestination(for: LaunchExampleItem.self) { item in
         self.makeLaunchView(item: item)
       }

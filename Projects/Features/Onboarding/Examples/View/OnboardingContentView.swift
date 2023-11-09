@@ -22,7 +22,7 @@ struct OnboardingContentView: View {
           }
         }
       }
-      .navigationTitle("데모")
+      .navigationBarTitle("데모", displayMode: .inline)
       .navigationDestination(for: OnboardingExampleItem.self) { item in
         switch item {
         case .onboardingView: OnboardingView()

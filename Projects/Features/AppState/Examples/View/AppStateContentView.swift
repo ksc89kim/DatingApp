@@ -30,7 +30,7 @@ struct AppStateContentView: View {
           }
         }
       }
-      .navigationTitle("데모")
+      .navigationBarTitle("데모", displayMode: .inline)
       .navigationDestination(for: MockRoutePath.self) { item in
         switch item {
         case .launch: AppStateDetailView(name: "런치 페이지")
