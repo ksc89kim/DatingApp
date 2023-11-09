@@ -25,8 +25,7 @@ public struct OnboardingView: View, Injectable {
           action: {},
           label: {
             HStack {
-              Image(systemName: "apple.logo")
-              Text("APPLE 계정으로 로그인 하기")
+              Text("Dating App 시작하기")
                 .font(.system(size: 16, weight: .bold))
             }
             .foregroundStyle(Color.Main.text)
