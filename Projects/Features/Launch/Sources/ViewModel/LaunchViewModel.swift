@@ -13,6 +13,7 @@ import AppStateInterface
 import Core
 import Util
 import DI
+import SwiftUI
 
 public final class LaunchViewModel: ViewModelType, Injectable {
 
@@ -52,11 +53,14 @@ public final class LaunchViewModel: ViewModelType, Injectable {
 
   private let taskBag: AnyCancelTaskDictionaryBag = .init()
 
+  private let tokenManager: TokenManagerType?
+
   var isForceUpdate: Bool = false
 
   // MARK: - Init
   
-  public init() {
+  public init(tokenManager: TokenManagerType = TokenManager()) {
+    self.tokenManager = tokenManager
   }
 
   // MARK: - Trigger Methods
@@ -138,9 +142,17 @@ public final class LaunchViewModel: ViewModelType, Injectable {
       }
       self.retry.add()
       try await self.rootWorkable?.run()
+      await self.next()
     } catch {
       await self.handleError(error)
     }
+  }
+
+  @MainActor
+  private func next() {
+    self.appState.router.remove(path: MainRoutePath.launch, for: RouteKey.main)
+    guard self.tokenManager?.accessToken() == nil else { return }
+    self.appState.router.append(path: MainRoutePath.onboarding, for: RouteKey.main)
   }
 
   @MainActor
@@ -212,10 +224,14 @@ public final class LaunchViewModel: ViewModelType, Injectable {
   @MainActor
   private func setCompletionCount(completedCount: Int, totalCount: Int) {
     guard totalCount > 0 else {
-      self.state.completionCountMessage = ""
+      self.state.bottomMessage = ""
+      self.state.completedCount = 0
+      self.state.totalCount = 0
       return
     }
-    self.state.completionCountMessage = "\(completedCount)/\(totalCount)"
+    self.state.bottomMessage = "\(completedCount)/\(totalCount)"
+    self.state.completedCount = completedCount
+    self.state.totalCount = totalCount
   }
 
   private func checkForceUpdate() {

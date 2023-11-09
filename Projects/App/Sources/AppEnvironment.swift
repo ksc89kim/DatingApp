@@ -19,7 +19,7 @@ struct AppEnvironment {
     diRegister.register()
 
     AppState.instance.router.append(
-      value: MainRoutePath.launch,
+      path: MainRoutePath.launch,
       for: RouteKey.main
     )
   }

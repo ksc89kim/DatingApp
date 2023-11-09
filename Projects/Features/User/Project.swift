@@ -16,7 +16,8 @@ func targets() -> [Target] {
           .core,
           .di,
           .feature(target: .launch, type: .interface)
-        ]
+        ],
+        tests: [.core]
       )
     )
   )

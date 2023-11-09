@@ -10,6 +10,8 @@ import SwiftUI
 import DI
 import LaunchInterface
 import AppStateInterface
+import OnboardingInterface
+import NavigationTransitions
 
 struct ContentView: View {
 
@@ -26,9 +28,12 @@ struct ContentView: View {
         switch path {
         case .launch: DIContainer.resolveView(for: LaunchViewKey.self)
             .toolbar(.hidden, for: .navigationBar)
+        case .onboarding: DIContainer.resolveView(for: OnboardingViewKey.self)
+            .toolbar(.hidden, for: .navigationBar)
         }
       }
     }
+    .navigationTransition(.fade(.cross))
   }
 }
 

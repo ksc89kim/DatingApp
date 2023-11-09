@@ -24,7 +24,7 @@ public struct LaunchWorkerBuilder: LaunchWorkerBuildable {
   public func build() async -> LaunchWorkable {
     let rootWorker: LaunchWorkable = LaunchRootWorker()
 
-    let delayTimerWorker: LaunchDelayWorker = .init(delayTime: 0.5)
+    let delayTimerWorker: LaunchDelayWorker = .init(delayTime: 1.0)
     await rootWorker.push(item: delayTimerWorker)
 
     let checkVersionWorker: LaunchWorkable = DIContainer.resolve(

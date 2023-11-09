@@ -8,11 +8,14 @@
 
 import XCTest
 import Combine
+@testable import Core
 @testable import LaunchInterface
 @testable import Launch
 @testable import LaunchTesting
 @testable import VersionInterface
 @testable import DI
+@testable import AppStateInterface
+@testable import AppStateTesting
 
 final class LaunchViewModelTests: XCTestCase {
 
@@ -26,6 +29,16 @@ final class LaunchViewModelTests: XCTestCase {
     try await super.setUp()
 
     self.cancellables = .init()
+
+    DIContainer.register {
+      InjectItem(LaunchWorkerBuilderKey.self) { MockLaunchWorkerBuilder() }
+      InjectItem(AppStateKey.self) {
+        AppState.instance.router.removeAll(for: RouteKey.main)
+        AppState.instance.router.removeAll(for: MockRouteKey.mock)
+        return AppState.instance
+      }
+      InjectItem(RouteInjectionKey.self) { MockRouter() }
+    }
   }
 
   /// 재시도 테스트
@@ -37,8 +50,7 @@ final class LaunchViewModelTests: XCTestCase {
         return builder
       }
     }
-
-    let viewModel: LaunchViewModel = .init()
+    let viewModel: LaunchViewModel = .init(tokenManager: MockTokenManager())
 
     await viewModel.trigger(.buildForWorker)
     await viewModel.trigger(.runAsync)
@@ -56,7 +68,7 @@ final class LaunchViewModelTests: XCTestCase {
         return builder
       }
     }
-    let viewModel: LaunchViewModel = .init()
+    let viewModel: LaunchViewModel = .init(tokenManager: MockTokenManager())
     let limitRetryCount = 3
     viewModel.limitRetryCount = limitRetryCount
 
@@ -73,23 +85,22 @@ final class LaunchViewModelTests: XCTestCase {
     let expectation: XCTestExpectation = .init(
       description: "CompletionCountExpectaion"
     )
-    let results: [String] = ["0/2", "1/2", "2/2"]
-    DIContainer.register {
-      InjectItem(LaunchWorkerBuilderKey.self) {
-        return MockLaunchWorkerBuilder()
-      }
-    }
-    let viewModel: LaunchViewModel = .init()
+    let viewModel: LaunchViewModel = .init(tokenManager: MockTokenManager())
     var index = 0
+    let totalCount = 2
 
     viewModel.trigger(.runAfterBuildForWoker)
 
     viewModel.$state
+      .removeDuplicates { lhs, rhs in
+        lhs.completedCount == rhs.completedCount
+      }
       .dropFirst()
       .sink { state in
-        XCTAssertEqual(results[index], state.completionCountMessage)
         index += 1
-        if index >= results.count {
+        XCTAssertEqual(index, state.completedCount)
+        XCTAssertEqual(totalCount, state.totalCount)
+        if state.completedCount == state.totalCount {
           expectation.fulfill()
         }
       }
@@ -100,22 +111,22 @@ final class LaunchViewModelTests: XCTestCase {
 
   /// (완료한 갯수 / 총 갯수) 클리어
   func testClearCount() async {
-    DIContainer.register {
-      InjectItem(LaunchWorkerBuilderKey.self) {
-        return MockLaunchWorkerBuilder()
-      }
-    }
-
-    let viewModel: LaunchViewModel = .init()
+    let viewModel: LaunchViewModel = .init(tokenManager: MockTokenManager())
 
     await viewModel.trigger(.buildForWorker)
     await viewModel.trigger(.runAsync)
 
-    XCTAssertEqual(viewModel.state.completionCountMessage, "2/2")
+    XCTAssertEqual(viewModel.state.totalCount, 2)
+    XCTAssertEqual(viewModel.state.completedCount, 2)
 
     await viewModel.trigger(.clearCountAsync)
 
-    XCTAssertEqual(viewModel.state.completionCountMessage, "")
+    XCTAssertEqual(viewModel.state.completedCount, 0)
+    XCTAssertEqual(viewModel.state.totalCount, 0)
+  }
+
+  func testBottomMessage() {
+
   }
 
   /// 알럿 테스트
@@ -130,7 +141,7 @@ final class LaunchViewModelTests: XCTestCase {
         return builder
       }
     }
-    let viewModel: LaunchViewModel = .init()
+    let viewModel: LaunchViewModel = .init(tokenManager: MockTokenManager())
 
     viewModel.trigger(.runAfterBuildForWoker)
 
@@ -174,7 +185,7 @@ final class LaunchViewModelTests: XCTestCase {
         return builder
       }
     }
-    let viewModel: LaunchViewModel = .init()
+    let viewModel: LaunchViewModel = .init(tokenManager: MockTokenManager())
 
     viewModel.trigger(.runAfterBuildForWoker)
 
@@ -203,12 +214,7 @@ final class LaunchViewModelTests: XCTestCase {
 
   /// 강제 업데이트 확인 테스트
   func testCheckForceUpdate() {
-    DIContainer.register {
-      InjectItem(LaunchWorkerBuilderKey.self) {
-        return MockLaunchWorkerBuilder()
-      }
-    }
-    let viewModel: LaunchViewModel = .init()
+    let viewModel: LaunchViewModel = .init(tokenManager: MockTokenManager())
     viewModel.isForceUpdate = true
 
     XCTAssertFalse(viewModel.state.isPresentAlert)
@@ -216,5 +222,29 @@ final class LaunchViewModelTests: XCTestCase {
     viewModel.trigger(.checkForceUpdate)
 
     XCTAssertTrue(viewModel.state.isPresentAlert)
+  }
+
+  /// 메인 화면으로 이동
+  func testPresentMain() async {
+    let tokenManager: MockTokenManager = .init(token: "ABCD")
+    let viewModel: LaunchViewModel = .init(tokenManager: tokenManager)
+    let state: AppState = DIContainer.resolve(for: AppStateKey.self)
+
+    await viewModel.trigger(.buildForWorker)
+    await viewModel.trigger(.runAsync)
+    
+    XCTAssertTrue(state.router.main.isEmpty)
+  }
+
+  /// 온보딩 화면으로 이동
+  func testPresentOnboarding() async {
+    let viewModel: LaunchViewModel = .init(tokenManager: MockTokenManager())
+    let state: AppState = DIContainer.resolve(for: AppStateKey.self)
+
+    await viewModel.trigger(.buildForWorker)
+    await viewModel.trigger(.runAsync)
+
+    XCTAssertFalse(state.router.main.isEmpty)
+    XCTAssertEqual(state.router.main.first, .onboarding)
   }
 }

@@ -10,7 +10,7 @@ public final class DIContainer {
 
   // MARK: - Method
 
-  public static func resolve<T>(for type: Any.Type?) -> T? {
+  public static func resolveOptional<T>(for type: Any.Type?) -> T? {
     let name = self.name(for: type) ?? String(describing: T.self)
     return self.instance.items[name]?.resolve() as? T
   }

@@ -29,19 +29,55 @@ public struct MockRouter: RouteType {
 
   // MARK: - Method
 
-  public mutating func append(value: Any, for key: RouteKeyType) {
-    guard let key = key as? MockRouteKey else { return }
-    switch key {
-    case .main: self.append(paths: &self.main, value: value)
-    case .mock: self.append(paths: &self.mock, value: value)
+  public mutating func set<Path: RoutePathType, Key: RouteKeyType>(
+    type: Path.Type,
+    paths: [Path],
+    for key: Key
+  ) {
+    if let mockRouteKey = key as? MockRouteKey {
+      switch mockRouteKey {
+      case .mock: self.mock = paths.compactMap { route in route as? MockRoutePath }
+      }
+    } else if let routeKey = key as? RouteKey {
+      switch routeKey {
+      case .main: self.main = paths.compactMap { route in route as? MainRoutePath }
+      }
     }
   }
 
-  public mutating func remove(value: Any, for key: RouteKeyType) {
-    guard let key = key as? MockRouteKey else { return }
-    switch key {
-    case .main: self.remove(paths: &self.main, value: value)
-    case .mock: self.remove(paths: &self.mock, value: value)
+  public mutating func append<Path: RoutePathType, Key: RouteKeyType>(path: Path, for key: Key) {
+    if let mockRouteKey = key as? MockRouteKey {
+      switch mockRouteKey {
+      case .mock: self.append(paths: &self.mock, path: path as? MockRoutePath)
+      }
+    } else if let routeKey = key as? RouteKey {
+      switch routeKey {
+      case .main: self.append(paths: &self.main, path: path as? MainRoutePath)
+      }
+    }
+  }
+
+  public mutating func remove<Path: RoutePathType, Key: RouteKeyType>(path: Path, for key: Key) {
+    if let mockRouteKey = key as? MockRouteKey {
+      switch mockRouteKey {
+      case .mock: self.remove(paths: &self.mock, path: path as? MockRoutePath)
+      }
+    } else if let routeKey = key as? RouteKey {
+      switch routeKey {
+      case .main: self.remove(paths: &self.main, path: path as? MainRoutePath)
+      }
+    }
+  }
+
+  public mutating func removeAll<Key: RouteKeyType>(for key: Key) {
+    if let mockRouteKey = key as? MockRouteKey {
+      switch mockRouteKey {
+      case .mock: self.mock.removeAll()
+      }
+    } else if let routeKey = key as? RouteKey {
+      switch routeKey {
+      case .main: self.main.removeAll()
+      }
     }
   }
 }

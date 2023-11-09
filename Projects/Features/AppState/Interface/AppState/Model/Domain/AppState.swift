@@ -10,10 +10,6 @@ import Foundation
 import DI
 import UserInterface
 
-public enum AppStateKey: InjectionKey {
-  public typealias Value = AppState
-}
-
 
 public final class AppState: ObservableObject, Injectable {
 

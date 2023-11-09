@@ -17,17 +17,25 @@ public struct LaunchState {
 
   var isPresentAlert: Bool
 
-  var completionCountMessage: String
+  var bottomMessage: String
+
+  var completedCount: Int
+
+  var totalCount: Int
 
   // MARK: - Init
 
   init(
     alert: BaseAlert = .empty,
     isPresentAlert: Bool = false,
-    completionCountMessage: String = ""
+    completionCountMessage: String = "",
+    completedCount: Int = 0,
+    totalCount: Int = 0
   ) {
     self.alert = alert
     self.isPresentAlert = isPresentAlert
-    self.completionCountMessage = completionCountMessage
+    self.bottomMessage = completionCountMessage
+    self.completedCount = completedCount
+    self.totalCount = totalCount
   }
 }

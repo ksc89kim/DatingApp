@@ -6,9 +6,9 @@
 //  Copyright © 2023 com.tronplay. All rights reserved.
 //
 
-import Foundation
+import AppStateInterface
 
-public enum MockRoutePath {
+public enum MockRoutePath: RoutePathType {
   case launch
   case onboarding
   case singUp

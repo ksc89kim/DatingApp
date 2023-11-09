@@ -8,6 +8,7 @@
 
 import Foundation
 
-public enum MainRoutePath {
+public enum MainRoutePath: RoutePathType {
   case launch
+  case onboarding
 }

@@ -34,4 +34,8 @@ public extension TargetDependency {
   static var moya: Self {
     return .external(name: "Moya")
   }
+
+  static var naviagationTransitions: Self {
+    return .external(name: "NavigationTransitions")
+  }
 }

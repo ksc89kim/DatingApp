@@ -9,36 +9,39 @@
 import Foundation
 import DI
 
-public enum RouteInjectionKey: InjectionKey {
-  public typealias Value = RouteType
-}
-
-
 public protocol RouteType: Injectable {
 
   var main: [MainRoutePath] { get set }
   
-  mutating func append(value: Any, for key: RouteKeyType)
+  mutating func set<Path: RoutePathType, Key: RouteKeyType>(
+    type: Path.Type,
+    paths: [Path],
+    for key: Key
+  )
 
-  mutating func remove(value: Any, for key: RouteKeyType)
+  mutating func append<Path: RoutePathType, Key: RouteKeyType>(path: Path, for key: Key)
+
+  mutating func remove<Path: RoutePathType, Key: RouteKeyType>(path: Path, for key: Key)
+
+  mutating func removeAll<Key: RouteKeyType>(for key: Key)
 }
 
 
 public extension RouteType {
 
-  func append<T>(
+  func append<T: RoutePathType>(
     paths: inout [T],
-    value: Any
+    path: T?
   ) {
-    guard let value = value as? T else { return }
-    paths.append(value)
+    guard let path = path else { return }
+    paths.append(path)
   }
 
-  func remove<T: Equatable>(
+  func remove<T: RoutePathType>(
     paths: inout [T],
-    value: Any
+    path: T?
   ) {
-    guard let value = value as? T else { return }
-    paths.removeAll { router in router == value }
+    guard let path = path else { return }
+    paths.removeAll { router in router == path }
   }
 }

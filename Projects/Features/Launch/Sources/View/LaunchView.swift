@@ -7,9 +7,10 @@
 //
 
 import SwiftUI
-import LaunchInterface
 import DI
 import Util
+import LaunchInterface
+import AppStateInterface
 
 public struct LaunchView: View, Injectable {
 
@@ -31,7 +32,7 @@ public struct LaunchView: View, Injectable {
       LogoView(animate: self.$animate)
       VStack {
         Spacer()
-        Text(self.viewModel.state.completionCountMessage)
+        Text(self.viewModel.state.bottomMessage)
           .font(.system(size: 16, weight: .bold))
           .foregroundStyle(Color.Main.text)
         Spacer().frame(height: 16)
@@ -60,8 +61,7 @@ public struct LaunchView: View, Injectable {
 
   // MARK: - Init
 
-  public init() {
-  }
+  public init() { }
 }
 
 
@@ -73,15 +73,12 @@ extension LaunchView: AlertBuildable {
   }
 }
 
-
 #Preview {
   DIContainer.register {
-    InjectItem(LaunchWorkerBuilderKey.self) {
-      return nil
-    }
-    InjectItem(LaunchViewModelKey.self) {
-      return LaunchViewModel()
-    }
+    InjectItem(LaunchWorkerBuilderKey.self) { nil }
+    InjectItem(LaunchViewModelKey.self) { LaunchViewModel() }
+    InjectItem(RouteInjectionKey.self) { EmptyRouter() }
+    InjectItem(AppStateKey.self) { AppState.instance }
   }
   return LaunchView()
 }

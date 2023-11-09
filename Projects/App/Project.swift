@@ -24,10 +24,12 @@ func targets() -> [Target] {
     .appendDependenciess([
       .di,
       .core,
+      .naviagationTransitions,
       .feature(target: .appState, type: .source),
       .feature(target: .launch, type: .source),
       .feature(target: .version, type: .source),
-      .feature(target: .user, type: .source)
+      .feature(target: .user, type: .source),
+      .feature(target: .onboarding, type: .source)
     ])
     .build()
   ]

@@ -17,6 +17,9 @@ import AppStateInterface
 import AppState
 import UserInterface
 import User
+import OnboardingInterface
+import Onboarding
+
 
 struct DIRegister {
 
@@ -25,6 +28,7 @@ struct DIRegister {
     self.registerForLaunch()
     self.registerForVersion()
     self.registerForUser()
+    self.registerOnboarding()
   }
 
   private func registerForAppState() {
@@ -71,6 +75,14 @@ struct DIRegister {
       InjectItem(LoginLaunchWorkerKey.self) {
         let login: Loginable = DIContainer.resolve(for: LoginKey.self)
         return LoginLaunchWorker(loginable: login)
+      }
+    }
+  }
+
+  private func registerOnboarding() {
+    DIContainer.register {
+      InjectItem(OnboardingViewKey.self) {
+        OnboardingView()
       }
     }
   }

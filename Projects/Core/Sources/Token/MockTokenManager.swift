@@ -7,21 +7,26 @@
 //
 
 import Foundation
-import Core
 
-final class MockTokenManager: TokenManagerType {
+public final class MockTokenManager: TokenManagerType {
 
   // MARK: - Property
 
   private var token: String?
 
+  // MARK: - Init
+
+  public init(token: String? = nil) {
+    self.token = token
+  }
+
   // MARK: - Method
 
-  func save(token: String?) {
+  public func save(token: String?) {
     self.token = token
   }
   
-  func accessToken() -> String? {
+  public func accessToken() -> String? {
     return self.token
   }
 }

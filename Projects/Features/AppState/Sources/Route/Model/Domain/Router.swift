@@ -23,17 +23,35 @@ public struct Router: RouteType {
 
   // MARK: - Method
 
-  public mutating func append(value: Any, for key: RouteKeyType) {
+  public mutating func set<Path: RoutePathType, Key: RouteKeyType>(
+    type: Path.Type,
+    paths: [Path],
+    for key: Key
+  ) {
     guard let key = key as? RouteKey else { return }
     switch key {
-    case .main: self.append(paths: &self.main, value: value)
+    case .main: self.main = paths.compactMap { route in route as? MainRoutePath }
     }
   }
 
-  public mutating func remove(value: Any, for key: RouteKeyType) {
+  public mutating func append<Path: RoutePathType, Key: RouteKeyType>(path: Path, for key: Key) {
     guard let key = key as? RouteKey else { return }
     switch key {
-    case .main: self.remove(paths: &self.main, value: value)
+    case .main: self.append(paths: &self.main, path: path as? MainRoutePath)
+    }
+  }
+
+  public mutating func remove<Path: RoutePathType, Key: RouteKeyType>(path: Path, for key: Key) {
+    guard let key = key as? RouteKey else { return }
+    switch key {
+    case .main: self.remove(paths: &self.main, path: path as? MainRoutePath)
+    }
+  }
+
+  public mutating func removeAll<Key: RouteKeyType>(for key: Key) {
+    guard let key = key as? RouteKey else { return }
+    switch key {
+    case .main: self.main.removeAll()
     }
   }
 }
