@@ -4,6 +4,7 @@ import LaunchInterface
 import Launch
 import LaunchTesting
 import VersionInterface
+import AppStateInterface
 
 struct LaunchContentView: View {
 
@@ -12,8 +13,6 @@ struct LaunchContentView: View {
   let sections: [LaunchExampleSection] = [
     .examples
   ]
-
-  // MARK: - Body
 
   var body: some View {
     NavigationStack {
@@ -33,14 +32,24 @@ struct LaunchContentView: View {
     }
   }
 
-  func makeLaunchView(item: LaunchExampleItem) -> LaunchView {
+  // MARK: - Init
+
+  init() {
     DIContainer.register {
       InjectItem(LaunchViewModelKey.self) {
         let viewModel = LaunchViewModel()
         viewModel.limitRetryCount = 3
         return viewModel
       }
+      InjectItem(AppStateKey.self) { AppState.instance }
+      InjectItem(RouteInjectionKey.self) { EmptyRouter() }
     }
+  }
+
+  // MARK: - Method
+
+  func makeLaunchView(item: LaunchExampleItem) -> LaunchView {
+
     switch item {
     case .launchViewForWork:
       DIContainer.register {
