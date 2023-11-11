@@ -27,6 +27,7 @@ public final class LaunchViewModel: ViewModelType, Injectable {
   private enum TaskKey {
     static let runAfterBuild = "runAfterBuildKey"
     static let bindWorkableCompletion = "bindWorkableCompletionKey"
+    static let buildForWorker = "buildForWorkerKey"
     static let run = "runKey"
     static let clearCount = "clearCountKey"
   }
@@ -71,18 +72,17 @@ public final class LaunchViewModel: ViewModelType, Injectable {
     case .runAfterBuildForWoker: self.runAfterBuildForWoker()
     case .clearCount: self.clearCount()
     case .checkForceUpdate: self.checkForceUpdate()
-    case .buildForWorker, .runAsync, .clearCountAsync:
-      break
+    case .buildForWorker: break
     }
   }
 
-  public func trigger(_ action: LaunchAction) async {
+  func trigger(_ action: LaunchAction) async {
     switch action {
     case .buildForWorker: await self.buildForWorker()
-    case .runAsync: await self.run()
-    case .clearCountAsync: await self.clearCount()
-    case .run, .runAfterBuildForWoker, .clearCount, .checkForceUpdate:
-      break
+    case .run: await self.run()
+    case .clearCount: await self.clearCount()
+    case .checkForceUpdate: self.checkForceUpdate()
+    case .runAfterBuildForWoker: await self.runAfterBuildForWoker()
     }
   }
 
@@ -92,10 +92,23 @@ public final class LaunchViewModel: ViewModelType, Injectable {
     self.taskBag[TaskKey.runAfterBuild]?.cancel()
 
     Task { [weak self] in
-      await self?.buildForWorker()
-      await self?.run()
+      await self?.runAfterBuildForWoker()
     }
     .store(in: self.taskBag, for: TaskKey.runAfterBuild)
+  }
+
+  private func runAfterBuildForWoker() async {
+    await self.buildForWorker()
+    await self.run()
+  }
+
+  private func buildForWorker() {
+    self.taskBag[TaskKey.buildForWorker]?.cancel()
+
+    Task { [weak self] in
+      await self?.buildForWorker()
+    }
+    .store(in: self.taskBag, for: TaskKey.buildForWorker)
   }
 
   private func buildForWorker() async {

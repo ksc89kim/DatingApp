@@ -10,10 +10,8 @@ import Foundation
 
 public enum LaunchAction {
   case run
-  case runAsync
   case runAfterBuildForWoker
   case buildForWorker
   case clearCount
-  case clearCountAsync
   case checkForceUpdate
 }

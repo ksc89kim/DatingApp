@@ -53,8 +53,8 @@ final class LaunchViewModelTests: XCTestCase {
     let viewModel: LaunchViewModel = .init(tokenManager: MockTokenManager())
 
     await viewModel.trigger(.buildForWorker)
-    await viewModel.trigger(.runAsync)
-    await viewModel.trigger(.runAsync)
+    await viewModel.trigger(.run)
+    await viewModel.trigger(.run)
 
     XCTAssertEqual(viewModel.retry.count, 2)
   }
@@ -73,9 +73,9 @@ final class LaunchViewModelTests: XCTestCase {
     viewModel.limitRetryCount = limitRetryCount
 
     await viewModel.trigger(.buildForWorker)
-    await viewModel.trigger(.runAsync)
-    await viewModel.trigger(.runAsync)
-    await viewModel.trigger(.runAsync)
+    await viewModel.trigger(.run)
+    await viewModel.trigger(.run)
+    await viewModel.trigger(.run)
 
     XCTAssertEqual(viewModel.retry.count, limitRetryCount)
   }
@@ -114,19 +114,25 @@ final class LaunchViewModelTests: XCTestCase {
     let viewModel: LaunchViewModel = .init(tokenManager: MockTokenManager())
 
     await viewModel.trigger(.buildForWorker)
-    await viewModel.trigger(.runAsync)
+    await viewModel.trigger(.run)
 
     XCTAssertEqual(viewModel.state.totalCount, 2)
     XCTAssertEqual(viewModel.state.completedCount, 2)
 
-    await viewModel.trigger(.clearCountAsync)
+    await viewModel.trigger(.clearCount)
 
     XCTAssertEqual(viewModel.state.completedCount, 0)
     XCTAssertEqual(viewModel.state.totalCount, 0)
   }
 
-  func testBottomMessage() {
+  /// 하단 메시지 테스트
+  func testBottomMessage() async {
+    let viewModel: LaunchViewModel = .init(tokenManager: MockTokenManager())
 
+    await viewModel.trigger(.buildForWorker)
+    await viewModel.trigger(.run)
+
+    XCTAssertEqual(viewModel.state.bottomMessage, "2/2")
   }
 
   /// 알럿 테스트
@@ -231,7 +237,7 @@ final class LaunchViewModelTests: XCTestCase {
     let state: AppState = DIContainer.resolve(for: AppStateKey.self)
 
     await viewModel.trigger(.buildForWorker)
-    await viewModel.trigger(.runAsync)
+    await viewModel.trigger(.run)
     
     XCTAssertTrue(state.router.main.isEmpty)
   }
@@ -242,7 +248,7 @@ final class LaunchViewModelTests: XCTestCase {
     let state: AppState = DIContainer.resolve(for: AppStateKey.self)
 
     await viewModel.trigger(.buildForWorker)
-    await viewModel.trigger(.runAsync)
+    await viewModel.trigger(.run)
 
     XCTAssertFalse(state.router.main.isEmpty)
     XCTAssertEqual(state.router.main.first, .onboarding)
