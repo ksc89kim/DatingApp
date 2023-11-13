@@ -1,13 +1,13 @@
 import Foundation
 import LaunchInterface
 
-public final class MockLaunchWorker: LaunchWorkable {
+final class MockLaunchWorker: LaunchWorkable {
 
   // MARK: - Property
 
-  public var items: [LaunchWorkable] = []
+  var items: [LaunchWorkable] = []
 
-  public var state: LaunchWorkerState = .ready
+  var state: LaunchWorkerState = .ready
 
   let id: UUID = .init()
 

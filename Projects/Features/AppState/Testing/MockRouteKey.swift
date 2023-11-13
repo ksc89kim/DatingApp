@@ -8,6 +8,6 @@
 
 import AppStateInterface
 
-public enum MockRouteKey: RouteKeyType {
+enum MockRouteKey: RouteKeyType {
   case mock
 }

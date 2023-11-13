@@ -2,7 +2,7 @@ import SwiftUI
 import DI
 import LaunchInterface
 import Launch
-import LaunchTesting
+@testable import LaunchTesting
 import VersionInterface
 import AppStateInterface
 

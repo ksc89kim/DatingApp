@@ -15,7 +15,9 @@ func targets() -> [Target] {
         source: [
           .core,
           .di,
-          .feature(target: .launch, type: .interface)
+          .util,
+          .feature(target: .launch, type: .interface),
+          .feature(target: .appState, type: .interface)
         ],
         tests: [.core]
       )

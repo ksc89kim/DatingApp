@@ -36,7 +36,9 @@ public struct OnboardingView: View, Injectable {
             }
           }
         )
-        Spacer().frame(height: 32)
+        .buttonStyle(PressedButtonStyle())
+        Spacer()
+          .frame(height: 32)
       }
     }
   }

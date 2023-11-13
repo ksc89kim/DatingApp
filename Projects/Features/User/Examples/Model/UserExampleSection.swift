@@ -17,7 +17,7 @@ struct UserExampleSection: Identifiable {
 extension UserExampleSection {
 
   static let examples: UserExampleSection = .init(
-    name: "예시1",
-    items: [.demoExample]
+    name: "가입",
+    items: [.signup]
   )
 }

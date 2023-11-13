@@ -1,4 +1,5 @@
 import SwiftUI
+import User
 
 struct UserContentView: View {
 
@@ -24,7 +25,7 @@ struct UserContentView: View {
       .navigationBarTitle("데모", displayMode: .inline)
       .navigationDestination(for: UserExampleItem.self) { item in
         switch item {
-        case .demoExample: UserDetailView(name: item.rawValue)
+        case .signup: SignupView()
         }
       }
       .listStyle(.sidebar)

@@ -45,8 +45,5 @@ public struct LogoView: View {
 }
 
 #Preview {
-  LogoView(animate: Binding(
-    get: { return true },
-    set: { _ in }
-  ))
+  LogoView(animateValue: true)
 }

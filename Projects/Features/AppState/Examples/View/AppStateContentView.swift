@@ -1,7 +1,7 @@
 import SwiftUI
 import DI
 import AppStateInterface
-import AppStateTesting
+@testable import AppStateTesting
 
 struct AppStateContentView: View {
 

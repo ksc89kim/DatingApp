@@ -26,3 +26,9 @@ public protocol ViewModelType: ObservableObject {
 
   func trigger(_ action: Action) async
 }
+
+
+extension ViewModelType {
+
+  func trigger(_ action: Action) async {}
+}

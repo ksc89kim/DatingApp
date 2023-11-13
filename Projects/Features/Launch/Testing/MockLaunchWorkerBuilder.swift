@@ -9,7 +9,7 @@
 import Foundation
 import LaunchInterface
 
-public struct MockLaunchWorkerBuilder: LaunchWorkerBuildable {
+struct MockLaunchWorkerBuilder: LaunchWorkerBuildable {
 
   // MARK: - Property
 
@@ -19,7 +19,7 @@ public struct MockLaunchWorkerBuilder: LaunchWorkerBuildable {
 
   // MARK: - Init
 
-  public init(
+  init(
     isSleep: Bool = false,
     error: Error? = nil
   ) {
@@ -29,7 +29,7 @@ public struct MockLaunchWorkerBuilder: LaunchWorkerBuildable {
 
   // MARK: - Method
 
-  public func build() async -> LaunchWorkable {
+  func build() async -> LaunchWorkable {
     let rootWorker: MockLaunchWorker = .init()
     rootWorker.completionSender = LaunchCompletionSender()
 

@@ -10,7 +10,7 @@ import Foundation
 import VersionInterface
 import Core
 
-public final class MockVersionRepository: VersionRepositoryType {
+final class MockVersionRepository: VersionRepositoryType {
 
   // MARK: - Property
 
@@ -18,7 +18,7 @@ public final class MockVersionRepository: VersionRepositoryType {
 
   // MARK: - Method
 
-  public func checkVersion() async throws -> VersionInterface.CheckVersionEntity? {
+  func checkVersion() async throws -> VersionInterface.CheckVersionEntity? {
     return .init(
       isForceUpdate: self.isForceUpdate,
       message: "업데이트가 필요합니다.",

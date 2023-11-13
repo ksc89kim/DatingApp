@@ -1,5 +1,5 @@
 import Foundation
-import AppStateTesting
+@testable import AppStateTesting
 
 struct AppStateExampleItem: Identifiable {
 

@@ -9,7 +9,7 @@
 import Foundation
 import AppStateInterface
 
-public struct MockRouter: RouteType {
+struct MockRouter: RouteType {
 
   // MARK: - Property
 
@@ -19,7 +19,7 @@ public struct MockRouter: RouteType {
 
   // MARK: - Init
 
-  public init(
+  init(
     main: [MainRoutePath] = [],
     mock: [MockRoutePath] = []
   ) {
@@ -29,7 +29,7 @@ public struct MockRouter: RouteType {
 
   // MARK: - Method
 
-  public mutating func set<Path: RoutePathType, Key: RouteKeyType>(
+  mutating func set<Path: RoutePathType, Key: RouteKeyType>(
     type: Path.Type,
     paths: [Path],
     for key: Key
@@ -45,7 +45,7 @@ public struct MockRouter: RouteType {
     }
   }
 
-  public mutating func append<Path: RoutePathType, Key: RouteKeyType>(path: Path, for key: Key) {
+  mutating func append<Path: RoutePathType, Key: RouteKeyType>(path: Path, for key: Key) {
     if let mockRouteKey = key as? MockRouteKey {
       switch mockRouteKey {
       case .mock: self.append(paths: &self.mock, path: path as? MockRoutePath)
@@ -57,7 +57,7 @@ public struct MockRouter: RouteType {
     }
   }
 
-  public mutating func remove<Path: RoutePathType, Key: RouteKeyType>(path: Path, for key: Key) {
+  mutating func remove<Path: RoutePathType, Key: RouteKeyType>(path: Path, for key: Key) {
     if let mockRouteKey = key as? MockRouteKey {
       switch mockRouteKey {
       case .mock: self.remove(paths: &self.mock, path: path as? MockRoutePath)
@@ -69,7 +69,7 @@ public struct MockRouter: RouteType {
     }
   }
 
-  public mutating func removeAll<Key: RouteKeyType>(for key: Key) {
+  mutating func removeAll<Key: RouteKeyType>(for key: Key) {
     if let mockRouteKey = key as? MockRouteKey {
       switch mockRouteKey {
       case .mock: self.mock.removeAll()

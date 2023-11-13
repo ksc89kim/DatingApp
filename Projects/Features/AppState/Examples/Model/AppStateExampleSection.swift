@@ -1,5 +1,5 @@
 import Foundation
-import AppStateInterface
+@testable import AppStateInterface
 
 struct AppStateExampleSection: Identifiable {
 
