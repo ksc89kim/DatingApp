@@ -25,13 +25,12 @@ public final class CheckVersionLaunchWorker: LaunchWorkable, Injectable {
 
   public var completionSender: LaunchCompletionSender?
 
-  private let repository: VersionRepositoryType
+  @Inject(VersionRepositoryTypeKey.self)
+  private var repository: VersionRepositoryType
 
   // MARK: - Init
 
-  public init(repository: VersionRepositoryType) {
-    self.repository = repository
-  }
+  public init() {}
 
   // MARK: - Method
 

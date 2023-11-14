@@ -13,3 +13,8 @@ import LaunchInterface
 public enum CheckVersionLaunchWorkerKey: InjectionKey {
   public typealias Value = LaunchWorkable
 }
+
+
+public enum VersionRepositoryTypeKey: InjectionKey {
+  public typealias Value = VersionRepositoryType
+}
