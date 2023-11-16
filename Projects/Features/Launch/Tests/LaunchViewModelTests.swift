@@ -23,15 +23,25 @@ final class LaunchViewModelTests: XCTestCase {
 
   private var cancellables: Set<AnyCancellable>!
 
+  private var error: Error?
+
+  private var mockTokenManager: MockTokenManager!
+
   // MARK: - Tests
 
   override func setUp() async throws {
     try await super.setUp()
 
     self.cancellables = .init()
+    self.mockTokenManager = .init()
+    self.error = nil
 
-    DIContainer.register {
-      InjectItem(LaunchWorkerBuilderKey.self) { MockLaunchWorkerBuilder() }
+    DIContainer.register { [weak self] in
+      InjectItem(LaunchWorkerBuilderKey.self) {
+        var builder = MockLaunchWorkerBuilder()
+        builder.error = self?.error
+        return builder
+      }
       InjectItem(AppStateKey.self) {
         AppState.instance.router.removeAll(for: RouteKey.main)
         AppState.instance.router.removeAll(for: MockRouteKey.mock)
@@ -43,14 +53,8 @@ final class LaunchViewModelTests: XCTestCase {
 
   /// 재시도 테스트
   func testRetry() async {
-    DIContainer.register {
-      InjectItem(LaunchWorkerBuilderKey.self) {
-        var builder = MockLaunchWorkerBuilder()
-        builder.error = MockLaunchWorkerError.runError
-        return builder
-      }
-    }
-    let viewModel: LaunchViewModel = .init(tokenManager: MockTokenManager())
+    self.error = MockLaunchWorkerError.runError
+    let viewModel: LaunchViewModel = .init(tokenManager: self.mockTokenManager)
 
     await viewModel.trigger(.buildForWorker)
     await viewModel.trigger(.run)
@@ -61,14 +65,8 @@ final class LaunchViewModelTests: XCTestCase {
 
   /// 한계 수치까지만 재시도 하는지 테스트
   func testLimitRetryCount() async {
-    DIContainer.register {
-      InjectItem(LaunchWorkerBuilderKey.self) {
-        var builder = MockLaunchWorkerBuilder()
-        builder.error = MockLaunchWorkerError.runError
-        return builder
-      }
-    }
-    let viewModel: LaunchViewModel = .init(tokenManager: MockTokenManager())
+    self.error = MockLaunchWorkerError.runError
+    let viewModel: LaunchViewModel = .init(tokenManager: self.mockTokenManager)
     let limitRetryCount = 3
     viewModel.limitRetryCount = limitRetryCount
 
@@ -85,7 +83,7 @@ final class LaunchViewModelTests: XCTestCase {
     let expectation: XCTestExpectation = .init(
       description: "CompletionCountExpectaion"
     )
-    let viewModel: LaunchViewModel = .init(tokenManager: MockTokenManager())
+    let viewModel: LaunchViewModel = .init(tokenManager: self.mockTokenManager)
     var index = 0
     let totalCount = 2
 
@@ -111,7 +109,7 @@ final class LaunchViewModelTests: XCTestCase {
 
   /// (완료한 갯수 / 총 갯수) 클리어
   func testClearCount() async {
-    let viewModel: LaunchViewModel = .init(tokenManager: MockTokenManager())
+    let viewModel: LaunchViewModel = .init(tokenManager: self.mockTokenManager)
 
     await viewModel.trigger(.buildForWorker)
     await viewModel.trigger(.run)
@@ -127,7 +125,7 @@ final class LaunchViewModelTests: XCTestCase {
 
   /// 하단 메시지 테스트
   func testBottomMessage() async {
-    let viewModel: LaunchViewModel = .init(tokenManager: MockTokenManager())
+    let viewModel: LaunchViewModel = .init(tokenManager: self.mockTokenManager)
 
     await viewModel.trigger(.buildForWorker)
     await viewModel.trigger(.run)
@@ -140,14 +138,8 @@ final class LaunchViewModelTests: XCTestCase {
     let expectation: XCTestExpectation = .init(
       description: "NeedUpdateExpectation"
     )
-    DIContainer.register {
-      InjectItem(LaunchWorkerBuilderKey.self) {
-        var builder = MockLaunchWorkerBuilder()
-        builder.error = MockLaunchWorkerError.runError
-        return builder
-      }
-    }
-    let viewModel: LaunchViewModel = .init(tokenManager: MockTokenManager())
+    self.error = MockLaunchWorkerError.runError
+    let viewModel: LaunchViewModel = .init(tokenManager: self.mockTokenManager)
 
     viewModel.trigger(.runAfterBuildForWoker)
 
@@ -184,14 +176,8 @@ final class LaunchViewModelTests: XCTestCase {
       message: "업데이트가 필요합니다.",
       linkURL: .init(fileURLWithPath: "")
     )
-    DIContainer.register {
-      InjectItem(LaunchWorkerBuilderKey.self) {
-        var builder = MockLaunchWorkerBuilder()
-        builder.error = CheckVersionLaunchWorkError.forceUpdate(entity)
-        return builder
-      }
-    }
-    let viewModel: LaunchViewModel = .init(tokenManager: MockTokenManager())
+    self.error = CheckVersionLaunchWorkError.forceUpdate(entity)
+    let viewModel: LaunchViewModel = .init(tokenManager: self.mockTokenManager)
 
     viewModel.trigger(.runAfterBuildForWoker)
 
@@ -220,7 +206,7 @@ final class LaunchViewModelTests: XCTestCase {
 
   /// 강제 업데이트 확인 테스트
   func testCheckForceUpdate() {
-    let viewModel: LaunchViewModel = .init(tokenManager: MockTokenManager())
+    let viewModel: LaunchViewModel = .init(tokenManager: self.mockTokenManager)
     viewModel.isForceUpdate = true
 
     XCTAssertFalse(viewModel.state.isPresentAlert)
@@ -232,8 +218,8 @@ final class LaunchViewModelTests: XCTestCase {
 
   /// 메인 화면으로 이동
   func testPresentMain() async {
-    let tokenManager: MockTokenManager = .init(token: "ABCD")
-    let viewModel: LaunchViewModel = .init(tokenManager: tokenManager)
+    let viewModel: LaunchViewModel = .init(tokenManager: self.mockTokenManager)
+    self.mockTokenManager.save(token: "ABCD")
     let state: AppState = DIContainer.resolve(for: AppStateKey.self)
 
     await viewModel.trigger(.buildForWorker)
