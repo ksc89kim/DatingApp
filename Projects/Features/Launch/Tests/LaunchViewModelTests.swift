@@ -134,43 +134,28 @@ final class LaunchViewModelTests: XCTestCase {
   }
 
   /// 알럿 테스트
-  func testPresentAlert() {
-    let expectation: XCTestExpectation = .init(
-      description: "NeedUpdateExpectation"
-    )
+  func testPresentAlert() async {
     self.error = MockLaunchWorkerError.runError
     let viewModel: LaunchViewModel = .init(tokenManager: self.mockTokenManager)
 
-    viewModel.trigger(.runAfterBuildForWoker)
-
-    viewModel.$state
-      .filter { state in state.alert != .empty }
-      .sink { state in
-        XCTAssertEqual(
-          state.alert,
-            .init(
-              title: "",
-              message: "작업을 완료할 수 없습니다.(LaunchTesting.MockLaunchWorkerError 오류 0.)",
-              primaryAction: .init(
-                title: LaunchViewModel.TextConstant.retry,
-                type: .default,
-                completion: nil
-              ),
-              secondaryAction: nil
-            )
+    await viewModel.trigger(.runAfterBuildForWoker)
+    XCTAssertEqual(
+      viewModel.state.alert,
+        .init(
+          title: "",
+          message: "작업을 완료할 수 없습니다.(LaunchTesting.MockLaunchWorkerError 오류 0.)",
+          primaryAction: .init(
+            title: LaunchViewModel.TextConstant.retry,
+            type: .default,
+            completion: nil
+          ),
+          secondaryAction: nil
         )
-        expectation.fulfill()
-      }
-      .store(in: &self.cancellables)
-
-    wait(for: [expectation], timeout: 5.0)
+    )
   }
 
   /// 강제 업데이트 알럿 테스트
-  func testPresentForceUpdateAlert() {
-    let expectation: XCTestExpectation = .init(
-      description: "NeedUpdateExpectation"
-    )
+  func testPresentForceUpdateAlert() async {
     let entity = CheckVersionEntity(
       isForceUpdate: true,
       message: "업데이트가 필요합니다.",
@@ -179,29 +164,20 @@ final class LaunchViewModelTests: XCTestCase {
     self.error = CheckVersionLaunchWorkError.forceUpdate(entity)
     let viewModel: LaunchViewModel = .init(tokenManager: self.mockTokenManager)
 
-    viewModel.trigger(.runAfterBuildForWoker)
-
-    viewModel.$state
-      .filter { state in state.alert != .empty }
-      .sink { state in
-        XCTAssertEqual(
-          state.alert,
-            .init(
-              title: "",
-              message: entity.message,
-              primaryAction: .init(
-                title: LaunchViewModel.TextConstant.confirm,
-                type: .openURL(url: entity.linkURL),
-                completion: nil
-              ),
-              secondaryAction: nil
-            )
+    await viewModel.trigger(.runAfterBuildForWoker)
+    XCTAssertEqual(
+      viewModel.state.alert,
+        .init(
+          title: "",
+          message: entity.message,
+          primaryAction: .init(
+            title: LaunchViewModel.TextConstant.confirm,
+            type: .openURL(url: entity.linkURL),
+            completion: nil
+          ),
+          secondaryAction: nil
         )
-        expectation.fulfill()
-      }
-      .store(in: &self.cancellables)
-
-    wait(for: [expectation], timeout: 5.0)
+    )
   }
 
   /// 강제 업데이트 확인 테스트
