@@ -26,7 +26,6 @@ public final class LaunchViewModel: ViewModelType, Injectable {
 
   private enum TaskKey {
     static let runAfterBuild = "runAfterBuildKey"
-    static let bindWorkableCompletion = "bindWorkableCompletionKey"
     static let buildForWorker = "buildForWorkerKey"
     static let run = "runKey"
     static let clearCount = "clearCountKey"
@@ -113,22 +112,17 @@ public final class LaunchViewModel: ViewModelType, Injectable {
 
   private func buildForWorker() async {
     self.rootWorkable = await self.builder?.build()
-    self.bindWorkableCompletion()
+    await self.bindWorkableCompletion()
   }
   
-  private func bindWorkableCompletion() {
-    self.taskBag[TaskKey.bindWorkableCompletion]?.cancel()
-
-    Task { [weak self] in
-      await self?.rootWorkable?.completionSender?.setCompletion { [weak self] counter in
-        guard let counter = counter else { return }
-         self?.setCompletionCount(
-          completedCount: counter.completedCount,
-          totalCount: counter.totalCount
-        )
-      }
+  private func bindWorkableCompletion() async {
+    await self.rootWorkable?.completionSender?.setCompletion { [weak self] counter in
+      guard let counter = counter else { return }
+       self?.setCompletionCount(
+        completedCount: counter.completedCount,
+        totalCount: counter.totalCount
+      )
     }
-    .store(in: self.taskBag, for: TaskKey.bindWorkableCompletion)
   }
 
   private func run() {
