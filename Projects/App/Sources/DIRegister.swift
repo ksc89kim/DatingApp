@@ -40,15 +40,10 @@ struct DIRegister {
 
   private func registerForLaunch() {
     DIContainer.register {
-      InjectItem(LaunchViewModelKey.self) {
-        LaunchViewModel(tokenManager: TokenManager())
+      InjectItem(LaunchViewModelKey.self) {  LaunchViewModel(tokenManager: TokenManager())
       }
-      InjectItem(LaunchWorkerBuilderKey.self) {
-        LaunchWorkerBuilder()
-      }
-      InjectItem(LaunchViewKey.self) {
-        LaunchView()
-      }
+      InjectItem(LaunchWorkerBuilderKey.self) { LaunchWorkerBuilder() }
+      InjectItem(LaunchViewKey.self) { LaunchView() }
     }
   }
 
@@ -60,9 +55,7 @@ struct DIRegister {
         )
         return repository
       }
-      InjectItem(CheckVersionLaunchWorkerKey.self) {
-        return CheckVersionLaunchWorker()
-      }
+      InjectItem(CheckVersionLaunchWorkerKey.self) { CheckVersionLaunchWorker() }
     }
   }
 
@@ -82,14 +75,19 @@ struct DIRegister {
         let login: Loginable = DIContainer.resolve(for: LoginKey.self)
         return LoginLaunchWorker(loginable: login)
       }
+      InjectItem(SignupViewKey.self) { SignupView() }
+      InjectItem(SignupViewModelKey.self) { SignupViewModel(tokenManager: TokenManager()) }
+      InjectItem(SignupRepositoryTypeKey.self) {
+        SignupRepository(
+          networking: .init(stubClosure: Networking<UserAPI>.immediatelyStub)
+        )
+      }
     }
   }
 
   private func registerOnboarding() {
     DIContainer.register {
-      InjectItem(OnboardingViewKey.self) {
-        OnboardingView()
-      }
+      InjectItem(OnboardingViewKey.self) { OnboardingView() }
     }
   }
 }
