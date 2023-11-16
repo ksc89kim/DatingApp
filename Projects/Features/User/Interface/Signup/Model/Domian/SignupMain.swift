@@ -18,7 +18,7 @@ public protocol SignupMain {
 
   // MARK: - Method
 
-  func complete()
+  func complete() async
 
   func mergeRequest(_ request: SignupRequest) -> SignupRequest
 }

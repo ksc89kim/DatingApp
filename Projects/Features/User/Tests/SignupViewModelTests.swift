@@ -20,8 +20,6 @@ final class SignupViewModelTests: XCTestCase {
 
   // MARK: - Property
 
-  private var cancellables: Set<AnyCancellable>!
-
   private var signupError: Error?
 
   private var loginError: Error?
@@ -30,10 +28,9 @@ final class SignupViewModelTests: XCTestCase {
 
   // MARK: - Method
 
-  override func setUp() {
-    super.setUp()
+  override func setUp() async throws {
+    try await super.setUp()
 
-    self.cancellables = .init()
     self.mockTokenManager = .init()
     self.signupError = nil
     self.loginError = nil
@@ -58,7 +55,7 @@ final class SignupViewModelTests: XCTestCase {
   }
 
   /// UI 초기화
-  func testInitUI() {
+  func testInitUI() async {
     let viewModel = SignupViewModel(
       mains: [
         MockSignupMain(isBottomDisable: false, title: "A"),
@@ -67,7 +64,7 @@ final class SignupViewModelTests: XCTestCase {
       tokenManager: self.mockTokenManager
     )
 
-    viewModel.trigger(.initUI)
+    await viewModel.trigger(.initUI)
 
     if let mock = viewModel.state.currentMain as? MockSignupMain {
       XCTAssertEqual(mock.title, "A")
@@ -87,14 +84,14 @@ final class SignupViewModelTests: XCTestCase {
   }
 
   /// 닉네임 설정 테스트
-  func testSetNickname() {
+  func testSetNickname() async {
     let viewModel = SignupViewModel(
       mains: [SignupNickname()],
       tokenManager: self.mockTokenManager
     )
-    viewModel.trigger(.initUI)
+    await viewModel.trigger(.initUI)
 
-    viewModel.trigger(.nickname("테스트"))
+    await viewModel.trigger(.nickname("테스트"))
 
     if let nickname = viewModel.state.currentMain as? SignupNickname {
       XCTAssertEqual(nickname.nickname, "테스트")
@@ -105,13 +102,13 @@ final class SignupViewModelTests: XCTestCase {
   }
 
   /// 닉네임 0자 일때, 바텀 버튼 disable
-  func testDisableBottomButtonWhenNoNickname() {
+  func testDisableBottomButtonWhenNoNickname() async {
     let viewModel = SignupViewModel(
       mains: [SignupNickname()],
       tokenManager: self.mockTokenManager
     )
 
-    viewModel.trigger(.initUI)
+    await viewModel.trigger(.initUI)
 
     if let nickname = viewModel.state.currentMain as? SignupNickname {
       XCTAssertTrue(nickname.nickname.isEmpty)
@@ -122,7 +119,7 @@ final class SignupViewModelTests: XCTestCase {
   }
 
   /// 메인 페이지 다음 테스트
-  func testNext() {
+  func testNext() async {
     let viewModel = SignupViewModel(
       mains: [
         MockSignupMain(isBottomDisable: false, title: "A"),
@@ -132,8 +129,8 @@ final class SignupViewModelTests: XCTestCase {
       tokenManager: self.mockTokenManager
     )
 
-    viewModel.trigger(.next)
-    viewModel.trigger(.next)
+    await viewModel.trigger(.next)
+    await viewModel.trigger(.next)
 
     if let mock = viewModel.state.currentMain as? MockSignupMain {
       XCTAssertEqual(mock.title, "C")
@@ -144,7 +141,7 @@ final class SignupViewModelTests: XCTestCase {
   }
 
   /// 메인 페이지 뒤로가기 테스트
-  func testPrevious() {
+  func testPrevious() async {
     let viewModel = SignupViewModel(
       mains: [
         MockSignupMain(isBottomDisable: false, title: "A"),
@@ -153,10 +150,10 @@ final class SignupViewModelTests: XCTestCase {
       ],
       tokenManager: self.mockTokenManager
     )
-    viewModel.trigger(.next)
-    viewModel.trigger(.next)
+    await viewModel.trigger(.next)
+    await viewModel.trigger(.next)
 
-    viewModel.trigger(.previous)
+    await viewModel.trigger(.previous)
 
     if let mock = viewModel.state.currentMain as? MockSignupMain {
       XCTAssertEqual(mock.title, "B")
@@ -167,7 +164,7 @@ final class SignupViewModelTests: XCTestCase {
   }
 
   /// 첫 메인 페이지 일 경우, 뒤로 가기 눌렀을 때, SignupView 제거
-  func testRemoveSignupViewWhenFirstMainPage() {
+  func testRemoveSignupViewWhenFirstMainPage() async {
     let viewModel = SignupViewModel(
       mains: [
         MockSignupMain(isBottomDisable: false, title: "A")
@@ -180,15 +177,14 @@ final class SignupViewModelTests: XCTestCase {
       for: RouteKey.main
     )
 
-    viewModel.trigger(.previous)
+    await viewModel.trigger(.previous)
 
     XCTAssertEqual(AppState.instance.router.main.count, 1)
     XCTAssertEqual(AppState.instance.router.main.first, .onboarding)
   }
 
   /// 가입하기
-  func testSignup() {
-    let expectation = XCTestExpectation(description: "SignupExpectation")
+  func testSignup() async {
     let viewModel = SignupViewModel(tokenManager: self.mockTokenManager)
     AppState.instance.router.set(
       type: MainRoutePath.self,
@@ -196,79 +192,42 @@ final class SignupViewModelTests: XCTestCase {
       for: RouteKey.main
     )
 
-    viewModel.trigger(.next)
+    await viewModel.trigger(.next)
 
-    viewModel.$state
-      .removeDuplicates { lhs, rhs in
-        lhs.successSignup == rhs.successSignup
-      }
-      .sink { [weak self] state in
-        guard let `self` = self else { return }
-        if state.successSignup {
-          XCTAssertEqual(self.mockTokenManager.accessToken(), MockLoginRepository.testToken)
-          XCTAssertTrue(AppState.instance.router.main.isEmpty)
-          expectation.fulfill()
-        }
-      }
-      .store(in: &self.cancellables)
-
-    wait(for: [expectation], timeout: 5.0)
+    XCTAssertTrue(viewModel.state.successSignup)
+    XCTAssertEqual(self.mockTokenManager.accessToken(), MockLoginRepository.testToken)
+    XCTAssertTrue(AppState.instance.router.main.isEmpty)
   }
 
   /// 가입 통신 에러 알럿 테스트
-  func testPresentAlertWhenSignupError() {
-    let expectation = XCTestExpectation(description: "SignupErrorExpectation")
-    let viewModel = SignupViewModel(tokenManager: self.mockTokenManager)
+  func testPresentAlertWhenSignupError() async {
     self.signupError = MockNetworkError.networkError
+    let viewModel = SignupViewModel(tokenManager: self.mockTokenManager)
 
-    viewModel.trigger(.next)
+    await viewModel.trigger(.next)
 
-    viewModel.$state
-      .removeDuplicates { lhs, rhs in
-        lhs.isPresentAlert == rhs.isPresentAlert
-      }
-      .sink { [weak self] state in
-        guard let `self` = self else { return }
-        if state.isPresentAlert {
-          XCTAssertNil(self.mockTokenManager.accessToken())
-          XCTAssertEqual(
-            state.alert.message,
-            MockNetworkError.networkError.localizedDescription
-          )
-          expectation.fulfill()
-        }
-      }
-      .store(in: &self.cancellables)
-
-    wait(for: [expectation], timeout: 5.0)
+    XCTAssertTrue(viewModel.state.isPresentAlert)
+    XCTAssertFalse(viewModel.state.successSignup)
+    XCTAssertNil(self.mockTokenManager.accessToken())
+    XCTAssertEqual(
+      viewModel.state.alert.message,
+      MockNetworkError.networkError.localizedDescription
+    )
   }
 
   /// 로그인 통신 에러 알럿 테스트
-  func testPresentAlertWhenLoginError() {
-    let expectation = XCTestExpectation(description: "SignupErrorExpectation")
-    let viewModel = SignupViewModel(tokenManager: self.mockTokenManager)
+  func testPresentAlertWhenLoginError() async {
     self.loginError = MockNetworkError.networkError
+    let viewModel = SignupViewModel(tokenManager: self.mockTokenManager)
 
-    viewModel.trigger(.next)
+    await viewModel.trigger(.next)
 
-    viewModel.$state
-      .removeDuplicates { lhs, rhs in
-        lhs.isPresentAlert == rhs.isPresentAlert
-      }
-      .sink { [weak self] state in
-        if state.isPresentAlert {
-          guard let `self` = self else { return }
-          XCTAssertNil(self.mockTokenManager.accessToken())
-          XCTAssertFalse(state.successSignup)
-          XCTAssertEqual(
-            state.alert.message,
-            MockNetworkError.networkError.localizedDescription
-          )
-          expectation.fulfill()
-        }
-      }
-      .store(in: &self.cancellables)
-
-    wait(for: [expectation], timeout: 5.0)
+    XCTAssertTrue(viewModel.state.isPresentAlert)
+    XCTAssertFalse(viewModel.state.successSignup)
+    XCTAssertNil(self.mockTokenManager.accessToken())
+    XCTAssertEqual(
+      viewModel.state.alert.message,
+      MockNetworkError.networkError.localizedDescription
+    )
   }
 }

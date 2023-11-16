@@ -73,32 +73,80 @@ public final class SignupViewModel: ViewModelType, Injectable {
     }
   }
 
+  public func trigger(_ action: SignupAction) async {
+    switch action {
+    case .initUI: await self.initUI()
+    case .nickname(let nickname): self.updateNicknameIfNeeded(nickname)
+    case .next: await self.next()
+    case .previous: await self.previous()
+    }
+  }
+
   private func initUI() {
+    self.taskBag.cancel()
+
+    Task { [weak self] in
+      await self?.initUI()
+    }
+    .store(in: self.taskBag)
+  }
+
+  private func initUI() async {
     self.index = 0
-    self.updateMainViewTypeIfNeeded()
+    await self.updateMainViewTypeIfNeeded()
   }
 
   private func next() {
+    self.taskBag.cancel()
+
+    Task { [weak self] in
+      await self?.next()
+    }
+    .store(in: self.taskBag)
+  }
+
+  private func next() async {
     guard self.mains.indices ~= self.index + 1 else {
-      self.complete()
+      await self.complete()
       return
     }
-    self.state.currentMain?.complete()
+    await self.state.currentMain?.complete()
     self.index += 1
-    self.state.progress.isAnimation = true
-    self.updateMainViewTypeIfNeeded()
+    await self.startProgressAnimation()
+    await self.updateMainViewTypeIfNeeded()
   }
 
   private func previous() {
-    guard self.mains.indices ~= self.index - 1 else {
-      _ = self.appState.router.main.popLast()
-      return
+    self.taskBag.cancel()
+
+    Task { [weak self] in
+      await self?.previous()
     }
-    self.index -= 1
-    self.state.progress.isAnimation = true
-    self.updateMainViewTypeIfNeeded()
+    .store(in: self.taskBag)
   }
 
+  private func previous() async {
+    guard self.mains.indices ~= self.index - 1 else {
+      await self.removePopFromSuperView()
+      return
+    }
+
+    self.index -= 1
+    await self.startProgressAnimation()
+    await self.updateMainViewTypeIfNeeded()
+  }
+
+  @MainActor
+  private func removePopFromSuperView() {
+    _ = self.appState.router.main.popLast()
+  }
+
+  @MainActor
+  private func startProgressAnimation() {
+    self.state.progress.isAnimation = true
+  }
+
+  @MainActor
   private func updateMainViewTypeIfNeeded() {
     guard self.mains.indices ~= self.index else { return }
     self.state.currentMain = self.mains[self.index]
@@ -114,19 +162,16 @@ public final class SignupViewModel: ViewModelType, Injectable {
     self.state.bottomButton.isDisable = signupNickname.isBottomDisable
   }
 
-  private func complete() {
-    self.startLoading()
+  private func complete() async {
+    await self.startLoading()
 
-    Task { [weak self] in
-      do {
-        try await self?.requestSignup()
-        try await self?.requestLogin()
-        await self?.successSignup()
-      } catch {
-        await self?.handleError(error)
-      }
+    do {
+      try await self.requestSignup()
+      try await self.requestLogin()
+      await self.successSignup()
+    } catch {
+      await self.handleError(error)
     }
-    .store(in: self.taskBag)
   }
 
   private func requestSignup() async throws {
@@ -165,11 +210,13 @@ public final class SignupViewModel: ViewModelType, Injectable {
     self.state.successSignup = true
   }
 
+  @MainActor
   private func startLoading() {
     self.state.bottomButton.isLoading = true
     self.state.bottomButton.isDisable = true
   }
 
+  @MainActor
   private func endLoading() {
     self.state.bottomButton.isLoading = false
     self.state.bottomButton.isDisable = false
