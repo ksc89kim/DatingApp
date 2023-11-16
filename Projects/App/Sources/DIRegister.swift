@@ -87,6 +87,7 @@ struct DIRegister {
 
   private func registerOnboarding() {
     DIContainer.register {
+      InjectItem(OnboardingViewModelKey.self) { OnboardingViewModel() }
       InjectItem(OnboardingViewKey.self) { OnboardingView() }
     }
   }

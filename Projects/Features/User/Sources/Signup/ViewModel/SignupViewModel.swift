@@ -14,9 +14,15 @@ import AppStateInterface
 
 public final class SignupViewModel: ViewModelType, Injectable {
 
+  // MARK: - Define
+
+  enum TextConstant {
+    static let confirm = "확인"
+  }
+
   // MARK: - Property
 
-  @Published 
+  @Published
   public var state: SignupState = .init()
 
   @Inject(AppStateKey.self)
@@ -103,46 +109,63 @@ public final class SignupViewModel: ViewModelType, Injectable {
   }
 
   private func complete() {
-    self.state.bottomButton.isLoading = true
+    self.startLoading()
 
     Task { [weak self] in
-      await self?.requestSignup()
-      await self?.requestLogin()
-      await self?.successSignup()
+      do {
+        try await self?.requestSignup()
+        try await self?.requestLogin()
+        await self?.successSignup()
+      } catch {
+        await self?.handleError(error)
+      }
     }
     .store(in: self.taskBag)
   }
 
-  private func requestSignup() async {
+  private func requestSignup() async throws {
     let request = self.mains.reduce(SignupRequest()) { partialResult, main in
       return main.mergeRequest(partialResult)
     }
 
-    do {
-      let entity = try await self.signupRepository.signup(request: request)
-      self.tokenManager.save(token: entity.token)
-    } catch {
-      self.handleError(error)
-    }
+    let entity = try await self.signupRepository.signup(request: request)
+    self.tokenManager.save(token: entity.token)
   }
 
-  private func requestLogin() async {
-    do {
-      try await self.login.login()
-    } catch {
-      self.handleError(error)
-    }
+  private func requestLogin() async throws {
+    try await self.login.login()
   }
 
+  @MainActor
   private func handleError(_ error: Error) {
-    self.state.alert = .init(title: "", message: error.localizedDescription)
+    self.state.alert = .init(
+      title: "",
+      message: error.localizedDescription,
+      primaryAction: .init(
+        title: TextConstant.confirm,
+        type: .default,
+        completion: { [weak self] in
+          self?.endLoading()
+        }
+      )
+    )
     self.state.isPresentAlert = true
   }
 
   @MainActor
   private func successSignup() {
-    self.state.bottomButton.isLoading = false
     self.appState.router.main.removeAll()
+    self.endLoading()
     self.state.successSignup = true
+  }
+
+  private func startLoading() {
+    self.state.bottomButton.isLoading = true
+    self.state.bottomButton.isDisable = true
+  }
+
+  private func endLoading() {
+    self.state.bottomButton.isLoading = false
+    self.state.bottomButton.isDisable = false
   }
 }

@@ -11,6 +11,7 @@ import SwiftUI
 extension AnyView: Injectable {
 }
 
+
 public extension DIContainer {
 
   static func resolveView(for type: Any.Type?) -> AnyView {

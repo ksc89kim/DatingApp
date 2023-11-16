@@ -1,5 +1,8 @@
 import SwiftUI
 import Onboarding
+import OnboardingInterface
+import AppStateInterface
+import DI
 
 struct OnboardingContentView: View {
 
@@ -29,6 +32,22 @@ struct OnboardingContentView: View {
         }
       }
       .listStyle(.sidebar)
+    }
+  }
+
+  // MARK: - Init
+
+  init() {
+    DIContainer.register {
+      InjectItem(OnboardingViewModelKey.self) {
+        OnboardingViewModel()
+      }
+      InjectItem(AppStateKey.self) {
+        AppState.instance
+      }
+      InjectItem(RouteInjectionKey.self) {
+        EmptyRouter()
+      }
     }
   }
 }

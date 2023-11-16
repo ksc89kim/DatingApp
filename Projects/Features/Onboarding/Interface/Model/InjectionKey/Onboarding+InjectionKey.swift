@@ -7,7 +7,13 @@
 //
 import SwiftUI
 import DI
+import Core
 
 public enum OnboardingViewKey: InjectionKey {
   public typealias Value = View
+}
+
+
+public enum OnboardingViewModelKey: InjectionKey {
+  public typealias Value = ViewModelType
 }

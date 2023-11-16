@@ -74,7 +74,9 @@ extension UserAPI: NetworkTargetType {
     {
       "code": 201,
       "message": "",
-      "data": {}
+      "data": {
+        "token": "TEST_TOKEN"
+      }
     }
     """.data(using: .utf16)!
   }

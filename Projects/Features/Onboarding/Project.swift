@@ -9,13 +9,27 @@ func targets() -> [Target] {
     baseBuilder: .make(
       featuresDependencies: .init(
         interface: [
-          .di
+          .di,
+          .core
         ],
         source: [
           .core,
           .util,
-          .di
+          .di,
+          .feature(target: .appState, type: .interface)
+        ],
+        examples: [
+          .di,
+          .feature(target: .appState, type: .interface)
+        ],
+        tests: [
+          .di,
+          .core
         ]
+        + TargetDependency.features(
+          target: .appState,
+          types: [.interface, .testing]
+        )
       )
     )
   )

@@ -9,9 +9,13 @@
 import SwiftUI
 import Util
 import DI
-
+import OnboardingInterface
 
 public struct OnboardingView: View, Injectable {
+
+  @StateObject private var viewModel: OnboardingViewModel = DIContainer.resolve(
+    for: OnboardingViewModelKey.self
+  )
 
   // MARK: - Property
 
@@ -22,21 +26,23 @@ public struct OnboardingView: View, Injectable {
       VStack {
         Spacer()
         Button(
-          action: {},
+          action: { self.viewModel.trigger(.presentSignup) },
           label: {
-            HStack {
-              Text("Dating App 시작하기")
-                .font(.system(size: 16, weight: .bold))
-            }
-            .foregroundStyle(Color.Main.text)
-            .padding()
-            .overlay {
-              RoundedRectangle(cornerRadius: 12)
-                .stroke(Color.white)
-            }
+            RoundedRectangle(cornerRadius: 8)
+              .stroke(Color.white)
+              .frame(
+                maxWidth: .infinity,
+                maxHeight: 48
+              )
+              .overlay {
+                Text("Dating App 시작하기")
+                  .font(.system(size: 16, weight: .bold))
+                  .foregroundStyle(Color.Main.text)
+              }
           }
         )
         .buttonStyle(PressedButtonStyle())
+        .padding(.horizontal, 24)
         Spacer()
           .frame(height: 32)
       }
@@ -50,5 +56,10 @@ public struct OnboardingView: View, Injectable {
 
 
 #Preview {
-  OnboardingView()
+  DIContainer.register {
+    InjectItem(OnboardingViewModelKey.self) {
+      OnboardingViewModel()
+    }
+  }
+  return OnboardingView()
 }

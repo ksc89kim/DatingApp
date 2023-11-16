@@ -202,7 +202,8 @@ final class SignupViewModelTests: XCTestCase {
       .removeDuplicates { lhs, rhs in
         lhs.successSignup == rhs.successSignup
       }
-      .sink { state in
+      .sink { [weak self] state in
+        guard let `self` = self else { return }
         if state.successSignup {
           XCTAssertEqual(self.mockTokenManager.accessToken(), MockLoginRepository.testToken)
           XCTAssertTrue(AppState.instance.router.main.isEmpty)
@@ -226,7 +227,8 @@ final class SignupViewModelTests: XCTestCase {
       .removeDuplicates { lhs, rhs in
         lhs.isPresentAlert == rhs.isPresentAlert
       }
-      .sink { state in
+      .sink { [weak self] state in
+        guard let `self` = self else { return }
         if state.isPresentAlert {
           XCTAssertNil(self.mockTokenManager.accessToken())
           XCTAssertEqual(
@@ -253,9 +255,11 @@ final class SignupViewModelTests: XCTestCase {
       .removeDuplicates { lhs, rhs in
         lhs.isPresentAlert == rhs.isPresentAlert
       }
-      .sink { state in
+      .sink { [weak self] state in
         if state.isPresentAlert {
+          guard let `self` = self else { return }
           XCTAssertNil(self.mockTokenManager.accessToken())
+          XCTAssertFalse(state.successSignup)
           XCTAssertEqual(
             state.alert.message,
             MockNetworkError.networkError.localizedDescription

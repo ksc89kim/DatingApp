@@ -12,7 +12,7 @@ import DI
 public protocol RouteType: Injectable {
 
   var main: [MainRoutePath] { get set }
-  
+
   mutating func set<Path: RoutePathType, Key: RouteKeyType>(
     type: Path.Type,
     paths: [Path],
