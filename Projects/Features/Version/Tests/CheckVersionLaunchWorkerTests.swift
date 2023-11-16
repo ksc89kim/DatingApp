@@ -10,35 +10,33 @@ final class CheckVersionLaunchWorkerTests: XCTestCase {
 
   private var worker: CheckVersionLaunchWorker!
 
+  private var isForceUpdate: Bool?
+
   // MARK: - Tests
 
   override func setUp() {
     super.setUp()
 
     self.worker = .init()
+    self.isForceUpdate = nil
+
+    DIContainer.register { [weak self] in
+      InjectItem(VersionRepositoryTypeKey.self) {
+        let repository = MockVersionRepository()
+        repository.isForceUpdate = self?.isForceUpdate ?? false
+        return repository
+      }
+    }
   }
 
   /// Work 기본 테스트
   func testWork() async throws {
-    DIContainer.register {
-      InjectItem(VersionRepositoryTypeKey.self) {
-        let repository = MockVersionRepository()
-        return repository
-      }
-    }
-
     try await self.worker.work()
   }
 
   /// 강제 업데이트 테스트
   func testForceUpdateFromWork() async {
-    DIContainer.register {
-      InjectItem(VersionRepositoryTypeKey.self) {
-        let repository = MockVersionRepository()
-        repository.isForceUpdate = true
-        return repository
-      }
-    }
+    self.isForceUpdate = true
 
     do {
       try await self.worker.work()
