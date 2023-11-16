@@ -52,6 +52,12 @@ public final class SignupViewModel: ViewModelType, Injectable {
     tokenManager: TokenManagerType
   ) {
     self.mains = mains
+    defer {
+      self.mains.forEach { main in
+        var main = main
+        main.repository = self.signupRepository
+      }
+    }
     self.index = index
     self.tokenManager = tokenManager
   }

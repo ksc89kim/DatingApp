@@ -17,6 +17,8 @@ struct MockSignupMain: SignupMain {
 
   var title: String
 
+  weak var repository: SignupRepositoryType?
+
   // MARK: - Method
 
   func mergeRequest(_ request: SignupRequest) -> SignupRequest {

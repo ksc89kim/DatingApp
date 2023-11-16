@@ -14,6 +14,8 @@ public protocol SignupMain {
   
   var isBottomDisable: Bool { get set }
 
+  var repository: SignupRepositoryType? { get set }
+
   // MARK: - Method
 
   func complete()

@@ -9,7 +9,7 @@
 import Foundation
 import UserInterface
 
-public final class SignupNickname: SignupMain {  
+public final class SignupNickname: SignupMain {
 
   // MARK: - Property
 
@@ -18,6 +18,8 @@ public final class SignupNickname: SignupMain {
   var limitCount: Int
 
   public var isBottomDisable: Bool
+
+  public weak var repository: SignupRepositoryType?
 
   // MARK: - Init
   
