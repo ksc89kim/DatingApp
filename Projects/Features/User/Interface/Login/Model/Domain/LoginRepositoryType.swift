@@ -9,7 +9,7 @@
 import Foundation
 import DI
 
-public protocol LoginRepositoryType: Injectable {
+public protocol LoginRepositoryType: AnyObject, Injectable {
 
   // MARK: - Method
 
