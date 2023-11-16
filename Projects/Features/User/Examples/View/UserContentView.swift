@@ -1,16 +1,21 @@
 import SwiftUI
-import User
+@testable import DI
+@testable import Core
+@testable import User
+@testable import UserInterface
+@testable import UserTesting
+@testable import AppStateInterface
 
 struct UserContentView: View {
-
+  
   // MARK: - Property
-
+  
   let sections: [UserExampleSection] = [
     .examples
   ]
-
+  
   // MARK: - Body
-
+  
   var body: some View {
     NavigationStack {
       List {
@@ -31,9 +36,24 @@ struct UserContentView: View {
       .listStyle(.sidebar)
     }
   }
+  
+  // MARK: - Init
+  
+  init() {
+    DIContainer.register {
+      InjectItem(LoginRepositoryTypeKey.self) { MockLoginRepository() }
+      InjectItem(LoginKey.self) { Login(tokenManager: MockTokenManager()) }
+      InjectItem(SignupRepositoryTypeKey.self) { MockSignupRepository() }
+      InjectItem(RouteInjectionKey.self) { EmptyRouter() }
+      InjectItem(AppStateKey.self) { AppState.instance }
+      InjectItem(SignupViewModelKey.self) { 
+        SignupViewModel(tokenManager: MockTokenManager())
+      }
+    }
+  }
 }
 
 
 #Preview {
-  UserContentView()
+  return UserContentView()
 }

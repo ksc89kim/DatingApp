@@ -11,4 +11,5 @@ import Foundation
 public enum MainRoutePath: RoutePathType {
   case launch
   case onboarding
+  case signup
 }

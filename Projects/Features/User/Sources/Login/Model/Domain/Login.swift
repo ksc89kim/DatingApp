@@ -11,21 +11,18 @@ import DI
 import Core
 import UserInterface
 
-public final class Login: Loginable, Injectable {
+public final class Login: Loginable {
 
   // MARK: - Property
 
-  private let repository: LoginRepositoryType
+  @Inject(LoginRepositoryTypeKey.self)
+  private var repository: LoginRepositoryType
 
   private let tokenManager: TokenManagerType
 
   // MARK: - Init
 
-  public init(
-    repository: LoginRepositoryType,
-    tokenManager: TokenManagerType
-  ) {
-    self.repository = repository
+  public init(tokenManager: TokenManagerType) {
     self.tokenManager = tokenManager
   }
 

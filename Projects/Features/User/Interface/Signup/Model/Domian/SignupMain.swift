@@ -13,4 +13,10 @@ public protocol SignupMain {
   // MARK: - Property
   
   var isBottomDisable: Bool { get set }
+
+  // MARK: - Method
+
+  func complete()
+
+  func mergeRequest(_ request: SignupRequest) -> SignupRequest
 }

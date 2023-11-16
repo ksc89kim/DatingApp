@@ -22,9 +22,19 @@ public final class SignupViewModel: ViewModelType, Injectable {
   @Inject(AppStateKey.self)
   private var appState: AppState
 
+  @Inject(SignupRepositoryTypeKey.self)
+  private var signupRepository: SignupRepositoryType
+
+  @Inject(LoginKey.self)
+  private var login: Loginable
+
+  private var tokenManager: TokenManagerType
+
   private var index: Int
 
   private let mains: [SignupMain]
+
+  private let taskBag: AnyCancelTaskBag = .init()
 
   // MARK: - Init
 
@@ -32,10 +42,12 @@ public final class SignupViewModel: ViewModelType, Injectable {
     mains: [SignupMain] = [
       SignupNickname()
     ],
-    index: Int = 0
+    index: Int = 0,
+    tokenManager: TokenManagerType
   ) {
     self.mains = mains
     self.index = index
+    self.tokenManager = tokenManager
   }
 
   // MARK: - Method
@@ -55,24 +67,31 @@ public final class SignupViewModel: ViewModelType, Injectable {
   }
 
   private func next() {
-    guard self.mains.indices ~= self.index + 1 else { return }
+    guard self.mains.indices ~= self.index + 1 else {
+      self.complete()
+      return
+    }
+    self.state.currentMain?.complete()
     self.index += 1
-    self.state.isProgressViewAnimation = true
+    self.state.progress.isAnimation = true
     self.updateMainViewTypeIfNeeded()
   }
 
   private func previous() {
-    guard self.mains.indices ~= self.index - 1 else { return }
+    guard self.mains.indices ~= self.index - 1 else {
+      _ = self.appState.router.main.popLast()
+      return
+    }
     self.index -= 1
-    self.state.isProgressViewAnimation = true
+    self.state.progress.isAnimation = true
     self.updateMainViewTypeIfNeeded()
   }
 
   private func updateMainViewTypeIfNeeded() {
     guard self.mains.indices ~= self.index else { return }
     self.state.currentMain = self.mains[self.index]
-    self.state.progressValue = Double(self.index + 1) / Double(self.mains.count)
-    self.state.isBottmButtonDisable = self.mains[self.index].isBottomDisable
+    self.state.progress.value = Double(self.index + 1) / Double(self.mains.count)
+    self.state.bottomButton.isDisable = self.mains[self.index].isBottomDisable
   }
 
   private func updateNicknameIfNeeded(_ nickname: String) {
@@ -80,6 +99,50 @@ public final class SignupViewModel: ViewModelType, Injectable {
       return
     }
     signupNickname.updateNickname(nickname: nickname)
-    self.state.isBottmButtonDisable = signupNickname.isBottomDisable
+    self.state.bottomButton.isDisable = signupNickname.isBottomDisable
+  }
+
+  private func complete() {
+    self.state.bottomButton.isLoading = true
+
+    Task { [weak self] in
+      await self?.requestSignup()
+      await self?.requestLogin()
+      await self?.successSignup()
+    }
+    .store(in: self.taskBag)
+  }
+
+  private func requestSignup() async {
+    let request = self.mains.reduce(SignupRequest()) { partialResult, main in
+      return main.mergeRequest(partialResult)
+    }
+
+    do {
+      let entity = try await self.signupRepository.signup(request: request)
+      self.tokenManager.save(token: entity.token)
+    } catch {
+      self.handleError(error)
+    }
+  }
+
+  private func requestLogin() async {
+    do {
+      try await self.login.login()
+    } catch {
+      self.handleError(error)
+    }
+  }
+
+  private func handleError(_ error: Error) {
+    self.state.alert = .init(title: "", message: error.localizedDescription)
+    self.state.isPresentAlert = true
+  }
+
+  @MainActor
+  private func successSignup() {
+    self.state.bottomButton.isLoading = false
+    self.appState.router.main.removeAll()
+    self.state.successSignup = true
   }
 }

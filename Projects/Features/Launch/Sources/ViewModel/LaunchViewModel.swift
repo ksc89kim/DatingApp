@@ -60,7 +60,7 @@ public final class LaunchViewModel: ViewModelType, Injectable {
 
   // MARK: - Init
   
-  public init(tokenManager: TokenManagerType = TokenManager()) {
+  public init(tokenManager: TokenManagerType) {
     self.tokenManager = tokenManager
   }
 

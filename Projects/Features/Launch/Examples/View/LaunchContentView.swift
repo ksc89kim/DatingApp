@@ -1,10 +1,11 @@
 import SwiftUI
-import DI
-import LaunchInterface
-import Launch
+@testable import DI
+@testable import Core
+@testable import LaunchInterface
+@testable import Launch
 @testable import LaunchTesting
-import VersionInterface
-import AppStateInterface
+@testable import VersionInterface
+@testable import AppStateInterface
 
 struct LaunchContentView: View {
 
@@ -37,7 +38,7 @@ struct LaunchContentView: View {
   init() {
     DIContainer.register {
       InjectItem(LaunchViewModelKey.self) {
-        let viewModel = LaunchViewModel()
+        let viewModel = LaunchViewModel(tokenManager: MockTokenManager())
         viewModel.limitRetryCount = 3
         return viewModel
       }

@@ -9,13 +9,18 @@
 import SwiftUI
 import Util
 import DI
+import Core
+import UserInterface
+import AppStateInterface
 
 public struct SignupView: View, Injectable {
 
   // MARK: - Property
 
   @StateObject
-  private var viewModel: SignupViewModel = .init()
+  private var viewModel: SignupViewModel = DIContainer.resolve(
+    for: SignupViewModelKey.self
+  )
 
   public var body: some View {
     VStack(alignment: .leading) {
@@ -25,6 +30,9 @@ public struct SignupView: View, Injectable {
       self.nextButton
     }
     .padding(.horizontal, 18)
+    .alert(isPresented: self.$viewModel.state.isPresentAlert) {
+      return self.buildAlert(self.viewModel.state.alert)
+    }
     .onAppear {
       self.viewModel.trigger(.initUI)
     }
@@ -68,10 +76,10 @@ public struct SignupView: View, Injectable {
 
   @ViewBuilder
   private var progressView: some View {
-    ProgressView(value: self.viewModel.state.progressValue)
+    ProgressView(value: self.viewModel.state.progress.value)
       .progressViewStyle(
         SignupProgressViewStyle(
-          isAnimation: self.viewModel.state.isProgressViewAnimation
+          isAnimation: self.viewModel.state.progress.isAnimation
         )
       )
       .padding(.top, 24)
@@ -81,13 +89,15 @@ public struct SignupView: View, Injectable {
   @ViewBuilder
   private var nextButton: some View {
     Button(
-      action: { self.viewModel.trigger(.next) },
+      action: {
+        self.viewModel.trigger(.next)
+      },
       label: {
         RoundedRectangle(cornerRadius: 12)
           .frame(maxWidth: .infinity, maxHeight: 48)
           .foregroundColor(Color.Main.background)
           .overlay {
-            if self.viewModel.state.isBottomButtonLoading {
+            if self.viewModel.state.bottomButton.isLoading {
               ProgressView()
                 .tint(Color.white)
             } else {
@@ -99,8 +109,8 @@ public struct SignupView: View, Injectable {
       }
     )
     .buttonStyle(PressedButtonStyle())
-    .disabled(self.viewModel.state.isBottmButtonDisable)
-    .opacity(self.viewModel.state.isBottmButtonDisable ? 0.5 : 1.0)
+    .disabled(self.viewModel.state.bottomButton.isDisable)
+    .opacity(self.viewModel.state.bottomButton.isDisable ? 0.5 : 1.0)
     .padding(.vertical, 18)
   }
 
@@ -110,6 +120,14 @@ public struct SignupView: View, Injectable {
 }
 
 
+extension SignupView: AlertBuildable { }
+
+
 #Preview {
-  SignupView()
+  DIContainer.register {
+    InjectItem(SignupViewModelKey.self) {
+      SignupViewModel(tokenManager: MockTokenManager())
+    }
+  }
+  return SignupView()
 }

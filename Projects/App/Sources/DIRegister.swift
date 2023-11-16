@@ -41,7 +41,7 @@ struct DIRegister {
   private func registerForLaunch() {
     DIContainer.register {
       InjectItem(LaunchViewModelKey.self) {
-        LaunchViewModel()
+        LaunchViewModel(tokenManager: TokenManager())
       }
       InjectItem(LaunchWorkerBuilderKey.self) {
         LaunchWorkerBuilder()
@@ -68,12 +68,15 @@ struct DIRegister {
 
   private func registerForUser() {
     DIContainer.register {
-      InjectItem(LoginKey.self) {
+      InjectItem(LoginRepositoryTypeKey.self) {
         let repository = LoginRepository(
           networking: .init(stubClosure: Networking<UserAPI>.immediatelyStub)
         )
+        return repository
+      }
+      InjectItem(LoginKey.self) {
         let tokenManager = TokenManager()
-        return Login(repository: repository, tokenManager: tokenManager)
+        return Login(tokenManager: tokenManager)
       }
       InjectItem(LoginLaunchWorkerKey.self) {
         let login: Loginable = DIContainer.resolve(for: LoginKey.self)

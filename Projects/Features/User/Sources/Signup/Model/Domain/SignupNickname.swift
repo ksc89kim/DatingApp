@@ -9,7 +9,7 @@
 import Foundation
 import UserInterface
 
-public final class SignupNickname: SignupMain {
+public final class SignupNickname: SignupMain {  
 
   // MARK: - Property
 
@@ -36,4 +36,12 @@ public final class SignupNickname: SignupMain {
     self.nickname = nickname
     self.isBottomDisable = nickname.isEmpty
   }
+
+  public func mergeRequest(_ request: SignupRequest) -> SignupRequest {
+    var request = request
+    request.nickname = self.nickname
+    return request
+  }
+
+  public func complete() { }
 }

@@ -30,6 +30,8 @@ struct ContentView: View {
             .toolbar(.hidden, for: .navigationBar)
         case .onboarding: DIContainer.resolveView(for: OnboardingViewKey.self)
             .toolbar(.hidden, for: .navigationBar)
+        case .signup: Spacer()
+            .toolbar(.hidden, for: .navigationBar)
         }
       }
     }

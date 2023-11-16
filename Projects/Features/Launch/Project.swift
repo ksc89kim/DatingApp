@@ -21,10 +21,16 @@ func targets() -> [Target] {
           .feature(target: .user, type: .interface),
           .feature(target: .onboarding, type: .interface)
         ],
+        examples: [
+          .core,
+          .di,
+          .feature(target: .version, type: .interface),
+          .feature(target: .appState, type: .interface)
+        ],
         tests: [
           .di,
           .feature(target: .version, type: .interface)
-        ] 
+        ]
         + TargetDependency.features(
           target: .appState,
           types: [.interface, .testing]

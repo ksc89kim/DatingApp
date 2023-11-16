@@ -9,6 +9,7 @@
 import SwiftUI
 import DI
 import Util
+import Core
 import LaunchInterface
 import AppStateInterface
 
@@ -76,7 +77,7 @@ extension LaunchView: AlertBuildable {
 #Preview {
   DIContainer.register {
     InjectItem(LaunchWorkerBuilderKey.self) { nil }
-    InjectItem(LaunchViewModelKey.self) { LaunchViewModel() }
+    InjectItem(LaunchViewModelKey.self) { LaunchViewModel(tokenManager: MockTokenManager()) }
     InjectItem(RouteInjectionKey.self) { EmptyRouter() }
     InjectItem(AppStateKey.self) { AppState.instance }
   }

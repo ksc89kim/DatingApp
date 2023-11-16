@@ -16,4 +16,12 @@ struct MockSignupMain: SignupMain {
   var isBottomDisable: Bool
 
   var title: String
+
+  // MARK: - Method
+
+  func mergeRequest(_ request: SignupRequest) -> SignupRequest {
+    return request
+  }
+
+  public func complete() { }
 }

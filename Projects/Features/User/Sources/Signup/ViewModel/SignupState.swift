@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Util
 import UserInterface
 
 public struct SignupState {
@@ -15,27 +16,31 @@ public struct SignupState {
 
   var currentMain: SignupMain?
 
-  var progressValue: Double
+  var progress: SignupProgressState
 
-  var isProgressViewAnimation: Bool
+  var bottomButton: SignupBottomButtonState
 
-  var isBottmButtonDisable: Bool
+  var alert: BaseAlert
 
-  var isBottomButtonLoading: Bool
+  var isPresentAlert: Bool
+
+  var successSignup: Bool
 
   // MARK: - Init
   
   init(
     currentMain: SignupMain? = nil,
-    progressValue: Double = 0.0,
-    isProgressViewAnimation: Bool = false,
-    isBottmButtonDisable: Bool = false,
-    isBottomButtonLoading: Bool = false
+    progress: SignupProgressState = .init(),
+    bottomButton: SignupBottomButtonState = .init(),
+    isPresentAlert: Bool = false,
+    alert: BaseAlert = .empty,
+    successSignup: Bool = false
   ) {
     self.currentMain = currentMain
-    self.progressValue = progressValue
-    self.isProgressViewAnimation = isProgressViewAnimation
-    self.isBottmButtonDisable = isBottmButtonDisable
-    self.isBottomButtonLoading = isBottomButtonLoading
+    self.progress = progress
+    self.bottomButton = bottomButton
+    self.isPresentAlert = isPresentAlert
+    self.alert = alert
+    self.successSignup = successSignup
   }
 }

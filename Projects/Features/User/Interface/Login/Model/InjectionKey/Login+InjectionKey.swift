@@ -18,3 +18,8 @@ public enum LoginKey: InjectionKey {
 public enum LoginLaunchWorkerKey: InjectionKey {
   public typealias Value = LaunchWorkable
 }
+
+
+public enum LoginRepositoryTypeKey: InjectionKey {
+  public typealias Value = LoginRepositoryType
+}

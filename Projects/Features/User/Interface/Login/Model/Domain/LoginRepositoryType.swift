@@ -7,8 +7,9 @@
 //
 
 import Foundation
+import DI
 
-public protocol LoginRepositoryType {
+public protocol LoginRepositoryType: Injectable {
 
   // MARK: - Method
 
