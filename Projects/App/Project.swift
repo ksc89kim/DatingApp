@@ -24,7 +24,7 @@ func targets() -> [Target] {
     .appendDependenciess([
       .di,
       .core,
-      .naviagationTransitions,
+      .util,
       .feature(target: .appState, type: .source),
       .feature(target: .launch, type: .source),
       .feature(target: .version, type: .source),

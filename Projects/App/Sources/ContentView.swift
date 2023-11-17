@@ -12,7 +12,7 @@ import LaunchInterface
 import AppStateInterface
 import OnboardingInterface
 import UserInterface
-import NavigationTransitions
+import Util
 
 struct ContentView: View {
 

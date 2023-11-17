@@ -15,6 +15,9 @@ func targets() -> [Target] {
 func sourceTarget() -> Target {
   return .Builder.makeSource(name: name)
     .product(.framework)
+    .appendDependenciess([
+      .naviagationTransitions
+    ])
     .build()
 }
 
