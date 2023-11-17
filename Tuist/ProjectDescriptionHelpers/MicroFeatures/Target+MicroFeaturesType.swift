@@ -89,43 +89,45 @@ public extension Target {
     switch type {
     case .source:
       builder.product(.framework)
-        .featuresDependencies(.init(
-          interface: feturesDependencies.sourceDependencies
-          + [.feature(target: target, type: .interface)]
-        ))
+        .featuresDependencies(
+          .init(source: feturesDependencies.sourceDependencies
+                + [.feature(target: target, type: .interface)])
+        )
     case .interface:
       builder.product(.framework)
         .featuresDependencies(
-          .init(source: feturesDependencies.interfaceDependencies)
+          .init(interface: feturesDependencies.interfaceDependencies
+                + [.di, .core, .util]
+               )
         )
     case .testing:
       builder.product(.framework)
-        .featuresDependencies(.init(
-          testing: feturesDependencies.testingDependencies
-          + [.feature(target: target, type: .interface)]
-        ))
+        .featuresDependencies(
+          .init(testing: feturesDependencies.testingDependencies
+                + [.feature(target: target, type: .interface)])
+        )
     case .tests:
       builder.product(.unitTests)
-        .featuresDependencies(.init(
-          tests: feturesDependencies.testsDependencies
-          + [
-            .feature(target: target, type: .testing),
-            .feature(target: target, type: .source),
-            .xctest
-          ]
-        ))
+        .featuresDependencies(
+          .init(tests: feturesDependencies.testsDependencies
+                + [
+                  .feature(target: target, type: .testing),
+                  .feature(target: target, type: .source),
+                  .xctest
+                ])
+        )
     case .examples:
       builder.product(.app)
         .infoPlist(.extendingDefault(with: [
           "UILaunchScreen" : .dictionary([:])
         ]))
-        .featuresDependencies(.init(
-          examples: feturesDependencies.examplesDependencies
-          + [
-            .feature(target: target, type: .testing),
-            .feature(target: target, type: .source)
-          ]
-        ))
+        .featuresDependencies(
+          .init(examples: feturesDependencies.examplesDependencies
+                + [
+                  .feature(target: target, type: .testing),
+                  .feature(target: target, type: .source)
+                ])
+        )
     }
     return builder.build()
   }

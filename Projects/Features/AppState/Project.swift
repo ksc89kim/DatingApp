@@ -9,7 +9,6 @@ func targets() -> [Target] {
     baseBuilder: .make(
       featuresDependencies: .init(
         interface: [
-          .di,
           .feature(target: .user, type: .interface)
         ]
       )
