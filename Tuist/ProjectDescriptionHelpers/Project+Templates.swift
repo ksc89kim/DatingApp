@@ -14,6 +14,7 @@ public extension Project {
     return .init(
       name: type.rawValue,
       organizationName: env.organizationName,
+      options: env.options,
       settings: settings,
       targets: targets
     )

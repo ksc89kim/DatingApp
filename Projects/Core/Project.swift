@@ -33,6 +33,7 @@ func testsTarget() -> Target {
 let project: Project = .init(
   name: name,
   organizationName: env.organizationName,
+  options: env.options,
   settings: .base,
   targets: targets()
 )

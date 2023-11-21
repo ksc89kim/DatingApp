@@ -38,6 +38,7 @@ func targets() -> [Target] {
 let project: Project = .init(
   name: env.name,
   organizationName: env.organizationName,
+  options: env.options,
   settings: settings,
   targets: targets(),
   schemes: configurations.schems(name: env.name)

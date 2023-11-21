@@ -20,8 +20,8 @@ public final class LaunchViewModel: ViewModelType, Injectable {
   // MARK: - Define
 
   enum TextConstant {
-    static let retry = "재시도"
-    static let confirm = "확인"
+    static let retry: LocalizedStringResource = "재시도"
+    static let confirm: LocalizedStringResource = "확인"
   }
 
   private enum TaskKey {
@@ -187,7 +187,7 @@ public final class LaunchViewModel: ViewModelType, Injectable {
       title: "",
       message: message,
       primaryAction: .init(
-        title: TextConstant.retry,
+        title: TextConstant.retry.stringValue,
         type: .default,
         completion: { [weak self] in
           self?.state.isPresentAlert = false
@@ -202,7 +202,7 @@ public final class LaunchViewModel: ViewModelType, Injectable {
       title: "",
       message: entity.message,
       primaryAction: .init(
-        title: TextConstant.confirm,
+        title: TextConstant.confirm.stringValue,
         type: .openURL(url: entity.linkURL),
         completion: { [weak self] in
           self?.state.isPresentAlert = false

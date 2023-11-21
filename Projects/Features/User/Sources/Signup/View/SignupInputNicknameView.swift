@@ -27,7 +27,7 @@ struct SignupInputNicknameView: View {
         .foregroundStyle(Color.gray)
         .padding(.bottom, 34)
       TextField(
-        "",
+        String(),
         text: self.$nickname.max(self.limitCount),
         prompt: Text("닉네임을 입력해주세요.")
           .font(.system(size: 24, weight: .semibold))
