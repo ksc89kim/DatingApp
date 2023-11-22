@@ -128,6 +128,9 @@ extension SignupView: AlertBuildable { }
     InjectItem(SignupViewModelKey.self) {
       SignupViewModel(tokenManager: MockTokenManager())
     }
+    InjectItem(SignupRepositoryTypeKey.self) { SignupRepository(networking: .init())
+    }
   }
+  
   return SignupView()
 }
