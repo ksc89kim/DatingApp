@@ -102,7 +102,7 @@ public struct SignupView: View, Injectable {
                 .tint(Color.white)
             } else {
               Text("다음")
-                .systemScaledFont(font: .bold, size: 14)
+                .systemScaledFont(style: .bottomButton)
                 .foregroundStyle(UtilAsset.MainColor.text.swiftUIColor)
             }
           }

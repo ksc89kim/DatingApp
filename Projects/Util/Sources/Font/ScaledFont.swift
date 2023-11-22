@@ -31,11 +31,21 @@ struct ScaledFontModifier: ViewModifier {
 
 public extension View {
 
+  // MARK: - Method
+  
   func scaledFont<Font: Fontable>(font: Font, size: CGFloat) -> some View {
     return self.modifier(ScaledFontModifier(font: font, size: size))
   }
 
+  func scaledFont<Style: FontStyle>(style: Style) -> some View {
+    return self.scaledFont(font: style.font, size: style.size)
+  }
+
   func systemScaledFont(font: SystemFont, size: CGFloat) -> some View {
     return self.scaledFont(font: font, size: size)
+  }
+
+  func systemScaledFont(style: SystemFont.Style) -> some View {
+    return self.scaledFont(style: style)
   }
 }

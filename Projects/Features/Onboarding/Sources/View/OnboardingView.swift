@@ -28,16 +28,15 @@ public struct OnboardingView: View, Injectable {
         Button(
           action: { self.viewModel.trigger(.presentSignup) },
           label: {
-            RoundedRectangle(cornerRadius: 8)
-              .stroke(Color.white)
-              .frame(
-                maxWidth: .infinity,
-                maxHeight: 48
-              )
+            Text("Dating App 시작하기")
+              .systemScaledFont(style: .bottomButton)
+              .lineLimit(2)
+              .foregroundStyle(UtilAsset.MainColor.text.swiftUIColor)
+              .padding(.vertical, 18)
+              .frame(maxWidth: .infinity)
               .overlay {
-                Text("Dating App 시작하기")
-                  .systemScaledFont(font: .bold, size: 16)
-                  .foregroundStyle(UtilAsset.MainColor.text.swiftUIColor)
+                RoundedRectangle(cornerRadius: 8)
+                  .stroke(Color.white)
               }
           }
         )

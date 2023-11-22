@@ -22,10 +22,10 @@ struct SignupInputNicknameView: View {
   var body: some View {
     VStack(alignment: .leading) {
       Text("닉네임을 만들어볼까요?")
-        .systemScaledFont(font: .bold, size: 22)
+        .systemScaledFont(style: .boldTitle)
         .padding(.bottom, 8)
       Text("프로필에 표시되는 이름으로, 언제든지 변경할 수 있어요.")
-        .systemScaledFont(font: .regular, size: 14)
+        .systemScaledFont(style: .placeHolder)
         .foregroundStyle(UtilAsset.MainColor.placeHolder.swiftUIColor)
         .padding(.bottom, 34)
       TextField(
@@ -42,7 +42,7 @@ struct SignupInputNicknameView: View {
       Divider()
         .padding(.bottom, 4)
       Text("최대 \(self.limitCount)자")
-        .systemScaledFont(font: .regular, size: 14)
+        .systemScaledFont(style: .placeHolder)
         .foregroundStyle(UtilAsset.MainColor.placeHolder.swiftUIColor)
     }
     .frame(
