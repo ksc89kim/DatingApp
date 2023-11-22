@@ -26,7 +26,7 @@ public struct LogoView: View {
         .symbolEffect(.bounce, value: self.animate.wrappedValue)
       Text("Dating")
         .foregroundStyle(UtilAsset.MainColor.text.swiftUIColor)
-        .font(.system(size: 32, weight: .bold))
+        .systemScaledFont(font: .bold, size: 32)
     }
   }
 

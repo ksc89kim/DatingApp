@@ -36,7 +36,7 @@ public struct OnboardingView: View, Injectable {
               )
               .overlay {
                 Text("Dating App 시작하기")
-                  .font(.system(size: 16, weight: .bold))
+                  .systemScaledFont(font: .bold, size: 16)
                   .foregroundStyle(UtilAsset.MainColor.text.swiftUIColor)
               }
           }

@@ -34,7 +34,7 @@ public struct LaunchView: View, Injectable {
       VStack {
         Spacer()
         Text(self.viewModel.state.bottomMessage)
-          .font(.system(size: 16, weight: .bold))
+          .systemScaledFont(font: .bold, size: 16)
           .foregroundStyle(UtilAsset.MainColor.text.swiftUIColor)
         Spacer().frame(height: 16)
       }
