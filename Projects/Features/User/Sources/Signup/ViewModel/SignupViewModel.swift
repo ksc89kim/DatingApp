@@ -7,18 +7,13 @@
 //
 
 import Foundation
+import Util
 import Core
 import DI
 import UserInterface
 import AppStateInterface
 
 public final class SignupViewModel: ViewModelType, Injectable {
-
-  // MARK: - Define
-
-  enum TextConstant {
-    static let confirm: LocalizedStringResource = "확인"
-  }
 
   // MARK: - Property
 
@@ -193,7 +188,7 @@ public final class SignupViewModel: ViewModelType, Injectable {
       title: "",
       message: error.localizedDescription,
       primaryAction: .init(
-        title: TextConstant.confirm.stringValue,
+        title: .confirm,
         type: .default,
         completion: { [weak self] in
           self?.endLoading()

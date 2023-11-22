@@ -82,13 +82,13 @@ extension BaseAlert: Equatable {
 extension BaseAlert.Action {
 
   public static let confirm: BaseAlert.Action = .init(
-    title: "확인",
+    title: .confirm,
     type: .default,
     completion: nil
   )
 
   public static let cancel: BaseAlert.Action = .init(
-    title: "취소",
+    title: .cancel,
     type: .cancel,
     completion: nil
   )

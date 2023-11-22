@@ -21,7 +21,6 @@ public final class LaunchViewModel: ViewModelType, Injectable {
 
   enum TextConstant {
     static let retry: LocalizedStringResource = "재시도"
-    static let confirm: LocalizedStringResource = "확인"
   }
 
   private enum TaskKey {
@@ -202,7 +201,7 @@ public final class LaunchViewModel: ViewModelType, Injectable {
       title: "",
       message: entity.message,
       primaryAction: .init(
-        title: TextConstant.confirm.stringValue,
+        title: .confirm,
         type: .openURL(url: entity.linkURL),
         completion: { [weak self] in
           self?.state.isPresentAlert = false

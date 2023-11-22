@@ -10,16 +10,6 @@
           }
         }
       }
-    },
-    "확인" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "confirm"
-          }
-        }
-      }
     }
   },
   "version" : "1.0"
