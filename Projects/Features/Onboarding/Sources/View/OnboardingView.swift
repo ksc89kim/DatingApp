@@ -21,7 +21,7 @@ public struct OnboardingView: View, Injectable {
 
   public var body: some View {
     ZStack {
-      Color.Main.background.ignoresSafeArea()
+      UtilAsset.MainColor.background.swiftUIColor.ignoresSafeArea()
       LogoView()
       VStack {
         Spacer()
@@ -37,7 +37,7 @@ public struct OnboardingView: View, Injectable {
               .overlay {
                 Text("Dating App 시작하기")
                   .font(.system(size: 16, weight: .bold))
-                  .foregroundStyle(Color.Main.text)
+                  .foregroundStyle(UtilAsset.MainColor.text.swiftUIColor)
               }
           }
         )

@@ -18,6 +18,7 @@ func sourceTarget() -> Target {
     .appendDependenciess([
       .naviagationTransitions
     ])
+    .resources("Resources/**")
     .build()
 }
 

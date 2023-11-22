@@ -22,10 +22,10 @@ public struct LogoView: View {
       Image(systemName: "heart.fill")
         .resizable()
         .frame(width: 35, height: 30)
-        .foregroundStyle(Color.Main.accent)
+        .foregroundStyle(UtilAsset.MainColor.accent.swiftUIColor)
         .symbolEffect(.bounce, value: self.animate.wrappedValue)
       Text("Dating")
-        .foregroundStyle(Color.Main.text)
+        .foregroundStyle(UtilAsset.MainColor.text.swiftUIColor)
         .font(.system(size: 32, weight: .bold))
     }
   }

@@ -29,13 +29,13 @@ public struct LaunchView: View, Injectable {
 
   public var body: some View {
     ZStack {
-      Color.Main.background.ignoresSafeArea()
+      UtilAsset.MainColor.background.swiftUIColor.ignoresSafeArea()
       LogoView(animate: self.$animate)
       VStack {
         Spacer()
         Text(self.viewModel.state.bottomMessage)
           .font(.system(size: 16, weight: .bold))
-          .foregroundStyle(Color.Main.text)
+          .foregroundStyle(UtilAsset.MainColor.text.swiftUIColor)
         Spacer().frame(height: 16)
       }
     }

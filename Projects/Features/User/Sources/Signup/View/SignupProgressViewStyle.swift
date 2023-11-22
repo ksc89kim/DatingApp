@@ -30,7 +30,7 @@ struct SignupProgressViewStyle: ProgressViewStyle {
         .frame(width: geometry.size.width)
         .overlay(alignment: .leading) {
           RoundedRectangle(cornerRadius: self.height / 2)
-            .fill(Color.Main.background)
+            .fill(UtilAsset.MainColor.background.swiftUIColor)
             .frame(width: geometry.size.width * progress)
             .animation(.easeOut, value: self.isAnimation ? progress : 0 )
         }
@@ -59,7 +59,7 @@ struct SignupProgressAnimationViewStyle: ProgressViewStyle {
         .frame(width: geometry.size.width)
         .overlay(alignment: .leading) {
           RoundedRectangle(cornerRadius: self.height / 2)
-            .fill(Color.Main.background)
+            .fill(UtilAsset.MainColor.background.swiftUIColor)
             .frame(width: geometry.size.width * progress)
             .animation(.easeInOut, value: progress)
         }

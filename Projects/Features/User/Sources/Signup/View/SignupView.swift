@@ -69,7 +69,7 @@ public struct SignupView: View, Injectable {
         Image(systemName: "chevron.backward")
           .resizable()
           .frame(width: 10, height: 18)
-          .foregroundColor(Color.Main.background)
+          .foregroundColor(UtilAsset.MainColor.background.swiftUIColor)
       }
     )
   }
@@ -95,7 +95,7 @@ public struct SignupView: View, Injectable {
       label: {
         RoundedRectangle(cornerRadius: 12)
           .frame(maxWidth: .infinity, maxHeight: 48)
-          .foregroundColor(Color.Main.background)
+          .foregroundColor(UtilAsset.MainColor.background.swiftUIColor)
           .overlay {
             if self.viewModel.state.bottomButton.isLoading {
               ProgressView()
@@ -103,14 +103,14 @@ public struct SignupView: View, Injectable {
             } else {
               Text("다음")
                 .font(.system(size: 14, weight: .bold))
-                .foregroundStyle(Color.Main.text)
+                .foregroundStyle(UtilAsset.MainColor.text.swiftUIColor)
             }
           }
       }
     )
     .buttonStyle(PressedButtonStyle())
     .disabled(self.viewModel.state.bottomButton.isDisable)
-    .opacity(self.viewModel.state.bottomButton.isDisable ? 0.5 : 1.0)
+    .opacity(self.viewModel.state.bottomButton.isDisable ? 0.7 : 1.0)
     .padding(.vertical, 18)
   }
 

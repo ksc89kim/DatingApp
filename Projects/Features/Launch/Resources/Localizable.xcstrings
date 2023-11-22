@@ -2,10 +2,24 @@
   "sourceLanguage" : "ko",
   "strings" : {
     "재시도" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "retry"
+          }
+        }
+      }
     },
     "확인" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "confirm"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"
