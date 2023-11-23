@@ -145,7 +145,7 @@ final class LaunchViewModelTests: XCTestCase {
           title: "",
           message: "작업을 완료할 수 없습니다.(LaunchTesting.MockLaunchWorkerError 오류 0.)",
           primaryAction: .init(
-            title: LaunchViewModel.TextConstant.retry,
+            title: LaunchViewModel.TextConstant.retry.stringValue,
             type: .default,
             completion: nil
           ),
@@ -171,7 +171,7 @@ final class LaunchViewModelTests: XCTestCase {
           title: "",
           message: entity.message,
           primaryAction: .init(
-            title: LaunchViewModel.TextConstant.confirm,
+            title: .confirm,
             type: .openURL(url: entity.linkURL),
             completion: nil
           ),
