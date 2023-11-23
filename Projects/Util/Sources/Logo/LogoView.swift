@@ -28,6 +28,8 @@ public struct LogoView: View {
         .foregroundStyle(UtilAsset.MainColor.text.swiftUIColor)
         .systemScaledFont(style: .logo)
     }
+    .accessibilityElement(children: .combine)
+    .accessibilityLabel("로고 UI")
   }
 
   // MARK: - Init

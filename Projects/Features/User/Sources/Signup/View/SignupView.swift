@@ -53,6 +53,8 @@ public struct SignupView: View, Injectable {
           .padding(.vertical, 14)
       }
     )
+    .accessibilityLabel("뒤로 가기")
+    .accessibilitySortPriority(5)
   }
 
   @ViewBuilder
@@ -63,6 +65,8 @@ public struct SignupView: View, Injectable {
           isAnimation: self.viewModel.state.progress.isAnimation
         )
       )
+      .accessibilityLabel("가입 진행률")
+      .accessibilitySortPriority(4)
       .disabled(true)
       .padding(.bottom, 24)
   }
