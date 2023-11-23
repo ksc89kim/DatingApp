@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import AppStateInterface
 
 public struct Router: RouteType {
 
@@ -15,10 +14,16 @@ public struct Router: RouteType {
 
   public var main: [MainRoutePath]
 
+  public var chat: [ChatRoutePath]
+
   // MARK: - Init
 
-  public init(main: [MainRoutePath] = []) {
+  public init(
+    main: [MainRoutePath] = [],
+    chat: [ChatRoutePath] = []
+  ) {
     self.main = main
+    self.chat = chat
   }
 
   // MARK: - Method
@@ -31,6 +36,7 @@ public struct Router: RouteType {
     guard let key = key as? RouteKey else { return }
     switch key {
     case .main: self.main = paths.compactMap { route in route as? MainRoutePath }
+    case .chat: self.chat = paths.compactMap { route in route as? ChatRoutePath }
     }
   }
 
@@ -38,6 +44,7 @@ public struct Router: RouteType {
     guard let key = key as? RouteKey else { return }
     switch key {
     case .main: self.append(paths: &self.main, path: path as? MainRoutePath)
+    case .chat: self.append(paths: &self.chat, path: path as? ChatRoutePath)
     }
   }
 
@@ -45,6 +52,7 @@ public struct Router: RouteType {
     guard let key = key as? RouteKey else { return }
     switch key {
     case .main: self.remove(paths: &self.main, path: path as? MainRoutePath)
+    case .chat: self.remove(paths: &self.chat, path: path as? ChatRoutePath)
     }
   }
 
@@ -52,6 +60,7 @@ public struct Router: RouteType {
     guard let key = key as? RouteKey else { return }
     switch key {
     case .main: self.main.removeAll()
+    case .chat: self.chat.removeAll()
     }
   }
 }

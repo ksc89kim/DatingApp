@@ -15,16 +15,23 @@ struct MockRouter: RouteType {
 
   public var main: [MainRoutePath]
 
+  public var chat: [ChatRoutePath]
+
   public var mock: [MockRoutePath]
+
+  private var router: Router
 
   // MARK: - Init
 
   init(
     main: [MainRoutePath] = [],
+    chat: [ChatRoutePath] = [],
     mock: [MockRoutePath] = []
   ) {
     self.main = main
+    self.chat = chat
     self.mock = mock
+    self.router = .init(main: main, chat: chat)
   }
 
   // MARK: - Method
@@ -39,9 +46,8 @@ struct MockRouter: RouteType {
       case .mock: self.mock = paths.compactMap { route in route as? MockRoutePath }
       }
     } else if let routeKey = key as? RouteKey {
-      switch routeKey {
-      case .main: self.main = paths.compactMap { route in route as? MainRoutePath }
-      }
+      self.router.set(type: type, paths: paths, for: key)
+      self.syncFromRouter()
     }
   }
 
@@ -51,9 +57,8 @@ struct MockRouter: RouteType {
       case .mock: self.append(paths: &self.mock, path: path as? MockRoutePath)
       }
     } else if let routeKey = key as? RouteKey {
-      switch routeKey {
-      case .main: self.append(paths: &self.main, path: path as? MainRoutePath)
-      }
+      self.router.append(path: path, for: key)
+      self.syncFromRouter()
     }
   }
 
@@ -63,9 +68,8 @@ struct MockRouter: RouteType {
       case .mock: self.remove(paths: &self.mock, path: path as? MockRoutePath)
       }
     } else if let routeKey = key as? RouteKey {
-      switch routeKey {
-      case .main: self.remove(paths: &self.main, path: path as? MainRoutePath)
-      }
+      self.router.remove(path: path, for: key)
+      self.syncFromRouter()
     }
   }
 
@@ -75,9 +79,13 @@ struct MockRouter: RouteType {
       case .mock: self.mock.removeAll()
       }
     } else if let routeKey = key as? RouteKey {
-      switch routeKey {
-      case .main: self.main.removeAll()
-      }
+      self.router.removeAll(for: key)
+      self.syncFromRouter()
     }
+  }
+
+  private mutating func syncFromRouter() {
+    self.main = self.router.main
+    self.chat = self.router.chat
   }
 }

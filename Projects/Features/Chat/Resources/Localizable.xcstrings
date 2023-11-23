@@ -1,7 +1,12 @@
 {
   "sourceLanguage" : "ko",
   "strings" : {
+    "Chat List" : {
 
+    },
+    "Chat Room" : {
+
+    }
   },
   "version" : "1.0"
 }

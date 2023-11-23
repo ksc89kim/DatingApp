@@ -11,8 +11,6 @@ struct AppStateContentView: View {
     .routers
   ]
 
-  @EnvironmentObject var appState: AppState
-
   @State var router: MockRouter = .init()
 
   // MARK: - Body
@@ -47,11 +45,5 @@ struct AppStateContentView: View {
 
 
 #Preview {
-  DIContainer.register {
-    InjectItem(RouteInjectionKey.self) {
-      MockRouter()
-    }
-  }
-  return AppStateContentView()
-    .environmentObject(AppState.instance)
+  AppStateContentView()
 }

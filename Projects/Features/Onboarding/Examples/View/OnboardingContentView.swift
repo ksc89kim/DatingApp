@@ -38,15 +38,11 @@ struct OnboardingContentView: View {
   // MARK: - Init
 
   init() {
+    AppStateDIRegister.register()
+    
     DIContainer.register {
       InjectItem(OnboardingViewModelKey.self) {
         OnboardingViewModel()
-      }
-      InjectItem(AppStateKey.self) {
-        AppState.instance
-      }
-      InjectItem(RouteInjectionKey.self) {
-        EmptyRouter()
       }
     }
   }

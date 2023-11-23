@@ -10,7 +10,6 @@ import XCTest
 @testable import DI
 @testable import Onboarding
 @testable import AppStateInterface
-@testable import AppStateTesting
 
 final class OnboardingViewModelTests: XCTestCase {
 
@@ -19,14 +18,7 @@ final class OnboardingViewModelTests: XCTestCase {
   override func setUp() {
     super.setUp()
 
-    DIContainer.register {
-      InjectItem(AppStateKey.self) {
-        AppState.instance
-      }
-      InjectItem(RouteInjectionKey.self) {
-        MockRouter()
-      }
-    }
+    AppStateDIRegister.register()
   }
 
   /// 가입하기로 이동

@@ -40,12 +40,12 @@ struct UserContentView: View {
   // MARK: - Init
   
   init() {
+    AppStateDIRegister.register()
+
     DIContainer.register {
       InjectItem(LoginRepositoryTypeKey.self) { MockLoginRepository() }
       InjectItem(LoginKey.self) { Login(tokenManager: MockTokenManager()) }
       InjectItem(SignupRepositoryTypeKey.self) { MockSignupRepository() }
-      InjectItem(RouteInjectionKey.self) { EmptyRouter() }
-      InjectItem(AppStateKey.self) { AppState.instance }
       InjectItem(SignupViewModelKey.self) { 
         SignupViewModel(tokenManager: MockTokenManager())
       }
@@ -55,5 +55,5 @@ struct UserContentView: View {
 
 
 #Preview {
-  return UserContentView()
+  UserContentView()
 }

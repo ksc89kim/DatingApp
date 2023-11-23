@@ -15,7 +15,6 @@ import Combine
 @testable import VersionInterface
 @testable import DI
 @testable import AppStateInterface
-@testable import AppStateTesting
 
 final class LaunchViewModelTests: XCTestCase {
 
@@ -36,18 +35,17 @@ final class LaunchViewModelTests: XCTestCase {
     self.mockTokenManager = .init()
     self.error = nil
 
+    AppStateDIRegister.register()
+
+    AppState.instance.router.removeAll(for: RouteKey.main)
+    AppState.instance.router.removeAll(for: RouteKey.chat)
+
     DIContainer.register { [weak self] in
       InjectItem(LaunchWorkerBuilderKey.self) {
         var builder = MockLaunchWorkerBuilder()
         builder.error = self?.error
         return builder
       }
-      InjectItem(AppStateKey.self) {
-        AppState.instance.router.removeAll(for: RouteKey.main)
-        AppState.instance.router.removeAll(for: MockRouteKey.mock)
-        return AppState.instance
-      }
-      InjectItem(RouteInjectionKey.self) { MockRouter() }
     }
   }
 

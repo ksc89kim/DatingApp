@@ -30,7 +30,8 @@ func targets() -> [Target] {
       .feature(target: .version, type: .source),
       .feature(target: .user, type: .source),
       .feature(target: .onboarding, type: .source),
-      .feature(target: .main, type: .source)
+      .feature(target: .main, type: .source),
+      .feature(target: .chat, type: .source)
     ])
     .build()
   ]

@@ -7,8 +7,9 @@
 //
 
 import SwiftUI
-import Util
-import DI
+@testable import Util
+@testable import DI
+@testable import ChatInterface
 
 public struct MainView: View, Injectable {
 
@@ -24,7 +25,7 @@ public struct MainView: View, Injectable {
         .tabItem {
           Label("친구", systemImage: "heart")
         }
-      Text("Chat")
+      DIContainer.resolveView(for: ChatListViewKey.self)
         .tabItem {
           Label("채팅", systemImage: "message")
         }
@@ -43,5 +44,10 @@ public struct MainView: View, Injectable {
 
 
 #Preview {
-  MainView()
+  DIContainer.register {
+    InjectItem(ChatListViewKey.self) {
+      AnyView(Text("Chat List"))
+    }
+  }
+  return MainView()
 }

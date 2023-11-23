@@ -75,11 +75,11 @@ extension LaunchView: AlertBuildable {
 }
 
 #Preview {
+  AppStateDIRegister.register()
+  
   DIContainer.register {
     InjectItem(LaunchWorkerBuilderKey.self) { nil }
     InjectItem(LaunchViewModelKey.self) { LaunchViewModel(tokenManager: MockTokenManager()) }
-    InjectItem(RouteInjectionKey.self) { EmptyRouter() }
-    InjectItem(AppStateKey.self) { AppState.instance }
   }
   return LaunchView()
 }

@@ -13,9 +13,6 @@ func targets() -> [Target] {
         ],
         source: [
           .feature(target: .appState, type: .interface)
-        ],
-        examples: [
-          .feature(target: .appState, type: .testing)
         ]
       )
     )

@@ -1,11 +1,10 @@
 import SwiftUI
-@testable import Main
 
-struct MainContentView: View {
+struct ChatContentView: View {
 
   // MARK: - Property
 
-  let sections: [MainExampleSection] = [
+  let sections: [ChatExampleSection] = [
     .examples
   ]
 
@@ -23,9 +22,9 @@ struct MainContentView: View {
         }
       }
       .navigationTitle("데모")
-      .navigationDestination(for: MainExampleItem.self) { item in
+      .navigationDestination(for: ChatExampleItem.self) { item in
         switch item {
-        case .main: MainView()
+        case .demoExample: ChatDetailView(name: item.rawValue)
         }
       }
       .listStyle(.sidebar)
@@ -35,5 +34,5 @@ struct MainContentView: View {
 
 
 #Preview {
-  MainContentView()
+  ChatContentView()
 }

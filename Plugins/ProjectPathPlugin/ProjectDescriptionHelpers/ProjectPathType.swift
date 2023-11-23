@@ -24,6 +24,7 @@ public enum ProjectPathType {
 public extension ProjectPathType {
 
   enum Features: String {
+    case chat = "Chat"
     case main = "Main"
     case onboarding = "Onboarding"
     case user = "User"

@@ -13,7 +13,6 @@ import XCTest
 @testable import UserInterface
 @testable import UserTesting
 @testable import AppStateInterface
-@testable import AppStateTesting
 
 final class SignupViewModelTests: XCTestCase {
 
@@ -34,6 +33,8 @@ final class SignupViewModelTests: XCTestCase {
     self.signupError = nil
     self.loginError = nil
 
+    AppStateDIRegister.register()
+    
     DIContainer.register { [weak self] in
       InjectItem(LoginRepositoryTypeKey.self) {
         let repository = MockLoginRepository()
@@ -48,8 +49,6 @@ final class SignupViewModelTests: XCTestCase {
         repository.error = self?.signupError
         return repository
       }
-      InjectItem(RouteInjectionKey.self) { MockRouter() }
-      InjectItem(AppStateKey.self) { AppState.instance }
     }
   }
 

@@ -12,4 +12,5 @@ public protocol RouteKeyType {}
 
 public enum RouteKey: RouteKeyType {
   case main
+  case chat
 }

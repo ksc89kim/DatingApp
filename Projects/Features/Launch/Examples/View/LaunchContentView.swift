@@ -36,14 +36,13 @@ struct LaunchContentView: View {
   // MARK: - Init
 
   init() {
+    AppStateDIRegister.register()
     DIContainer.register {
       InjectItem(LaunchViewModelKey.self) {
         let viewModel = LaunchViewModel(tokenManager: MockTokenManager())
         viewModel.limitRetryCount = 3
         return viewModel
       }
-      InjectItem(AppStateKey.self) { AppState.instance }
-      InjectItem(RouteInjectionKey.self) { EmptyRouter() }
     }
   }
 

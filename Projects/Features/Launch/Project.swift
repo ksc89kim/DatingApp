@@ -13,9 +13,6 @@ func targets() -> [Target] {
           .feature(target: .version, type: .interface),
           .feature(target: .user, type: .interface),
           .feature(target: .onboarding, type: .interface)
-        ],
-        tests: [
-          .feature(target: .appState, type: .testing)
         ]
       )
     )

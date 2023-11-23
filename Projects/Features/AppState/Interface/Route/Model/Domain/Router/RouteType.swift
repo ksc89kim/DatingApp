@@ -11,7 +11,13 @@ import DI
 
 public protocol RouteType: Injectable {
 
+  // MARK: - Property
+
   var main: [MainRoutePath] { get set }
+
+  var chat: [ChatRoutePath] { get set }
+
+  // MARK: - Method
 
   mutating func set<Path: RoutePathType, Key: RouteKeyType>(
     type: Path.Type,

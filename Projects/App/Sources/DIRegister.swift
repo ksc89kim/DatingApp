@@ -21,6 +21,8 @@ import OnboardingInterface
 import Onboarding
 import MainInterface
 import Main
+import ChatInterface
+import Chat
 
 struct DIRegister {
 
@@ -31,13 +33,11 @@ struct DIRegister {
     self.registerForUser()
     self.registerOnboarding()
     self.registerMain()
+    self.registerChat()
   }
 
   private func registerForAppState() {
-    DIContainer.register {
-      InjectItem(RouteInjectionKey.self) { Router() }
-      InjectItem(AppStateKey.self) { AppState.instance }
-    }
+    AppStateDIRegister.register()
   }
 
   private func registerForLaunch() {
@@ -97,6 +97,12 @@ struct DIRegister {
   private func registerMain() {
     DIContainer.register {
       InjectItem(MainViewKey.self) { MainView() }
+    }
+  }
+
+  private func registerChat() {
+    DIContainer.register {
+      InjectItem(ChatListViewKey.self) { ChatListView() }
     }
   }
 }

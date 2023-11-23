@@ -3,8 +3,9 @@ import ProjectDescriptionHelpers
 import ProjectPathPlugin
 
 func targets() -> [Target] {
+
   return Target.features(
-    target: .onboarding,
+    target: .chat,
     types: .all,
     baseBuilder: .make(
       featuresDependencies: .init(
@@ -16,4 +17,4 @@ func targets() -> [Target] {
   )
 }
 
-let project: Project = .feature(type: .onboarding, targets: targets())
+let project: Project = .feature(type: .chat, targets: targets())
