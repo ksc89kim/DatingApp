@@ -25,17 +25,46 @@ public struct SignupView: View, Injectable {
   public var body: some View {
     VStack(alignment: .leading) {
       self.backButton
-      self.progressView
-      self.currentMainView
-      self.nextButton
+      VStack(alignment: .leading) {
+        self.progressView
+        self.currentMainView
+        self.nextButton
+      }
+      .padding(.horizontal, 18)
     }
-    .padding(.horizontal, 18)
     .alert(isPresented: self.$viewModel.state.isPresentAlert) {
       return self.buildAlert(self.viewModel.state.alert)
     }
     .onAppear {
       self.viewModel.trigger(.initUI)
     }
+  }
+
+  @ViewBuilder
+  private var backButton: some View {
+    Button(
+      action: { self.viewModel.trigger(.previous) },
+      label: {
+        Image(systemName: "chevron.backward")
+          .resizable()
+          .frame(width: 10, height: 18)
+          .foregroundColor(UtilAsset.MainColor.background.swiftUIColor)
+          .padding(.horizontal, 18)
+          .padding(.vertical, 14)
+      }
+    )
+  }
+
+  @ViewBuilder
+  private var progressView: some View {
+    ProgressView(value: self.viewModel.state.progress.value)
+      .progressViewStyle(
+        SignupProgressViewStyle(
+          isAnimation: self.viewModel.state.progress.isAnimation
+        )
+      )
+      .disabled(true)
+      .padding(.bottom, 24)
   }
 
   @ViewBuilder
@@ -59,31 +88,6 @@ public struct SignupView: View, Injectable {
     } else {
       Spacer()
     }
-  }
-
-  @ViewBuilder
-  private var backButton: some View {
-    Button(
-      action: { self.viewModel.trigger(.previous) },
-      label: {
-        Image(systemName: "chevron.backward")
-          .resizable()
-          .frame(width: 10, height: 18)
-          .foregroundColor(UtilAsset.MainColor.background.swiftUIColor)
-      }
-    )
-  }
-
-  @ViewBuilder
-  private var progressView: some View {
-    ProgressView(value: self.viewModel.state.progress.value)
-      .progressViewStyle(
-        SignupProgressViewStyle(
-          isAnimation: self.viewModel.state.progress.isAnimation
-        )
-      )
-      .padding(.top, 24)
-      .padding(.bottom, 34)
   }
 
   @ViewBuilder

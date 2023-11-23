@@ -73,7 +73,7 @@ public extension SystemFont {
       case .boldTitle: 22
       case .semiboldTitle: 22
       case .body: 17
-      case .placeHolder: 14
+      case .placeHolder: 12
       case .bottomButton: 14
       case .logo: 32
       }

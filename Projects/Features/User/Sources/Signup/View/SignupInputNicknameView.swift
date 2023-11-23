@@ -22,12 +22,12 @@ struct SignupInputNicknameView: View {
   var body: some View {
     VStack(alignment: .leading) {
       Text("닉네임을 만들어볼까요?")
-        .systemScaledFont(style: .boldTitle)
+        .systemScaledFont(font: .bold, size: 24)
         .padding(.bottom, 8)
       Text("프로필에 표시되는 이름으로, 언제든지 변경할 수 있어요.")
         .systemScaledFont(style: .placeHolder)
         .foregroundStyle(UtilAsset.MainColor.placeHolder.swiftUIColor)
-        .padding(.bottom, 34)
+        .padding(.bottom, 24)
       TextField(
         String(),
         text: self.$nickname.max(self.limitCount),
