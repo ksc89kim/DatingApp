@@ -12,6 +12,7 @@ import LaunchInterface
 import AppStateInterface
 import OnboardingInterface
 import UserInterface
+import MainInterface
 import Util
 
 struct ContentView: View {
@@ -24,23 +25,25 @@ struct ContentView: View {
 
   var body: some View {
     NavigationStack(path: self.$appState.router.main) {
-      Text("Main")
-        .navigationDestination(for: MainRoutePath.self) { path in
-          switch path {
-          case .launch: DIContainer.resolveView(
-            for: LaunchViewKey.self
-          )
-          .toolbar(.hidden, for: .navigationBar)
-          case .onboarding: DIContainer.resolveView(
-            for: OnboardingViewKey.self
-          )
-          .toolbar(.hidden, for: .navigationBar)
-          case .signup: DIContainer.resolveView(
-            for: SignupViewKey.self
-          )
-          .toolbar(.hidden, for: .navigationBar)
-          }
+      DIContainer.resolveView(
+        for: MainViewKey.self
+      )
+      .navigationDestination(for: MainRoutePath.self) { path in
+        switch path {
+        case .launch: DIContainer.resolveView(
+          for: LaunchViewKey.self
+        )
+        .toolbar(.hidden, for: .navigationBar)
+        case .onboarding: DIContainer.resolveView(
+          for: OnboardingViewKey.self
+        )
+        .toolbar(.hidden, for: .navigationBar)
+        case .signup: DIContainer.resolveView(
+          for: SignupViewKey.self
+        )
+        .toolbar(.hidden, for: .navigationBar)
         }
+      }
     }
     .navigationBarTitleDisplayMode(.inline)
     .navigationTransition(.fade(.cross))

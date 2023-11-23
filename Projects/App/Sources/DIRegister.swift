@@ -19,7 +19,8 @@ import UserInterface
 import User
 import OnboardingInterface
 import Onboarding
-
+import MainInterface
+import Main
 
 struct DIRegister {
 
@@ -29,6 +30,7 @@ struct DIRegister {
     self.registerForVersion()
     self.registerForUser()
     self.registerOnboarding()
+    self.registerMain()
   }
 
   private func registerForAppState() {
@@ -89,6 +91,12 @@ struct DIRegister {
     DIContainer.register {
       InjectItem(OnboardingViewModelKey.self) { OnboardingViewModel() }
       InjectItem(OnboardingViewKey.self) { OnboardingView() }
+    }
+  }
+
+  private func registerMain() {
+    DIContainer.register {
+      InjectItem(MainViewKey.self) { MainView() }
     }
   }
 }
