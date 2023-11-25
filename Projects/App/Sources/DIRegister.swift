@@ -102,7 +102,7 @@ struct DIRegister {
 
   private func registerChat() {
     DIContainer.register {
-      InjectItem(ChatListViewKey.self) { ChatListView() }
+      InjectItem(ChatHomeViewKey.self) { ChatHomeView() }
     }
   }
 }

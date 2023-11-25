@@ -9,6 +9,6 @@
 import DI
 import SwiftUI
 
-public enum ChatListViewKey: InjectionKey {
+public enum ChatHomeViewKey: InjectionKey {
   public typealias Value = View
 }

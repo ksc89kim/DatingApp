@@ -1,10 +1,19 @@
 {
   "sourceLanguage" : "ko",
   "strings" : {
-    "Chat List" : {
+    "Chat Room" : {
 
     },
-    "Chat Room" : {
+    "Click me to navigate" : {
+
+    },
+    "Kim" : {
+
+    },
+    "찜 목록" : {
+
+    },
+    "채팅" : {
 
     }
   },

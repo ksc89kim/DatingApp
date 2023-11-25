@@ -1,4 +1,6 @@
 import SwiftUI
+@testable import Chat
+@testable import AppStateInterface
 
 struct ChatContentView: View {
 
@@ -24,11 +26,17 @@ struct ChatContentView: View {
       .navigationTitle("데모")
       .navigationDestination(for: ChatExampleItem.self) { item in
         switch item {
-        case .demoExample: ChatDetailView(name: item.rawValue)
+        case .chatList: ChatListView()
         }
       }
       .listStyle(.sidebar)
     }
+  }
+
+  // MARK: - Property
+
+  init() {
+    AppStateDIRegister.register()
   }
 }
 

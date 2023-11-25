@@ -17,7 +17,7 @@ struct ChatExampleSection: Identifiable {
 extension ChatExampleSection {
 
   static let examples: ChatExampleSection = .init(
-    name: "예시1",
-    items: [.demoExample]
+    name: "채팅",
+    items: [.chatList]
   )
 }

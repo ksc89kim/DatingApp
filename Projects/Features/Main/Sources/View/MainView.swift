@@ -25,7 +25,7 @@ public struct MainView: View, Injectable {
         .tabItem {
           Label("친구", systemImage: "heart")
         }
-      DIContainer.resolveView(for: ChatListViewKey.self)
+      DIContainer.resolveView(for: ChatHomeViewKey.self)
         .tabItem {
           Label("채팅", systemImage: "message")
         }
@@ -45,7 +45,7 @@ public struct MainView: View, Injectable {
 
 #Preview {
   DIContainer.register {
-    InjectItem(ChatListViewKey.self) {
+    InjectItem(ChatHomeViewKey.self) {
       AnyView(Text("Chat List"))
     }
   }
