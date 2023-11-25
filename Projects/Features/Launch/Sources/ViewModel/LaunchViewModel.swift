@@ -156,9 +156,9 @@ public final class LaunchViewModel: ViewModelType, Injectable {
 
   @MainActor
   private func next() {
-    self.appState.router.remove(path: MainRoutePath.launch, for: RouteKey.main)
+    self.appState.router.remove(path: .launch)
     guard self.tokenManager?.accessToken() == nil else { return }
-    self.appState.router.append(path: MainRoutePath.onboarding, for: RouteKey.main)
+    self.appState.router.append(path: .onboarding)
   }
 
   @MainActor

@@ -16,8 +16,8 @@ public final class AppState: ObservableObject, Injectable {
   // MARK: - Property
 
   @Published 
-  public var router: RouteType = DIContainer.resolve(
-    for: RouteInjectionKey.self
+  public var router: Router = DIContainer.resolve(
+    for: RouterInjectionKey.self
   )
 
   public static let instance: AppState = .init()

@@ -24,7 +24,7 @@ struct ContentView: View {
   )
 
   var body: some View {
-    NavigationStack(path: self.$appState.router.main) {
+    NavigationStack(path: self.$appState.router.paths) {
       DIContainer.resolveView(
         for: MainViewKey.self
       )

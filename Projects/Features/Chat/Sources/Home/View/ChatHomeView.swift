@@ -13,24 +13,8 @@ import Util
 
 public struct ChatHomeView: View, Injectable {
 
-  // MARK: - Property
-
-  @StateObject var appState: AppState = DIContainer.resolve(
-    for: AppStateKey.self
-  )
-
   public var body: some View {
-    NavigationStack(path: self.$appState.router.chat) {
-      ChatListView()
-        .navigationDestination(for: ChatRoutePath.self) { path in
-          switch path {
-          case .chatRoom: Text("Chat Room")
-          }
-        }
-        .navigationTitle("채팅")
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar(.visible, for: .navigationBar)
-    }
+    ChatListView()
   }
 
   // MARK: - Init
@@ -39,6 +23,5 @@ public struct ChatHomeView: View, Injectable {
 }
 
 #Preview {
-  AppStateDIRegister.register()
   return ChatHomeView()
 }

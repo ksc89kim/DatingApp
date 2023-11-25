@@ -11,43 +11,49 @@ import DI
 
 public protocol RouteType: Injectable {
 
+  // MARK: - Define
+  
+  associatedtype Path: RoutePathType
+
   // MARK: - Property
 
-  var main: [MainRoutePath] { get set }
-
-  var chat: [ChatRoutePath] { get set }
-
-  // MARK: - Method
-
-  mutating func set<Path: RoutePathType, Key: RouteKeyType>(
-    type: Path.Type,
-    paths: [Path],
-    for key: Key
-  )
-
-  mutating func append<Path: RoutePathType, Key: RouteKeyType>(path: Path, for key: Key)
-
-  mutating func remove<Path: RoutePathType, Key: RouteKeyType>(path: Path, for key: Key)
-
-  mutating func removeAll<Key: RouteKeyType>(for key: Key)
+  var paths: [Path] { get set }
 }
 
 
-public extension RouteType {
+// MARK: - Extension RouteType
 
-  func append<T: RoutePathType>(
-    paths: inout [T],
-    path: T?
-  ) {
-    guard let path = path else { return }
-    paths.append(path)
+public extension RouteType {
+  
+  var count: Int {
+    return self.paths.count
   }
 
-  func remove<T: RoutePathType>(
-    paths: inout [T],
-    path: T?
-  ) {
-    guard let path = path else { return }
-    paths.removeAll { router in router == path }
+  var first: Path? {
+    return self.paths.first
+  }
+
+  var isEmpty: Bool {
+    return self.paths.isEmpty
+  }
+
+  mutating func set(paths: [Path]) {
+    self.paths = paths
+  }
+
+  mutating func append(path: Path) {
+    self.paths.append(path)
+  }
+
+  mutating func remove(path: Path) {
+    self.paths.removeAll { route in route == path }
+  }
+
+  mutating func removeAll() {
+    self.paths.removeAll()
+  }
+
+  mutating func popLast() -> Path? {
+    return self.paths.popLast()
   }
 }

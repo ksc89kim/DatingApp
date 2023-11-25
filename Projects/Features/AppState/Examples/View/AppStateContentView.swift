@@ -11,18 +11,19 @@ struct AppStateContentView: View {
     .routers
   ]
 
-  @State var router: MockRouter = .init()
+  @State
+  var router: MockRouter = .init()
 
   // MARK: - Body
 
   var body: some View {
-    NavigationStack(path: self.$router.mock) {
+    NavigationStack(path: self.$router.paths) {
       List {
         ForEach(self.sections) { section in
           Section(section.name) {
             ForEach(section.items) { item in
               Button(item.title) {
-                self.router.mock = item.paths
+                self.router.set(paths: item.paths)
               }
             }
           }

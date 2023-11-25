@@ -14,6 +14,6 @@ public enum AppStateKey: InjectionKey {
 }
 
 
-public enum RouteInjectionKey: InjectionKey {
-  public typealias Value = RouteType?
+public enum RouterInjectionKey: InjectionKey {
+  public typealias Value = Router?
 }

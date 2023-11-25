@@ -169,32 +169,24 @@ final class SignupViewModelTests: XCTestCase {
       ],
       tokenManager: self.mockTokenManager
     )
-    AppState.instance.router.set(
-      type: MainRoutePath.self,
-      paths: [.onboarding, .signup],
-      for: RouteKey.main
-    )
+    AppState.instance.router.set(paths: [.onboarding, .signup])
 
     await viewModel.trigger(.previous)
 
-    XCTAssertEqual(AppState.instance.router.main.count, 1)
-    XCTAssertEqual(AppState.instance.router.main.first, .onboarding)
+    XCTAssertEqual(AppState.instance.router.count, 1)
+    XCTAssertEqual(AppState.instance.router.first, .onboarding)
   }
 
   /// 가입하기
   func testSignup() async {
     let viewModel = SignupViewModel(tokenManager: self.mockTokenManager)
-    AppState.instance.router.set(
-      type: MainRoutePath.self,
-      paths: [.onboarding, .signup],
-      for: RouteKey.main
-    )
+    AppState.instance.router.set(paths: [.onboarding, .signup])
 
     await viewModel.trigger(.next)
 
     XCTAssertTrue(viewModel.state.successSignup)
     XCTAssertEqual(self.mockTokenManager.accessToken(), MockLoginRepository.testToken)
-    XCTAssertTrue(AppState.instance.router.main.isEmpty)
+    XCTAssertTrue(AppState.instance.router.isEmpty)
   }
 
   /// 가입 통신 에러 알럿 테스트
