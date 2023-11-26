@@ -15,9 +15,14 @@ public final class AppState: ObservableObject, Injectable {
 
   // MARK: - Property
 
-  @Published 
+  @Published
   public var entranceRouter: EntranceRouter = DIContainer.resolve(
-    for: RouterInjectionKey.self
+    for: EntranceRouteKey.self
+  )
+
+  @Published
+  public var chatRouter: ChatRouter = DIContainer.resolve(
+    for: ChatRouteKey.self
   )
 
   public static let instance: AppState = .init()

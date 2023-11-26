@@ -15,10 +15,9 @@ public struct AppStateDIRegister {
   
   public static func register() {
     DIContainer.register {
-      InjectItem(AppStateKey.self) {
-        AppState.instance
-      }
-      InjectItem(RouterInjectionKey.self) { EntranceRouter() }
+      InjectItem(AppStateKey.self) { AppState.instance }
+      InjectItem(EntranceRouteKey.self) { EntranceRouter() }
+      InjectItem(ChatRouteKey.self) { ChatRouter() }
     }
   }
 }

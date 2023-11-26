@@ -14,6 +14,11 @@ public enum AppStateKey: InjectionKey {
 }
 
 
-public enum RouterInjectionKey: InjectionKey {
-  public typealias Value = EntranceRouter?
+public enum EntranceRouteKey: InjectionKey {
+  public typealias Value = EntranceRouter
+}
+
+
+public enum ChatRouteKey: InjectionKey {
+  public typealias Value = ChatRouter
 }

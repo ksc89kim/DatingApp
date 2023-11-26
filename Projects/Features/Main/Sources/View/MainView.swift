@@ -15,8 +15,6 @@ public struct MainView: View, Injectable {
 
   // MARK: - Property
 
-  @State var isAnimation: Bool = false
-
   public var body: some View {
     TabView {
       Text("Home")
@@ -36,9 +34,13 @@ public struct MainView: View, Injectable {
           Label("MY", systemImage: "person")
         }
     }
-    .frame(maxWidth: .infinity, maxHeight: .infinity)
     .tint(UtilAsset.MainColor.background.swiftUIColor)
     .transition(.opacity.animation(.easeInOut(duration: 0.2)))
+    .onAppear {
+      UITabBar.appearance().shadowImage = UIImage()
+      UITabBar.appearance().backgroundImage = UIImage()
+      UITabBar.appearance().backgroundColor = UIColor.white
+    }
   }
 
   // MARK: - Init
