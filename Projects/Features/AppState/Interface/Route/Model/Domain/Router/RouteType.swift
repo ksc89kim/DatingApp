@@ -8,6 +8,7 @@
 
 import Foundation
 import DI
+import Util
 
 public protocol RouteType: Injectable {
 
@@ -18,6 +19,8 @@ public protocol RouteType: Injectable {
   // MARK: - Property
 
   var paths: [Path] { get set }
+
+  var navigationTransition: NavigationTransition { get set }
 }
 
 

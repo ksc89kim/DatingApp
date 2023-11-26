@@ -133,7 +133,7 @@ public final class SignupViewModel: ViewModelType, Injectable {
 
   @MainActor
   private func removePopFromSuperView() {
-    _ = self.appState.router.popLast()
+    _ = self.appState.entranceRouter.popLast()
   }
 
   @MainActor
@@ -200,9 +200,9 @@ public final class SignupViewModel: ViewModelType, Injectable {
 
   @MainActor
   private func successSignup() {
-    self.appState.router.removeAll()
     self.endLoading()
     self.state.successSignup = true
+    self.appState.entranceRouter.goMain()
   }
 
   @MainActor

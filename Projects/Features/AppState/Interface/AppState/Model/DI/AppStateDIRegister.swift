@@ -18,7 +18,7 @@ public struct AppStateDIRegister {
       InjectItem(AppStateKey.self) {
         AppState.instance
       }
-      InjectItem(RouterInjectionKey.self) { Router() }
+      InjectItem(RouterInjectionKey.self) { EntranceRouter() }
     }
   }
 }

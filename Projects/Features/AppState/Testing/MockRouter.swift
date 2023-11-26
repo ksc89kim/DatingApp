@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Util
 import AppStateInterface
 
 struct MockRouter: RouteType {
@@ -15,9 +16,15 @@ struct MockRouter: RouteType {
 
   var paths: [MockRoutePath]
 
+  var navigationTransition: NavigationTransition
+
   // MARK: - Init
 
-  init(paths: [MockRoutePath] = []) {
+  init(
+    paths: [MockRoutePath] = [],
+    navigationTransition: NavigationTransition = .default
+  ) {
     self.paths = paths
+    self.navigationTransition = navigationTransition
   }
 }

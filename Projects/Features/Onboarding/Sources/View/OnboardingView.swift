@@ -9,12 +9,19 @@
 import SwiftUI
 import Util
 import DI
+import AppStateInterface
 import OnboardingInterface
 
 public struct OnboardingView: View, Injectable {
 
-  @StateObject private var viewModel: OnboardingViewModel = DIContainer.resolve(
+  @StateObject 
+  private var viewModel: OnboardingViewModel = DIContainer.resolve(
     for: OnboardingViewModelKey.self
+  )
+
+  @StateObject 
+  var appState: AppState = DIContainer.resolve(
+    for: AppStateKey.self
   )
 
   // MARK: - Property
@@ -31,6 +38,7 @@ public struct OnboardingView: View, Injectable {
             Text("Dating App 시작하기")
               .systemScaledFont(style: .bottomButton)
               .lineLimit(2)
+              .background(UtilAsset.MainColor.background.swiftUIColor)
               .foregroundStyle(UtilAsset.MainColor.text.swiftUIColor)
               .padding(.vertical, 18)
               .frame(maxWidth: .infinity)
@@ -45,6 +53,9 @@ public struct OnboardingView: View, Injectable {
         Spacer()
           .frame(height: 32)
       }
+      .onAppear {
+        self.appState.entranceRouter.navigationTransition = .slide
+      }
     }
   }
 
@@ -55,6 +66,7 @@ public struct OnboardingView: View, Injectable {
 
 
 #Preview {
+  AppStateDIRegister.register()
   DIContainer.register {
     InjectItem(OnboardingViewModelKey.self) {
       OnboardingViewModel()

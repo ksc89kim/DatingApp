@@ -156,9 +156,12 @@ public final class LaunchViewModel: ViewModelType, Injectable {
 
   @MainActor
   private func next() {
-    self.appState.router.remove(path: .launch)
-    guard self.tokenManager?.accessToken() == nil else { return }
-    self.appState.router.append(path: .onboarding)
+    guard self.tokenManager?.accessToken() == nil else {
+      self.appState.entranceRouter.goMain()
+      return
+    }
+    self.appState.entranceRouter.remove(path: .launch)
+    self.appState.entranceRouter.append(path: .onboarding)
   }
 
   @MainActor

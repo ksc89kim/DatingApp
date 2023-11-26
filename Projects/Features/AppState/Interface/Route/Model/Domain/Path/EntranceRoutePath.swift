@@ -1,5 +1,5 @@
 //
-//  MainRoutePath.swift
+//  EntranceRoutePath.swift
 //  AppState
 //
 //  Created by kim sunchul on 2023/10/03.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-public enum MainRoutePath: RoutePathType {
+public enum EntranceRoutePath: RoutePathType {
   case launch
   case onboarding
   case signup

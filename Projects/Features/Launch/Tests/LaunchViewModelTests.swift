@@ -37,7 +37,7 @@ final class LaunchViewModelTests: XCTestCase {
 
     AppStateDIRegister.register()
 
-    AppState.instance.router.removeAll()
+    AppState.instance.entranceRouter.removeAll()
     
     DIContainer.register { [weak self] in
       InjectItem(LaunchWorkerBuilderKey.self) {
@@ -198,7 +198,7 @@ final class LaunchViewModelTests: XCTestCase {
     await viewModel.trigger(.buildForWorker)
     await viewModel.trigger(.run)
     
-    XCTAssertTrue(state.router.isEmpty)
+    XCTAssertTrue(state.entranceRouter.isEmpty)
   }
 
   /// 온보딩 화면으로 이동
@@ -209,7 +209,7 @@ final class LaunchViewModelTests: XCTestCase {
     await viewModel.trigger(.buildForWorker)
     await viewModel.trigger(.run)
 
-    XCTAssertFalse(state.router.isEmpty)
-    XCTAssertEqual(state.router.first, .onboarding)
+    XCTAssertFalse(state.entranceRouter.isEmpty)
+    XCTAssertEqual(state.entranceRouter.first, .onboarding)
   }
 }

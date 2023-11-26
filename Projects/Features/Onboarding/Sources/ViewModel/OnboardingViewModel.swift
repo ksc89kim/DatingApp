@@ -34,6 +34,6 @@ public final class OnboardingViewModel: ViewModelType, Injectable {
   }
 
   private func presentSignup() {
-    self.appState.router.append(path: .signup)
+    self.appState.entranceRouter.append(path: .signup)
   }
 }

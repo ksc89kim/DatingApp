@@ -9,14 +9,14 @@
 import Foundation
 import DI
 import UserInterface
-
+import Util
 
 public final class AppState: ObservableObject, Injectable {
 
   // MARK: - Property
 
   @Published 
-  public var router: Router = DIContainer.resolve(
+  public var entranceRouter: EntranceRouter = DIContainer.resolve(
     for: RouterInjectionKey.self
   )
 

@@ -27,7 +27,7 @@ final class OnboardingViewModelTests: XCTestCase {
 
     viewModel.trigger(.presentSignup)
 
-    XCTAssertEqual(AppState.instance.router.count, 1)
-    XCTAssertEqual(AppState.instance.router.first, .signup)
+    XCTAssertEqual(AppState.instance.entranceRouter.count, 1)
+    XCTAssertEqual(AppState.instance.entranceRouter.first, .signup)
   }
 }

@@ -18,6 +18,6 @@ struct AppEnvironment {
     let diRegister: DIRegister = .init()
     diRegister.register()
 
-    AppState.instance.router.append(path: .launch)
+    AppState.instance.entranceRouter.set(paths: [.launch])
   }
 }
