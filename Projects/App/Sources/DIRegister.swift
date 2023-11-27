@@ -29,10 +29,10 @@ struct DIRegister {
   func register() {
     AppStateDIRegister.register()
     LaunchDIRegister.register()
+    MainDIRegister.register()
     self.registerForVersion()
     self.registerForUser()
     self.registerOnboarding()
-    self.registerMain()
     self.registerChat()
   }
 
@@ -78,12 +78,6 @@ struct DIRegister {
     DIContainer.register {
       InjectItem(OnboardingViewModelKey.self) { OnboardingViewModel() }
       InjectItem(OnboardingViewKey.self) { OnboardingView() }
-    }
-  }
-
-  private func registerMain() {
-    DIContainer.register {
-      InjectItem(MainViewKey.self) { MainView() }
     }
   }
 

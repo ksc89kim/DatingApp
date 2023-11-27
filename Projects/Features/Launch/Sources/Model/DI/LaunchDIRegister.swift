@@ -13,6 +13,8 @@ import Core
 
 public struct LaunchDIRegister {
 
+  // MARK: - Method
+  
   public static func register() {
     DIContainer.register {
       InjectItem(LaunchViewModelKey.self) {  
