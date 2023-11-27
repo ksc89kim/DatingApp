@@ -18,7 +18,7 @@ public final class VersionRepository: VersionRepositoryType {
 
   // MARK: - Init
 
-  public init(networking: Networking<VersionAPI>) {
+  init(networking: Networking<VersionAPI>) {
     self.networking = networking
   }
 

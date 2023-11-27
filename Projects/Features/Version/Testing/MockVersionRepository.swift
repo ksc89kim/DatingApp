@@ -18,7 +18,7 @@ final class MockVersionRepository: VersionRepositoryType {
 
   // MARK: - Method
 
-  func checkVersion() async throws -> VersionInterface.CheckVersionEntity? {
+  func checkVersion() async throws -> CheckVersionEntity? {
     return .init(
       isForceUpdate: self.isForceUpdate,
       message: "업데이트가 필요합니다.",

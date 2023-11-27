@@ -9,39 +9,39 @@
 import Core
 import Foundation
 
-public enum VersionAPI {
+enum VersionAPI {
   case checkVersion
 }
 
 
 extension VersionAPI: NetworkTargetType {
 
-  public var method: Core.NetworkMethod {
+  var method: Core.NetworkMethod {
     return .get
   }
 
-  public var baseURL: URL {
+  var baseURL: URL {
     return .init(string: API.EndPoint.baseURL + "/version")!
   }
 
-  public var path: String {
+  var path: String {
     switch self {
     case .checkVersion: return "/check"
     }
   }
 
-  public var headers: [String: String]? {
+  var headers: [String: String]? {
     return API.baseHeaders
   }
 
-  public var task: Core.NetworkTask {
+  var task: Core.NetworkTask {
     return .requestParameters(
       parameters: [:],
       encoding: URLEncoding.default
     )
   }
 
-  public var sampleData: Data {
+  var sampleData: Data {
     return """
     {
       "code": 201,

@@ -28,10 +28,6 @@ public final class CheckVersionLaunchWorker: LaunchWorkable, Injectable {
   @Inject(VersionRepositoryTypeKey.self)
   private var repository: VersionRepositoryType
 
-  // MARK: - Init
-
-  public init() {}
-
   // MARK: - Method
 
   public func work() async throws {

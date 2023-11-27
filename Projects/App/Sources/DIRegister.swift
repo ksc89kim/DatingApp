@@ -31,21 +31,9 @@ struct DIRegister {
     LaunchDIRegister.register()
     MainDIRegister.register()
     OnboardingDIRegister.register()
-    self.registerForVersion()
+    VersionDIRegister.register()
     self.registerForUser()
     self.registerChat()
-  }
-
-  private func registerForVersion() {
-    DIContainer.register {
-      InjectItem(VersionRepositoryTypeKey.self) {
-        let repository = VersionRepository(
-          networking: .init(stubClosure: Networking<VersionAPI>.immediatelyStub)
-        )
-        return repository
-      }
-      InjectItem(CheckVersionLaunchWorkerKey.self) { CheckVersionLaunchWorker() }
-    }
   }
 
   private func registerForUser() {
