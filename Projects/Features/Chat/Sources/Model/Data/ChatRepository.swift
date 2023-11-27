@@ -18,7 +18,7 @@ final class ChatRepository: ChatRepositoryType {
 
   // MARK: - Init
 
-  public init(networking: Networking<ChatAPI>) {
+  init(networking: Networking<ChatAPI>) {
     self.networking = networking
   }
 

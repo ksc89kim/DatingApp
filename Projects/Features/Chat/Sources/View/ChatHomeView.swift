@@ -10,14 +10,14 @@ import SwiftUI
 import DI
 import AppStateInterface
 
-public struct ChatHomeView: View, Injectable {
+struct ChatHomeView: View, Injectable {
 
   @StateObject
   private var appState: AppState = DIContainer.resolve(
     for: AppStateKey.self
   )
 
-  public var body: some View {
+  var body: some View {
     NavigationStack(path: self.$appState.chatRouter.paths) {
       ChatListView()
         .navigationDestination(for: ChatRoutePath.self) { path in
@@ -28,11 +28,8 @@ public struct ChatHomeView: View, Injectable {
         .navigationTitle("채팅")
     }
   }
-
-  // MARK: - Init
-
-  public init() { }
 }
+
 
 #Preview {
   AppStateDIRegister.register()

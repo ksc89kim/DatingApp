@@ -8,6 +8,6 @@
 
 import Foundation
 
-public enum ChatListAction {
-  
+enum ChatListAction {
+
 }

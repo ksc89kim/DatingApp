@@ -9,7 +9,7 @@
 import Foundation
 import Core
 
-public enum ChatAPI {
+enum ChatAPI {
   case chatList
   case chosenList
 }
@@ -17,40 +17,40 @@ public enum ChatAPI {
 
 extension ChatAPI: NetworkTargetType {
 
-  public var method: Core.NetworkMethod {
+  var method: Core.NetworkMethod {
     return .get
   }
 
-  public var baseURL: URL {
+  var baseURL: URL {
     return .init(string: API.EndPoint.baseURL + "/chat")!
   }
 
-  public var path: String {
+  var path: String {
     switch self {
     case .chatList: return "/chat_list"
     case .chosenList: return "/chosen_list"
     }
   }
 
-  public var headers: [String: String]? {
+  var headers: [String: String]? {
     return API.baseHeaders
   }
 
-  public var parameters: [String: Any] {
+  var parameters: [String: Any] {
     switch self {
     case .chatList: return [:]
     case .chosenList: return [:]
     }
   }
 
-  public var task: Core.NetworkTask {
+  var task: Core.NetworkTask {
     return .requestParameters(
       parameters: self.parameters,
       encoding: URLEncoding.default
     )
   }
 
-  public var sampleData: Data {
+  var sampleData: Data {
     switch self {
     case .chatList: return self.chatListSampleData
     case .chosenList: return self.chosenListSampleData

@@ -9,19 +9,12 @@
 import Foundation
 import Core
 import DI
-import LaunchInterface
 import Launch
-import VersionInterface
 import Version
 import AppStateInterface
-import AppState
-import UserInterface
 import User
-import OnboardingInterface
 import Onboarding
-import MainInterface
 import Main
-import ChatInterface
 import Chat
 
 struct DIRegister {
@@ -33,12 +26,6 @@ struct DIRegister {
     OnboardingDIRegister.register()
     VersionDIRegister.register()
     UserDIRegister.register()
-    self.registerChat()
-  }
-
-  private func registerChat() {
-    DIContainer.register {
-      InjectItem(ChatHomeViewKey.self) { ChatHomeView() }
-    }
+    ChatDIRegister.register()
   }
 }

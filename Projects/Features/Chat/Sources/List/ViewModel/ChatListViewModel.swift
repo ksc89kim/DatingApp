@@ -10,14 +10,14 @@ import Foundation
 import Core
 import DI
 
-public final class ChatListViewModel: ViewModelType, Injectable {
+final class ChatListViewModel: ViewModelType, Injectable {
 
   // MARK: - Property
 
   @Published
-  public var state: ChatListState = .init()
+  var state: ChatListState = .init()
 
   // MARK: - Method
 
-  public func trigger(_ action: ChatListAction) { }
+  func trigger(_ action: ChatListAction) { }
 }
