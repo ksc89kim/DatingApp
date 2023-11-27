@@ -10,7 +10,7 @@ import Foundation
 import VersionInterface
 import Core
 
-public final class VersionRepository: VersionRepositoryType {
+final class VersionRepository: VersionRepositoryType {
 
   // MARK: - Property
 
@@ -24,7 +24,7 @@ public final class VersionRepository: VersionRepositoryType {
 
   // MARK: - Method
 
-  public func checkVersion() async throws -> CheckVersionEntity? {
+  func checkVersion() async throws -> CheckVersionEntity? {
     let response = try await self.networking.request(
       CheckVersionResponse.self,
       target: .checkVersion

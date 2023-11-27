@@ -11,26 +11,26 @@ import LaunchInterface
 import VersionInterface
 import DI
 
-public final class CheckVersionLaunchWorker: LaunchWorkable, Injectable {
+final class CheckVersionLaunchWorker: LaunchWorkable, Injectable {
 
   // MARK: - Property
 
-  public weak var parent: LaunchWorkable?
+  weak var parent: LaunchWorkable?
 
-  public var items: [LaunchWorkable] = []
+  var items: [LaunchWorkable] = []
 
-  public var state: LaunchWorkerState = .ready
+  var state: LaunchWorkerState = .ready
 
-  public var sender: LaunchSendable?
+  var sender: LaunchSendable?
 
-  public var completionSender: LaunchCompletionSender?
+  var completionSender: LaunchCompletionSender?
 
   @Inject(VersionRepositoryTypeKey.self)
   private var repository: VersionRepositoryType
 
   // MARK: - Method
 
-  public func work() async throws {
+  func work() async throws {
     let entity = try await self.repository.checkVersion()
     guard let entity = entity else {
       throw CheckVersionLaunchWorkError.emptyEntity
