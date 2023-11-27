@@ -27,7 +27,6 @@ public struct ChatHomeView: View, Injectable {
         }
         .navigationTitle("채팅")
     }
-
   }
 
   // MARK: - Init
