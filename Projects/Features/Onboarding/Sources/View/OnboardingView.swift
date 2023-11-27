@@ -38,10 +38,10 @@ struct OnboardingView: View, Injectable {
             Text("Dating App 시작하기")
               .systemScaledFont(style: .bottomButton)
               .lineLimit(2)
-              .background(UtilAsset.MainColor.background.swiftUIColor)
               .foregroundStyle(UtilAsset.MainColor.text.swiftUIColor)
               .padding(.vertical, 18)
               .frame(maxWidth: .infinity)
+              .background(UtilAsset.MainColor.background.swiftUIColor)
               .overlay {
                 RoundedRectangle(cornerRadius: 8)
                   .stroke(Color.white)
