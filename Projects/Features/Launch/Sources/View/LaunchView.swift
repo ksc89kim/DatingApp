@@ -59,10 +59,6 @@ public struct LaunchView: View, Injectable {
       }
     }
   }
-
-  // MARK: - Init
-
-  public init() { }
 }
 
 
@@ -73,6 +69,7 @@ extension LaunchView: AlertBuildable {
     self.openURL(url)
   }
 }
+
 
 #Preview {
   AppStateDIRegister.register()

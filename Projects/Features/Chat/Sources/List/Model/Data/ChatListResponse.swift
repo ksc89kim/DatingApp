@@ -22,9 +22,7 @@ struct ChatListResponse: Codable {
   // MARK: - Method
 
   func toEntity() -> ChatListEntity {
-    let messages = self.messages.map { (
-      response:  ChatListMessageResponse
-    ) -> ChatListMessageEntity in
+    let messages = self.messages.map { (response: ChatListMessageResponse) -> ChatListMessageEntity in
       return response.toEntity()
     }
     return .init(

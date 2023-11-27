@@ -14,11 +14,6 @@ import UserInterface
 
 public struct LaunchWorkerBuilder: LaunchWorkerBuildable {
 
-  // MARK: - Init
-
-  public init() {
-  }
-
   // MARK: - Method
   
   public func build() async -> LaunchWorkable {

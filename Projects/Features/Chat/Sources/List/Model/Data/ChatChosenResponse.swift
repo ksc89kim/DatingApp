@@ -20,9 +20,7 @@ struct ChatChosenResponse: Codable {
   // MARK: - Method
 
   func toEntity() -> ChatChosenEntity {
-    let users = self.users.map { (
-      user: ChatChosenUserResponse
-    ) -> ChatChosenUserEntity in
+    let users = self.users.map { (user: ChatChosenUserResponse) -> ChatChosenUserEntity in
       return user.toEntity()
     }
 

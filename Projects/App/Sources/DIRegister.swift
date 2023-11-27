@@ -27,26 +27,13 @@ import Chat
 struct DIRegister {
 
   func register() {
-    self.registerForAppState()
-    self.registerForLaunch()
+    AppStateDIRegister.register()
+    LaunchDIRegister.register()
     self.registerForVersion()
     self.registerForUser()
     self.registerOnboarding()
     self.registerMain()
     self.registerChat()
-  }
-
-  private func registerForAppState() {
-    AppStateDIRegister.register()
-  }
-
-  private func registerForLaunch() {
-    DIContainer.register {
-      InjectItem(LaunchViewModelKey.self) {  LaunchViewModel(tokenManager: TokenManager())
-      }
-      InjectItem(LaunchWorkerBuilderKey.self) { LaunchWorkerBuilder() }
-      InjectItem(LaunchViewKey.self) { LaunchView() }
-    }
   }
 
   private func registerForVersion() {

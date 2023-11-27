@@ -13,7 +13,6 @@ import AppStateInterface
 import Core
 import Util
 import DI
-import SwiftUI
 
 public final class LaunchViewModel: ViewModelType, Injectable {
 
@@ -58,7 +57,7 @@ public final class LaunchViewModel: ViewModelType, Injectable {
 
   // MARK: - Init
   
-  public init(tokenManager: TokenManagerType) {
+  init(tokenManager: TokenManagerType) {
     self.tokenManager = tokenManager
   }
 
