@@ -11,11 +11,11 @@ import SwiftUI
 @testable import DI
 @testable import ChatInterface
 
-public struct MainView: View, Injectable {
+struct MainView: View, Injectable {
 
   // MARK: - Property
 
-  public var body: some View {
+  var body: some View {
     TabView {
       Text("Home")
         .tabItem {
@@ -42,10 +42,6 @@ public struct MainView: View, Injectable {
       UITabBar.appearance().backgroundColor = UIColor.white
     }
   }
-
-  // MARK: - Init
-
-  public init() { }
 }
 
 
