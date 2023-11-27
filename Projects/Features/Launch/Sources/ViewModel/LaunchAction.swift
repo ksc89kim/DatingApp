@@ -8,7 +8,7 @@
 
 import Foundation
 
-public enum LaunchAction {
+enum LaunchAction {
   case run
   case runAfterBuildForWoker
   case buildForWorker

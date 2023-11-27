@@ -13,7 +13,7 @@ import Core
 import LaunchInterface
 import AppStateInterface
 
-public struct LaunchView: View, Injectable {
+struct LaunchView: View, Injectable {
 
   // MARK: - Property
 
@@ -27,7 +27,7 @@ public struct LaunchView: View, Injectable {
 
   @State private var animate = false
 
-  public var body: some View {
+  var body: some View {
     ZStack {
       UtilAsset.MainColor.background.swiftUIColor.ignoresSafeArea()
       LogoView(animate: self.$animate)
@@ -64,7 +64,7 @@ public struct LaunchView: View, Injectable {
 
 extension LaunchView: AlertBuildable {
 
-  public func openURL(url: URL?) {
+  func openURL(url: URL?) {
     guard let url = url else { return }
     self.openURL(url)
   }

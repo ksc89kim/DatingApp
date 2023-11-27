@@ -9,7 +9,7 @@
 import Foundation
 import Util
 
-public struct LaunchState {
+struct LaunchState {
 
   // MARK: - Property
 

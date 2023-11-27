@@ -12,11 +12,11 @@ import LaunchInterface
 import VersionInterface
 import UserInterface
 
-public struct LaunchWorkerBuilder: LaunchWorkerBuildable {
+struct LaunchWorkerBuilder: LaunchWorkerBuildable {
 
   // MARK: - Method
   
-  public func build() async -> LaunchWorkable {
+  func build() async -> LaunchWorkable {
     let rootWorker: LaunchWorkable = LaunchRootWorker()
 
     let delayTimerWorker: LaunchDelayWorker = .init(delayTime: 1.0)

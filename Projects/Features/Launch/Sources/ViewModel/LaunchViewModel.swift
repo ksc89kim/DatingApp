@@ -14,7 +14,7 @@ import Core
 import Util
 import DI
 
-public final class LaunchViewModel: ViewModelType, Injectable {
+final class LaunchViewModel: ViewModelType, Injectable {
 
   // MARK: - Define
 
@@ -32,7 +32,7 @@ public final class LaunchViewModel: ViewModelType, Injectable {
   // MARK: - Property
 
   @Published
-  public var state: LaunchState = .init()
+  var state: LaunchState = .init()
 
   @Inject(LaunchWorkerBuilderKey.self)
   private var builder: LaunchWorkerBuildable?
@@ -42,7 +42,7 @@ public final class LaunchViewModel: ViewModelType, Injectable {
 
   private var rootWorkable: LaunchWorkable?
 
-  public var limitRetryCount: Int {
+  var limitRetryCount: Int {
     get { self.retry.limit }
     set { self.retry.limit = newValue }
   }
@@ -63,7 +63,7 @@ public final class LaunchViewModel: ViewModelType, Injectable {
 
   // MARK: - Trigger Methods
 
-  public func trigger(_ action: LaunchAction) {
+  func trigger(_ action: LaunchAction) {
     switch action {
     case .run: self.run()
     case .runAfterBuildForWoker: self.runAfterBuildForWoker()
