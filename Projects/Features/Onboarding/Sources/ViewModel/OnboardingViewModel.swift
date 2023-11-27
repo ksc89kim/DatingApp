@@ -21,10 +21,6 @@ public final class OnboardingViewModel: ViewModelType, Injectable {
   @Inject(AppStateKey.self)
   private var appState: AppState
 
-  // MARK: - Init
-
-  public init() {}
-
   // MARK: - Method
 
   public func trigger(_ action: OnboardingAction) {

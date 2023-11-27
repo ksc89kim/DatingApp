@@ -20,7 +20,7 @@ public struct OnboardingView: View, Injectable {
   )
 
   @StateObject 
-  var appState: AppState = DIContainer.resolve(
+  private var appState: AppState = DIContainer.resolve(
     for: AppStateKey.self
   )
 
@@ -58,19 +58,11 @@ public struct OnboardingView: View, Injectable {
       }
     }
   }
-
-  // MARK: - Init
-
-  public init() {}
 }
 
 
 #Preview {
   AppStateDIRegister.register()
-  DIContainer.register {
-    InjectItem(OnboardingViewModelKey.self) {
-      OnboardingViewModel()
-    }
-  }
+  OnboardingDIRegister.register()
   return OnboardingView()
 }

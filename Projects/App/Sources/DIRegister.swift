@@ -30,9 +30,9 @@ struct DIRegister {
     AppStateDIRegister.register()
     LaunchDIRegister.register()
     MainDIRegister.register()
+    OnboardingDIRegister.register()
     self.registerForVersion()
     self.registerForUser()
-    self.registerOnboarding()
     self.registerChat()
   }
 
@@ -71,13 +71,6 @@ struct DIRegister {
           networking: .init(stubClosure: Networking<UserAPI>.immediatelyStub)
         )
       }
-    }
-  }
-
-  private func registerOnboarding() {
-    DIContainer.register {
-      InjectItem(OnboardingViewModelKey.self) { OnboardingViewModel() }
-      InjectItem(OnboardingViewKey.self) { OnboardingView() }
     }
   }
 
