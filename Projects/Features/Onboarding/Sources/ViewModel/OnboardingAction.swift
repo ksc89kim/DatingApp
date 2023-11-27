@@ -8,6 +8,6 @@
 
 import Foundation
 
-public enum OnboardingAction {
+enum OnboardingAction {
   case presentSignup
 }

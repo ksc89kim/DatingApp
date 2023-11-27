@@ -12,7 +12,7 @@ import DI
 import AppStateInterface
 import OnboardingInterface
 
-public struct OnboardingView: View, Injectable {
+struct OnboardingView: View, Injectable {
 
   @StateObject 
   private var viewModel: OnboardingViewModel = DIContainer.resolve(
@@ -26,7 +26,7 @@ public struct OnboardingView: View, Injectable {
 
   // MARK: - Property
 
-  public var body: some View {
+  var body: some View {
     ZStack {
       UtilAsset.MainColor.background.swiftUIColor.ignoresSafeArea()
       LogoView()

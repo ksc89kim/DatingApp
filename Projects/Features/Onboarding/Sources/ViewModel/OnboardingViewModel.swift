@@ -11,19 +11,19 @@ import Core
 import DI
 import AppStateInterface
 
-public final class OnboardingViewModel: ViewModelType, Injectable {
+final class OnboardingViewModel: ViewModelType, Injectable {
 
   // MARK: - Property
 
   @Published
-  public var state: OnboardingState = .init()
+  var state: OnboardingState = .init()
 
   @Inject(AppStateKey.self)
   private var appState: AppState
 
   // MARK: - Method
 
-  public func trigger(_ action: OnboardingAction) {
+  func trigger(_ action: OnboardingAction) {
     switch action {
     case .presentSignup: self.presentSignup()
     }

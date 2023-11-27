@@ -8,5 +8,5 @@
 
 import Foundation
 
-public struct OnboardingState {
+struct OnboardingState {
 }
