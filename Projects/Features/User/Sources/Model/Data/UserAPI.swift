@@ -9,7 +9,7 @@
 import Foundation
 import Core
 
-public enum UserAPI {
+enum UserAPI {
   case login
   case signup([String: Any])
 }
@@ -17,47 +17,47 @@ public enum UserAPI {
 
 extension UserAPI: NetworkTargetType {
 
-  public var method: Core.NetworkMethod {
+  var method: Core.NetworkMethod {
     return .get
   }
 
-  public var baseURL: URL {
+  var baseURL: URL {
     return .init(string: API.EndPoint.baseURL + "/user")!
   }
 
-  public var path: String {
+  var path: String {
     switch self {
     case .login: return "/login"
     case .signup: return "/signup"
     }
   }
 
-  public var headers: [String: String]? {
+  var headers: [String: String]? {
     return API.baseHeaders
   }
 
-  public var parameters: [String: Any] {
+  var parameters: [String: Any] {
     switch self {
     case .login: return [:]
     case .signup(let parameter): return parameter
     }
   }
 
-  public var task: Core.NetworkTask {
+  var task: Core.NetworkTask {
     return .requestParameters(
       parameters: self.parameters,
       encoding: URLEncoding.default
     )
   }
 
-  public var sampleData: Data {
+  var sampleData: Data {
     switch self {
     case .login: return self.loginSampleData
     case .signup: return self.signupSampleData
     }
   }
 
-  private var loginSampleData: Data {
+  var loginSampleData: Data {
     return """
     {
       "code": 201,
@@ -69,7 +69,7 @@ extension UserAPI: NetworkTargetType {
     """.data(using: .utf16)!
   }
 
-  private var signupSampleData: Data {
+  var signupSampleData: Data {
     return """
     {
       "code": 201,

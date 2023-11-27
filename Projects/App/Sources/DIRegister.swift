@@ -32,34 +32,8 @@ struct DIRegister {
     MainDIRegister.register()
     OnboardingDIRegister.register()
     VersionDIRegister.register()
-    self.registerForUser()
+    UserDIRegister.register()
     self.registerChat()
-  }
-
-  private func registerForUser() {
-    DIContainer.register {
-      InjectItem(LoginRepositoryTypeKey.self) {
-        let repository = LoginRepository(
-          networking: .init(stubClosure: Networking<UserAPI>.immediatelyStub)
-        )
-        return repository
-      }
-      InjectItem(LoginKey.self) {
-        let tokenManager = TokenManager()
-        return Login(tokenManager: tokenManager)
-      }
-      InjectItem(LoginLaunchWorkerKey.self) {
-        let login: Loginable = DIContainer.resolve(for: LoginKey.self)
-        return LoginLaunchWorker(loginable: login)
-      }
-      InjectItem(SignupViewKey.self) { SignupView() }
-      InjectItem(SignupViewModelKey.self) { SignupViewModel(tokenManager: TokenManager()) }
-      InjectItem(SignupRepositoryTypeKey.self) {
-        SignupRepository(
-          networking: .init(stubClosure: Networking<UserAPI>.immediatelyStub)
-        )
-      }
-    }
   }
 
   private func registerChat() {

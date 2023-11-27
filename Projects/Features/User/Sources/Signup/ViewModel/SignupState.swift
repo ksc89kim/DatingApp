@@ -10,7 +10,7 @@ import Foundation
 import Util
 import UserInterface
 
-public struct SignupState {
+struct SignupState {
 
   // MARK: - Property
 

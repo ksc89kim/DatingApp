@@ -8,7 +8,7 @@
 
 import Foundation
 
-public enum SignupAction {
+enum SignupAction {
   case initUI
   case nickname(String)
   case next

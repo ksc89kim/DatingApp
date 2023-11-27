@@ -10,7 +10,7 @@ import Foundation
 import UserInterface
 import Core
 
-public final class SignupRepository: SignupRepositoryType {
+final class SignupRepository: SignupRepositoryType {
 
   // MARK: - Property
 
@@ -18,13 +18,13 @@ public final class SignupRepository: SignupRepositoryType {
 
   // MARK: - Init
 
-  public init(networking: Networking<UserAPI>) {
+  init(networking: Networking<UserAPI>) {
     self.networking = networking
   }
 
   // MARK: - Method
 
-  public func signup(request: SignupRequest) async throws -> SignupEntity {
+  func signup(request: SignupRequest) async throws -> SignupEntity {
     let response = try await self.networking.request(
       SignupResponse.self,
       target: .signup(request.paramters)

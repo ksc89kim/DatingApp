@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct User: Codable {
+struct User: Codable {
   
   // MARK: - CodingKey
 
@@ -18,11 +18,11 @@ public struct User: Codable {
 
   // MARK: - Property
 
-  public let userID: String
+  let userID: String
 
   // MARK: - Init
 
-  public init(from decoder: Decoder) throws {
+  init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: Keys.self)
     self.userID = try container.decode(String.self, forKey: .userID)
   }

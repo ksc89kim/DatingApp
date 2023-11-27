@@ -11,7 +11,7 @@ import DI
 import Core
 import UserInterface
 
-public final class Login: Loginable {
+final class Login: Loginable {
 
   // MARK: - Property
 
@@ -22,13 +22,13 @@ public final class Login: Loginable {
 
   // MARK: - Init
 
-  public init(tokenManager: TokenManagerType) {
+  init(tokenManager: TokenManagerType) {
     self.tokenManager = tokenManager
   }
 
   // MARK: - Method
 
-  public func login() async throws {
+  func login() async throws {
     guard self.tokenManager.accessToken() != nil else {
       throw LoginTokenError.notExist
     }

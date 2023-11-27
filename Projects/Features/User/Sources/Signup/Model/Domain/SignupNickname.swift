@@ -9,7 +9,7 @@
 import Foundation
 import UserInterface
 
-public final class SignupNickname: SignupMain {
+final class SignupNickname: SignupMain {
 
   // MARK: - Property
 
@@ -17,13 +17,13 @@ public final class SignupNickname: SignupMain {
 
   var limitCount: Int
 
-  public var isBottomDisable: Bool
+  var isBottomDisable: Bool
 
-  public weak var repository: SignupRepositoryType?
+  weak var repository: SignupRepositoryType?
 
   // MARK: - Init
   
-  public init(
+  init(
     nickname: String = "",
     limitCount: Int = 10
   ) {
@@ -39,7 +39,7 @@ public final class SignupNickname: SignupMain {
     self.isBottomDisable = nickname.isEmpty
   }
 
-  public func mergeRequest(_ request: SignupRequest) -> SignupRequest {
+  func mergeRequest(_ request: SignupRequest) -> SignupRequest {
     var request = request
     request.nickname = self.nickname
     return request

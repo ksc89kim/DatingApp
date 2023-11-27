@@ -13,7 +13,7 @@ import Core
 import UserInterface
 import AppStateInterface
 
-public struct SignupView: View, Injectable {
+struct SignupView: View, Injectable {
 
   // MARK: - Property
 
@@ -22,7 +22,7 @@ public struct SignupView: View, Injectable {
     for: SignupViewModelKey.self
   )
 
-  public var body: some View {
+  var body: some View {
     VStack(alignment: .leading) {
       self.backButton
       VStack(alignment: .leading) {
@@ -121,10 +121,6 @@ public struct SignupView: View, Injectable {
     .opacity(self.viewModel.state.bottomButton.isDisable ? 0.7 : 1.0)
     .padding(.vertical, 18)
   }
-
-  // MARK: - Init
-
-  public init() {}
 }
 
 

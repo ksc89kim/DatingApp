@@ -11,31 +11,31 @@ import LaunchInterface
 import UserInterface
 import DI
 
-public final class LoginLaunchWorker: LaunchWorkable, Injectable {
+final class LoginLaunchWorker: LaunchWorkable, Injectable {
 
   // MARK: - Property
 
-  public weak var parent: LaunchWorkable?
+  weak var parent: LaunchWorkable?
   
-  public var items: [LaunchWorkable] = []
+  var items: [LaunchWorkable] = []
   
-  public var state: LaunchWorkerState = .ready
+  var state: LaunchWorkerState = .ready
 
-  public var sender: LaunchSendable?
+  var sender: LaunchSendable?
 
-  public var completionSender: LaunchCompletionSender?
+  var completionSender: LaunchCompletionSender?
 
-  private let loginable: Loginable
+  let loginable: Loginable
 
   // MARK: - Init
 
-  public init(loginable: Loginable) {
+  init(loginable: Loginable) {
     self.loginable = loginable
   }
 
   // MARK: - Method
 
-  public func work() async throws {
+  func work() async throws {
     do {
       try await self.loginable.login()
     } catch {

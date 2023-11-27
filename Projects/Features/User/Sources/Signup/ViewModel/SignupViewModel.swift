@@ -13,12 +13,12 @@ import DI
 import UserInterface
 import AppStateInterface
 
-public final class SignupViewModel: ViewModelType, Injectable {
+final class SignupViewModel: ViewModelType, Injectable {
 
   // MARK: - Property
 
   @Published
-  public var state: SignupState = .init()
+  var state: SignupState = .init()
 
   @Inject(AppStateKey.self)
   private var appState: AppState
@@ -39,7 +39,7 @@ public final class SignupViewModel: ViewModelType, Injectable {
 
   // MARK: - Init
 
-  public init(
+  init(
     mains: [SignupMain] = [
       SignupNickname()
     ],
@@ -59,7 +59,7 @@ public final class SignupViewModel: ViewModelType, Injectable {
 
   // MARK: - Method
 
-  public func trigger(_ action: SignupAction) {
+  func trigger(_ action: SignupAction) {
     switch action {
     case .initUI: self.initUI()
     case .nickname(let nickname): self.updateNicknameIfNeeded(nickname)
@@ -68,7 +68,7 @@ public final class SignupViewModel: ViewModelType, Injectable {
     }
   }
 
-  public func trigger(_ action: SignupAction) async {
+  func trigger(_ action: SignupAction) async {
     switch action {
     case .initUI: await self.initUI()
     case .nickname(let nickname): self.updateNicknameIfNeeded(nickname)

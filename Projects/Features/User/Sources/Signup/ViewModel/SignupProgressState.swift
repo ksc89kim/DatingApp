@@ -18,7 +18,7 @@ struct SignupProgressState {
 
   // MARK: - Init
 
-  public init(
+  init(
     value: Double = 0.0,
     isAnimation: Bool = false
   ) {
