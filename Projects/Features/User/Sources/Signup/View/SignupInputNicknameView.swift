@@ -61,8 +61,5 @@ struct SignupInputNicknameView: View {
 
 
 #Preview {
-  SignupInputNicknameView(nickname: Binding(
-    get: { "" },
-    set: { _ in }
-  ))
+  SignupInputNicknameView(nickname: .constant(""))
 }

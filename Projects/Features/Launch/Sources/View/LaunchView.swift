@@ -40,10 +40,7 @@ struct LaunchView: View, Injectable {
       }
     }
     .background()
-    .alert(isPresented: Binding(
-      get: { self.viewModel.state.isPresentAlert },
-      set: { _ in }
-    )) {
+    .alert(isPresented: .constant(self.viewModel.state.isPresentAlert)) {
       return self.buildAlert(self.viewModel.state.alert)
     }
     .onAppear {
