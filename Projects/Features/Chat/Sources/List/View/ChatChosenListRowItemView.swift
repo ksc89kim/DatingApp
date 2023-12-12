@@ -17,12 +17,12 @@ struct ChatChosenListRowItemView: View {
   let item: ChatChosenSectionItem
 
   var body: some View {
-    VStack(spacing: 8) {
-      ChatListProfileView(profile: self.item.toProfile())
+    VStack(spacing: 12) {
+      ChatChosenProfileView(profile: self.item.toProfile())
       Text(self.item.nickname)
-        .systemScaledFont(font: .semibold, size: 12)
+        .systemScaledFont(font: .bold, size: 12)
     }
-    .padding(.leading, 15)
+    .padding(.leading, 8)
   }
 }
 

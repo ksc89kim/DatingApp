@@ -37,10 +37,11 @@ struct ChatChosenListRowView: View {
               }
           }
         }
+        .padding(.leading, 7)
         .padding(.trailing, 15)
       }
       .scrollIndicators(.hidden)
-      .frame(height: 100)
+      .frame(height: 150)
     }
   }
 }

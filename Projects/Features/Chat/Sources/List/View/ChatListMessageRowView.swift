@@ -21,7 +21,7 @@ struct ChatListMessageRowView: View {
 
   var body: some View {
     HStack {
-      ChatListProfileView(profile: self.item.toProfile())
+      ChatListMessageProfileView(profile: self.item.toProfile())
         .padding(.leading, 15)
         .padding(.trailing, 13)
       VStack(alignment: .leading, spacing: 8) {

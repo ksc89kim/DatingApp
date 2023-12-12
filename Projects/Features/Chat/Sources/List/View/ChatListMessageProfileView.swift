@@ -1,5 +1,5 @@
 //
-//  ChatListProfileView.swift
+//  ChatListMessageProfileView.swift
 //  Chat
 //
 //  Created by kim sunchul on 11/26/23.
@@ -9,7 +9,7 @@
 import SwiftUI
 import Kingfisher
 
-struct ChatListProfileView: View {
+struct ChatListMessageProfileView: View {
 
   // MARK: - Define
 
@@ -54,7 +54,7 @@ struct ChatListProfileView: View {
 }
 
 #Preview {
-  ChatListProfileView(
+  ChatListMessageProfileView(
     profile: .init(thumbnail: nil, badge: false)
   )
 }
