@@ -1,8 +1,8 @@
 import SwiftUI
-import Onboarding
-import OnboardingInterface
-import AppStateInterface
-import DI
+@testable import Onboarding
+@testable import OnboardingInterface
+@testable import AppStateInterface
+@testable import DI
 
 struct OnboardingContentView: View {
 

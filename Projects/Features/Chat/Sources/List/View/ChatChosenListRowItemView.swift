@@ -8,15 +8,18 @@
 
 import SwiftUI
 import Util
+import ChatInterface
 
 struct ChatChosenListRowItemView: View {
 
   // MARK: - Property
 
+  let item: ChatChosenSectionItem
+
   var body: some View {
     VStack(spacing: 8) {
-      ChatListProfileView()
-      Text("Kim")
+      ChatListProfileView(profile: self.item.toProfile())
+      Text(self.item.nickname)
         .systemScaledFont(font: .semibold, size: 12)
     }
     .padding(.leading, 15)
@@ -25,5 +28,5 @@ struct ChatChosenListRowItemView: View {
 
 
 #Preview {
-  ChatChosenListRowItemView()
+  return ChatChosenListRowItemView(item: .dummy())
 }

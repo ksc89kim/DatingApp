@@ -1,5 +1,5 @@
 //
-//  ChatListRowView.swift
+//  ChatListMessageRowView.swift
 //  Chat
 //
 //  Created by kim sunchul on 11/26/23.
@@ -9,26 +9,30 @@
 import SwiftUI
 import Util
 
-struct ChatListRowView: View {
-  
+struct ChatListMessageRowView: View {
+
   // MARK: - Define
-  
+
   private typealias Assets = ChatAsset.Assets
-  
+
   // MARK: - Property
-  
+
+  let item: ChatListMessageSectionItem
+
   var body: some View {
     HStack {
-      ChatListProfileView()
+      ChatListProfileView(profile: self.item.toProfile())
         .padding(.leading, 15)
         .padding(.trailing, 13)
       VStack(alignment: .leading, spacing: 8) {
-        Text("Kim")
+        Text(item.nickname)
           .systemScaledFont(font: .bold, size: 16)
-        Text("Hi~")
-          .systemScaledFont(font: .medium, size: 14)
+        Text(item.message)
+          .systemScaledFont(font: .regular, size: 14)
           .foregroundStyle(
-            Assets.chatListRowContentRead.swiftUIColor
+            self.item.isRead ?
+            Assets.chatListRowContentRead.swiftUIColor :
+              Color.black
           )
       }
       Spacer()
@@ -39,5 +43,5 @@ struct ChatListRowView: View {
 
 
 #Preview {
-  ChatListRowView()
+  ChatListMessageRowView(item: .dummy())
 }

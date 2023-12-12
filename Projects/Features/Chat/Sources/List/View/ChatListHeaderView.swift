@@ -13,20 +13,20 @@ struct ChatListHeaderView: View {
 
   // MARK: - Property
 
+  let title: String
+
   var body: some View {
-    VStack {
-      Text("22개의 대화방")
-        .systemScaledFont(font: .semibold, size: 16)
-        .foregroundStyle(.black)
-    }
-    .padding(.leading, 15)
-    .padding(.top, 7)
-    .padding(.bottom, 20)
-    .frame(maxWidth: .infinity, alignment: .leading)
+    Text(self.title)
+      .systemScaledFont(font: .semibold, size: 16)
+      .foregroundStyle(.black)
+      .padding(.leading, 15)
+      .padding(.top, 7)
+      .padding(.bottom, 14)
+      .frame(maxWidth: .infinity, alignment: .leading)
   }
 }
 
 
 #Preview {
-  ChatListHeaderView()
+  ChatListHeaderView(title: "테스트")
 }

@@ -25,13 +25,21 @@ func targets() -> [Target] {
       .di,
       .core,
       .util,
+      .kingfisher,
       .feature(target: .appState, type: .source),
+      .feature(target: .appState, type: .interface),
       .feature(target: .launch, type: .source),
+      .feature(target: .launch, type: .interface),
       .feature(target: .version, type: .source),
+      .feature(target: .version, type: .interface),
       .feature(target: .user, type: .source),
+      .feature(target: .user, type: .interface),
       .feature(target: .onboarding, type: .source),
+      .feature(target: .onboarding, type: .interface),
       .feature(target: .main, type: .source),
-      .feature(target: .chat, type: .source)
+      .feature(target: .main, type: .interface),
+      .feature(target: .chat, type: .source),
+      .feature(target: .chat, type: .interface)
     ])
     .build()
   ]

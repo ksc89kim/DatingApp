@@ -9,6 +9,7 @@
 import SwiftUI
 import DI
 import AppStateInterface
+import Util
 
 struct ChatHomeView: View, Injectable {
 
@@ -19,13 +20,20 @@ struct ChatHomeView: View, Injectable {
 
   var body: some View {
     NavigationStack(path: self.$appState.chatRouter.paths) {
-      ChatListView()
-        .navigationDestination(for: ChatRoutePath.self) { path in
-          switch path {
-          case .chatRoom: Text("Test")
-          }
+      VStack {
+        ChatListView()
+      }
+      .navigationDestination(for: ChatRoutePath.self) { path in
+        switch path {
+        case .chatRoom: Text("")
         }
-        .navigationTitle("채팅")
+      }
+      .toolbar {
+        ToolbarItem(placement: .navigationBarLeading) {
+          Text("채팅")
+            .systemScaledFont(style: .boldLargeTitle)
+        }
+      }
     }
   }
 }
@@ -33,5 +41,6 @@ struct ChatHomeView: View, Injectable {
 
 #Preview {
   AppStateDIRegister.register()
+  ChatDIRegister.register()
   return ChatHomeView()
 }

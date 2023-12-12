@@ -1,5 +1,5 @@
 //
-//  ChatListResponse.swift
+//  ChatChosenResponse.swift
 //  Chat
 //
 //  Created by kim sunchul on 11/27/23.
@@ -9,21 +9,18 @@
 import Foundation
 import ChatInterface
 
-struct ChatListResponse: Codable {
+struct ChatChosenListResponse: Codable {
 
   // MARK: - Define
 
   private enum Keys: String, CodingKey {
-    case totalCount = "total_count"
-    case messages
+    case users
     case isFinal = "is_final"
   }
 
   // MARK: - Property
 
-  let messages: [ChatListMessageResponse]
-
-  let totalCount: Int
+  let users: [ChatChosenUserResponse]
 
   let isFinal: Bool
 
@@ -31,20 +28,18 @@ struct ChatListResponse: Codable {
 
   init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: Keys.self)
-    self.totalCount = try container.decode(Int.self, forKey: .totalCount)
-    self.messages = try container.decode([ChatListMessageResponse].self, forKey: .messages)
+    self.users = try container.decode([ChatChosenUserResponse].self, forKey: .users)
     self.isFinal = try container.decode(Bool.self, forKey: .isFinal)
   }
 
   // MARK: - Method
 
-  func toEntity() -> ChatListEntity {
-    let items = self.messages.map { response -> ChatListMessageEntity in
-      return response.toEntity()
+  func toEntity() -> ChatChosenListEntity {
+    let items = self.users.map { (user: ChatChosenUserResponse) -> ChatChosenUserEntity in
+      return user.toEntity()
     }
-    
+
     return .init(
-      totalCount: self.totalCount,
       items: items,
       isFinal: self.isFinal
     )

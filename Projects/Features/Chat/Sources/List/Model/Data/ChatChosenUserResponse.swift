@@ -1,6 +1,6 @@
 //
 //  ChatChosenUserResponse.swift
-//  ChatInterface
+//  Chat
 //
 //  Created by kim sunchul on 11/27/23.
 //  Copyright © 2023 com.tronplay. All rights reserved.
@@ -20,6 +20,6 @@ struct ChatChosenUserResponse: Codable {
   // MARK: - Method
 
   func toEntity() -> ChatChosenUserEntity {
-    return .init(user: self.user.toEntity(), badge: badge)
+    return .init(user: self.user.toEntity(), badge: self.badge)
   }
 }

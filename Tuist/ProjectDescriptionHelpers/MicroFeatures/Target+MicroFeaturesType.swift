@@ -79,10 +79,10 @@ public extension Target {
       builder.builder(baseBuilder)
     }
     builder
+      .name(type.name(target))
       .scripts([.swiftLint])
       .sources(type.sourceFileList)
       .resources(type.resources)
-      .name(type.name(target))
 
     let feturesDependencies = builder.featuresDependencies
 
@@ -90,31 +90,37 @@ public extension Target {
     case .source:
       builder.product(.framework)
         .featuresDependencies(
-          .init(source: feturesDependencies.sourceDependencies
-                + [.feature(target: target, type: .interface)])
+          .init(
+            source: feturesDependencies.sourceDependencies
+            + [.feature(target: target, type: .interface)]
+            + [.di, .core, .util]
+          )
         )
     case .interface:
       builder.product(.framework)
         .featuresDependencies(
-          .init(interface: feturesDependencies.interfaceDependencies
-                + [.di, .core, .util]
-               )
+          .init(
+            interface: feturesDependencies.interfaceDependencies
+            + [.di, .core, .util]
+          )
         )
     case .testing:
-      builder.product(.framework)
+      builder.product(.staticFramework)
         .featuresDependencies(
-          .init(testing: feturesDependencies.testingDependencies
-                + [.feature(target: target, type: .interface)])
+          .init(
+            testing: feturesDependencies.testingDependencies
+            + [.feature(target: target, type: .interface)])
         )
     case .tests:
       builder.product(.unitTests)
         .featuresDependencies(
-          .init(tests: feturesDependencies.testsDependencies
-                + [
-                  .feature(target: target, type: .testing),
-                  .feature(target: target, type: .source),
-                  .xctest
-                ])
+          .init(
+            tests: feturesDependencies.testsDependencies
+            + [
+              .feature(target: target, type: .testing),
+              .feature(target: target, type: .source),
+              .xctest
+            ])
         )
     case .examples:
       builder.product(.app)
@@ -122,11 +128,12 @@ public extension Target {
           "UILaunchScreen" : .dictionary([:])
         ]))
         .featuresDependencies(
-          .init(examples: feturesDependencies.examplesDependencies
-                + [
-                  .feature(target: target, type: .testing),
-                  .feature(target: target, type: .source)
-                ])
+          .init(
+            examples: feturesDependencies.examplesDependencies
+            + [
+              .feature(target: target, type: .testing),
+              .feature(target: target, type: .source)
+            ])
         )
     }
     return builder.build()

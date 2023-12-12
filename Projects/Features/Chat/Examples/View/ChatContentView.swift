@@ -1,6 +1,10 @@
 import SwiftUI
+@testable import ChatInterface
 @testable import Chat
+@testable import ChatTesting
 @testable import AppStateInterface
+@testable import Core
+@testable import DI
 
 struct ChatContentView: View {
 
@@ -37,6 +41,17 @@ struct ChatContentView: View {
 
   init() {
     AppStateDIRegister.register()
+    DIContainer.register {
+      InjectItem(ChatListViewModelKey.self) {
+        ChatListViewModel(
+          listPagination: Pagination(),
+          chosenPagination: Pagination()
+        )
+      }
+      InjectItem(ChatRepositoryKey.self) {
+        MockChatRepository()
+      }
+    }
   }
 }
 

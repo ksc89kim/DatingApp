@@ -7,42 +7,107 @@
 //
 
 import SwiftUI
+import Util
 import AppStateInterface
+import ChatInterface
+import DI
 
 struct ChatListView: View {
 
+  @StateObject
+  private var viewModel: ChatListViewModel = DIContainer.resolve(
+    for: ChatListViewModelKey.self
+  )
+
+  @State
+  private var chosenAppearIndex: Int = 0
+
+  // MARK: - Property
+
   var body: some View {
+    Group {
+      if self.viewModel.state.isEmpty {
+        ChatListEmptyView()
+      } else {
+        self.listView
+      }
+    }
+    .onAppear {
+      self.viewModel.trigger(.load)
+    }
+    .alert(isPresented:
+        .constant(self.viewModel.state.isPresentAlert)
+    ) {
+      self.buildAlert(self.viewModel.state.alert)
+    }
+  }
+
+  @ViewBuilder
+  private var listView: some View {
     List {
-      Section {
-        ChatChosenListRowView()
-      }
-      .listRowInsets(EdgeInsets())
-      .listRowSeparator(.hidden)
-      Section {
-        ChatListHeaderView()
-        ForEach(1...100, id: \.self) { _ in
-          ChatListRowView()
-            .swipeActions(edge: .trailing) {
-              Button(
-                role: .destructive,
-                action: { },
-                label: {
-                  Label("Delete", systemImage: "trash")
-                }
-              )
-            }
-        }
-      }
-      .listRowInsets(EdgeInsets())
-      .listRowSeparator(.hidden)
+      self.chosenSection
+      self.messageSection
     }
     .listSectionSpacing(24)
     .listStyle(.plain)
     .environment(\.defaultMinListRowHeight, 0)
   }
+
+  @ViewBuilder
+  private var chosenSection: some View {
+    Section {
+      ChatChosenListRowView(
+        items: self.viewModel.state.chosenUsers,
+        appearIndex: Binding(
+          get: { self.chosenAppearIndex},
+          set: { newValue in
+            self.viewModel.trigger(.loadChosenListMore(index: newValue))
+            self.chosenAppearIndex = newValue
+          }
+        )
+      )
+    }
+    .listRowInsets(EdgeInsets())
+    .listRowSeparator(.hidden)
+  }
+
+  @ViewBuilder
+  private var messageSection: some View {
+    Section {
+      ChatListHeaderView(title: self.viewModel.state.listTitle)
+      ForEach(
+        self.viewModel.state.messages.enumerated().map { $0 },
+        id: \.element.roomIdx
+      ) { index, item in
+        ChatListMessageRowView(item: item)
+          .onAppear {
+            self.viewModel.trigger(.loadMessageListMore(index: index))
+          }
+          .swipeActions(edge: .trailing) {
+            Button(
+              role: .destructive,
+              action: {
+                self.viewModel.trigger(
+                  .deleteMessage(roomIdx: item.roomIdx)
+                )
+              },
+              label: {
+                Label("Delete", systemImage: "trash")
+              }
+            )
+          }
+      }
+    }
+    .listRowInsets(EdgeInsets())
+    .listRowSeparator(.hidden)
+  }
 }
 
 
+extension ChatListView: AlertBuildable { }
+
+
 #Preview {
+  ChatDIRegister.register()
   return ChatListView()
 }

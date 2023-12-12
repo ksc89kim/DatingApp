@@ -38,4 +38,8 @@ public extension TargetDependency {
   static var naviagationTransitions: Self {
     return .external(name: "NavigationTransitions")
   }
+
+  static var kingfisher: Self {
+    return .external(name: "Kingfisher")
+  }
 }

@@ -27,11 +27,11 @@ public extension Target {
 
     private var bundleId: String?
 
-    private var deploymentTarget: DeploymentTarget?
+    private var deploymentTarget: DeploymentTarget
 
-    private var infoPlist: InfoPlist?
+    private var infoPlist: InfoPlist
 
-    private var sources: SourceFilesList?
+    private var sources: SourceFilesList
 
     private var resources: ResourceFileElements?
 
@@ -68,12 +68,12 @@ public extension Target {
     public init(
       name: String = "",
       platform: Platform = env.platform,
-      product: Product = .framework,
+      product: Product = .staticFramework,
       productName: String? = nil,
       bundleId: String? = nil,
-      deploymentTarget: DeploymentTarget? = env.deploymentTarget,
-      infoPlist: InfoPlist? = .default,
-      sources: SourceFilesList? = "Sources/**",
+      deploymentTarget: DeploymentTarget = env.deploymentTarget,
+      infoPlist: InfoPlist = .default,
+      sources: SourceFilesList = "Sources/**",
       resources: ResourceFileElements? = nil,
       copyFiles: [CopyFilesAction]? = nil,
       headers: Headers? = nil,

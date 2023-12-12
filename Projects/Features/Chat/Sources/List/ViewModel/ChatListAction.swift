@@ -9,5 +9,10 @@
 import Foundation
 
 enum ChatListAction {
-
+  case load
+  case loadMessageList
+  case loadMessageListMore(index: Int)
+  case loadChosenList
+  case loadChosenListMore(index: Int)
+  case deleteMessage(roomIdx: String)
 }

@@ -72,6 +72,18 @@ extension BaseAlert {
     title: "",
     message: ""
   )
+
+  public static func message(_ message: String) -> BaseAlert {
+    return .init(
+      title: "",
+      message: message,
+      primaryAction: .init(
+        title: .confirm,
+        type: .default,
+        completion: {}
+      )
+    )
+  }
 }
 
 

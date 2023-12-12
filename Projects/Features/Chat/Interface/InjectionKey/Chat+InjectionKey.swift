@@ -8,7 +8,18 @@
 
 import DI
 import SwiftUI
+import Core
 
 public enum ChatHomeViewKey: InjectionKey {
   public typealias Value = View
+}
+
+
+public enum ChatRepositoryKey: InjectionKey {
+  public typealias Value = ChatRepositoryType
+}
+
+
+public enum ChatListViewModelKey: InjectionKey {
+  public typealias Value = ViewModelType
 }

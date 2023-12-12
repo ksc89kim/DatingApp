@@ -10,7 +10,8 @@ func targets() -> [Target] {
     baseBuilder: .make(
       featuresDependencies: .init(
         source: [
-          .feature(target: .appState, type: .interface)
+          .feature(target: .appState, type: .interface),
+          .kingfisher
         ]
       )
     )
