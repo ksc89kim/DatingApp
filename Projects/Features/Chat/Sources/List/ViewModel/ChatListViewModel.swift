@@ -66,9 +66,17 @@ final class ChatListViewModel: ViewModelType, Injectable {
     switch action {
     case .load: self.load()
     case .loadMessageListMore(index: let index):
-      self.loadMessageListMoreIfNeeded(index: index)
+      self.loadMoreIfNeeded(
+        pagination: self.listMessagePagination,
+        index: index,
+        taskKey: TaskKey.loadMessageListMore
+      )
     case .loadChosenListMore(index: let index):
-      self.loadChosenListMoreIfNeeded(index: index)
+      self.loadMoreIfNeeded(
+        pagination: self.chosenPagination,
+        index: index,
+        taskKey: TaskKey.loadChosenListMore
+      )
     case .deleteMessage(roomIdx: let roomIdx):
       self.deleteMessage(roomIdx: roomIdx)
     case .loadChosenList, .loadMessageList: break
@@ -79,10 +87,16 @@ final class ChatListViewModel: ViewModelType, Injectable {
     switch action {
     case .loadMessageList: await self.loadMessageList()
     case .loadMessageListMore(let index): 
-      await self.loadMessageListMoreIfNeeded(index: index)
+      await self.loadMoreIfNeeded(
+        pagination: self.listMessagePagination,
+        index: index
+      )
     case .loadChosenList: await self.loadChosenList()
     case .loadChosenListMore(let index): 
-      await self.loadChosenListMoreIfNeeded(index: index)
+      await self.loadMoreIfNeeded(
+        pagination: self.chosenPagination,
+        index: index
+      )
     case .deleteMessage(roomIdx: let roomIdx):
       await self.deleteMessage(roomIdx: roomIdx)
     case .load: await self.load()
@@ -109,41 +123,10 @@ final class ChatListViewModel: ViewModelType, Injectable {
   // MARK: - Method (Load Message)
 
   private func loadMessageList() async {
-    do {
-      let response = try await self.listMessagePagination.load() as? ChatListEntity
-      let messages = response?.items.map(ChatListMessageSectionItem.init) ?? []
-      await self.setListTitle(response?.totalCount ?? 0)
-      await self.setMessages(messages)
-    } catch {
-      await self.handleError(error)
-    }
-  }
-
-  private func loadMessageListMoreIfNeeded(index: Int) {
-    guard self.isAvailableMore(
-      pagination: self.listMessagePagination,
-      index: index
-    ) else { return }
-    
-    self.taskBag[TaskKey.loadMessageListMore]?.cancel()
-
-    Task { [weak self] in
-      await self?.loadMessageListMoreIfNeeded(index: index)
-    }
-    .store(in: self.taskBag, for: TaskKey.loadMessageListMore)
-  }
-
-  private func loadMessageListMoreIfNeeded(index: Int) async {
-    do {
-      let messages: [ChatListMessageSectionItem] = try await self.loadMoreList(
-        pagination: self.listMessagePagination,
-        index: index
-      )?.map(ChatListMessageSectionItem.init) ?? []
-
-      await self.setMessages(self.state.messages + messages)
-    } catch {
-      await self.handleError(error)
-    }
+    let entity: ChatListEntity? = await self.load(pagination: self.listMessagePagination)
+    guard let entity else { return }
+    await self.setListTitle(entity.totalCount)
+    await self.setMessages(entity.items.map(ChatListMessageSectionItem.init))
   }
 
   // MARK: - Method (Set Message)
@@ -161,39 +144,9 @@ final class ChatListViewModel: ViewModelType, Injectable {
   // MARK: - Method (Load Chosen)
 
   private func loadChosenList() async {
-    do {
-      let response = try await self.chosenPagination.load() as? ChatChosenListEntity
-      let chosenList = response?.items.map(ChatChosenSectionItem.init) ?? []
-      await self.setChosenUsers(chosenList)
-    } catch {
-      await self.handleError(error)
-    }
-  }
-
-  private func loadChosenListMoreIfNeeded(index: Int) {
-    guard self.isAvailableMore(
-      pagination: self.chosenPagination,
-      index: index
-    ) else { return }
-
-    self.taskBag[TaskKey.loadChosenListMore]?.cancel()
-
-    Task { [weak self] in
-      await self?.loadChosenListMoreIfNeeded(index: index)
-    }
-    .store(in: self.taskBag, for: TaskKey.loadChosenListMore)
-  }
-
-  private func loadChosenListMoreIfNeeded(index: Int) async {
-    do {
-      let chosenList: [ChatChosenSectionItem] = try await self.loadMoreList(
-        pagination: self.chosenPagination,
-        index: index
-      )?.map(ChatChosenSectionItem.init) ?? []
-      await self.setChosenUsers(self.state.chosenUsers + chosenList)
-    } catch {
-      await self.handleError(error)
-    }
+    let entity: ChatChosenListEntity? = await self.load(pagination: self.chosenPagination)
+    guard let entity else { return }
+    await self.setChosenUsers(entity.items.map(ChatChosenSectionItem.init))
   }
 
   // MARK: - Method (Set Chosen)
@@ -249,20 +202,64 @@ final class ChatListViewModel: ViewModelType, Injectable {
 
   // MARK: - Method (ETC)
 
+  private func load<Entity, Pagination: PaginationType>(
+    pagination: Pagination
+  ) async -> Entity? {
+    do {
+      return try await pagination.load() as? Entity
+    } catch {
+      await self.handleError(error)
+    }
+    return nil
+  }
+
+  private func loadMoreIfNeeded(
+    pagination: some PaginationType,
+    index: Int,
+    taskKey: String
+  ) {
+    guard self.isAvailableMore(
+      pagination: pagination,
+      index: index
+    ) else { return }
+
+    self.taskBag[taskKey]?.cancel()
+
+    Task { [weak self] in
+      await self?.loadMoreIfNeeded(
+        pagination: pagination,
+        index: index
+      )
+    }
+    .store(in: self.taskBag, for: taskKey)
+  }
+
   private func isAvailableMore(
-    pagination: PaginationType,
+    pagination: some PaginationType,
     index: Int
   ) -> Bool {
     return pagination.isAvailableLoadMore(index: index)
   }
 
-  private func loadMoreList<Item>(
-    pagination: PaginationType,
+  private func loadMoreIfNeeded(
+    pagination: some PaginationType,
     index: Int
-  ) async throws -> [Item]? {
-    let response = try await pagination.loadMoreIfNeeded(index: index)
-    return response?.items.compactMap { item in
-      return item as? Item
+  ) async {
+    do {
+      let response = try await pagination.loadMoreIfNeeded(index: index)
+      await self.updateItems(response)
+    } catch {
+      await self.handleError(error)
+    }
+  }
+
+  private func updateItems(_ response: (any PaginationResponse)?) async {
+    if let listEntity = response as? ChatListEntity {
+      let items = listEntity.items.map(ChatListMessageSectionItem.init)
+      await self.setMessages(self.state.messages + items)
+    } else if let chosenEntity = response as? ChatChosenListEntity {
+      let items = chosenEntity.items.map(ChatChosenSectionItem.init)
+      await self.setChosenUsers(self.state.chosenUsers + items)
     }
   }
 }
