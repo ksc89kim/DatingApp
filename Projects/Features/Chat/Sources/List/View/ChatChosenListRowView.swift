@@ -22,6 +22,7 @@ struct ChatChosenListRowView: View {
   var body: some View {
     VStack(alignment: .leading) {
       Text("친구 요청 목록")
+        .accessibilityAddTraits(.isHeader)
         .systemScaledFont(font: .semibold, size: 16)
         .padding(.leading, 15)
         .padding(.top, 5)
@@ -41,7 +42,8 @@ struct ChatChosenListRowView: View {
         .padding(.trailing, 15)
       }
       .scrollIndicators(.hidden)
-      .frame(height: 150)
+      .frame(maxHeight: 300)
+      .fixedSize(horizontal: false, vertical: true)
     }
   }
 }

@@ -25,10 +25,14 @@ struct ChatListMessageRowView: View {
         .padding(.leading, 15)
         .padding(.trailing, 13)
       VStack(alignment: .leading, spacing: 8) {
-        Text(item.nickname)
+        Text(self.item.nickname)
           .systemScaledFont(font: .bold, size: 16)
-        Text(item.message)
+          .accessibilityLabel("유저 닉네임")
+          .accessibilityValue(self.item.nickname)
+        Text(self.item.message)
           .systemScaledFont(font: .regular, size: 14)
+          .accessibilityLabel("메시지")
+          .accessibilityValue(self.item.message)
           .foregroundStyle(
             self.item.isRead ?
             Assets.chatListRowContentRead.swiftUIColor :
@@ -37,6 +41,7 @@ struct ChatListMessageRowView: View {
       }
       Spacer()
     }
+    .accessibilityElement(children: .combine)
     .padding(.vertical, 10)
   }
 }

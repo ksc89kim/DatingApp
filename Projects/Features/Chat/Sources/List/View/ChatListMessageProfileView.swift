@@ -50,6 +50,7 @@ struct ChatListMessageProfileView: View {
           .frame(width: 17)
           .opacity(self.profile.badge ? 1.0 : 0.0)
       }
+      .accessibilityElement(children: .ignore)
   }
 }
 

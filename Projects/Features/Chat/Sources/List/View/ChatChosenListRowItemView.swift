@@ -21,7 +21,10 @@ struct ChatChosenListRowItemView: View {
       ChatChosenProfileView(profile: self.item.toProfile())
       Text(self.item.nickname)
         .systemScaledFont(font: .bold, size: 12)
+        .accessibilityLabel("유저 닉네임")
+        .accessibilityValue(self.item.nickname)
     }
+    .accessibilityElement(children: .combine)
     .padding(.leading, 8)
   }
 }

@@ -52,6 +52,8 @@ struct ChatChosenProfileView: View {
         .frame(width: 17)
         .opacity(self.profile.badge ? 1.0 : 0.0)
     }
+    .accessibilityLabel("유저 이미지")
+    .accessibilityAddTraits(.isImage)
   }
 }
 

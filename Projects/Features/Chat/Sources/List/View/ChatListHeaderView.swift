@@ -23,6 +23,7 @@ struct ChatListHeaderView: View {
       .padding(.top, 7)
       .padding(.bottom, 14)
       .frame(maxWidth: .infinity, alignment: .leading)
+      .accessibilityAddTraits(.isHeader)
   }
 }
 
