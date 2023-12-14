@@ -29,6 +29,6 @@ final class LoginRepository: LoginRepositoryType {
       LoginResponse.self,
       target: .login
     ).data
-    return response.toEntity()
+    return response.info
   }
 }

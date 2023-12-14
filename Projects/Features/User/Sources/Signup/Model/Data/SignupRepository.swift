@@ -30,6 +30,6 @@ final class SignupRepository: SignupRepositoryType {
       target: .signup(request.paramters)
     ).data
 
-    return response.toEntity()
+    return response.info
   }
 }

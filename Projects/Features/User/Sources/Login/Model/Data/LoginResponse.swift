@@ -15,9 +15,7 @@ struct LoginResponse: Codable {
 
   let token: String
 
-  // MARK: - Method
-
-  func toEntity() -> LoginInfo {
+  var info: LoginInfo {
     return .init(token: self.token)
   }
 }
