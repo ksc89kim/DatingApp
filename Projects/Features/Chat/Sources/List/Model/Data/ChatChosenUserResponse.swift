@@ -17,9 +17,7 @@ struct ChatChosenUserResponse: Codable {
   
   let badge: Bool
 
-  // MARK: - Method
-
-  func toEntity() -> ChatChosenUser {
-    return .init(user: self.user.toEntity(), badge: self.badge)
+  var chosenUser: ChatChosenUser {
+    return .init(user: self.user.chatUser, badge: self.badge)
   }
 }

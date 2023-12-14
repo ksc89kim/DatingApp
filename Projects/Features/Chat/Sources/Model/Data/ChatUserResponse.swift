@@ -27,6 +27,14 @@ struct ChatUserResponse: Codable {
 
   let thumbnail: URL?
 
+  var chatUser: ChatUser {
+    return .init(
+      userIdx: self.userIdx,
+      nickname: self.nickname,
+      thumbnail: self.thumbnail
+    )
+  }
+
   // MARK: - Init
 
   init(from decoder: Decoder) throws {
@@ -34,15 +42,5 @@ struct ChatUserResponse: Codable {
     self.nickname = try container.decode(String.self, forKey: .nickname)
     self.userIdx = try container.decode(String.self, forKey: .userIdx)
     self.thumbnail = try container.decodeIfPresent(URL.self, forKey: .thumbnail)
-  }
-
-  // MARK: - Method
-
-  func toEntity() -> ChatUser {
-    return .init(
-      userIdx: self.userIdx,
-      nickname: self.nickname,
-      thumbnail: self.thumbnail
-    )
   }
 }

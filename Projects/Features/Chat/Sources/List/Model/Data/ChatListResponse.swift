@@ -27,6 +27,14 @@ struct ChatListResponse: Codable {
 
   let isFinal: Bool
 
+  var chatMessageList: ChatList {
+    return .init(
+      totalCount: self.totalCount,
+      items: self.messages.map(\.chatMessage),
+      isFinal: self.isFinal
+    )
+  }
+
   // MARK: - Init
 
   init(from decoder: Decoder) throws {
@@ -34,19 +42,5 @@ struct ChatListResponse: Codable {
     self.totalCount = try container.decode(Int.self, forKey: .totalCount)
     self.messages = try container.decode([ChatListMessageResponse].self, forKey: .messages)
     self.isFinal = try container.decode(Bool.self, forKey: .isFinal)
-  }
-
-  // MARK: - Method
-
-  func toEntity() -> ChatList {
-    let items = self.messages.map { response -> ChatListMessage in
-      return response.toEntity()
-    }
-    
-    return .init(
-      totalCount: self.totalCount,
-      items: items,
-      isFinal: self.isFinal
-    )
   }
 }

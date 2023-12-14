@@ -33,6 +33,16 @@ struct ChatListMessageResponse: Codable {
 
   let isRead: Bool
 
+  var chatMessage: ChatListMessage {
+    return .init(
+      roomIdx: self.roomIdx,
+      user: self.user.chatUser,
+      message: self.message,
+      badge: self.badge,
+      isRead: self.isRead
+    )
+  }
+
   // MARK: - Init
 
   init(from decoder: Decoder) throws {
@@ -42,17 +52,5 @@ struct ChatListMessageResponse: Codable {
     self.badge = try container.decode(Bool.self, forKey: .badge)
     self.message = try container.decode(String.self, forKey: .message)
     self.isRead = try container.decode(Bool.self, forKey: .isRead)
-  }
-
-  // MARK: - Method
-
-  func toEntity() -> ChatListMessage {
-    return .init(
-      roomIdx: self.roomIdx,
-      user: self.user.toEntity(),
-      message: self.message,
-      badge: self.badge,
-      isRead: self.isRead
-    )
   }
 }

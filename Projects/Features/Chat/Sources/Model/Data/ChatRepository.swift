@@ -30,7 +30,7 @@ final class ChatRepository: ChatRepositoryType {
       target: .chatList(page: request.page, limit: request.limit)
     ).data
 
-    return response.toEntity()
+    return response.chatMessageList
   }
 
   func chosenList(request: ChatChosenListRequest) async throws -> ChatChosenList {
@@ -39,7 +39,7 @@ final class ChatRepository: ChatRepositoryType {
       target: .chosenList(page: request.page, limit: request.limit)
     ).data
 
-    return response.toEntity()
+    return response.chatChosenList
   }
 
   func deleteMessage(roomIdx: String) async throws {

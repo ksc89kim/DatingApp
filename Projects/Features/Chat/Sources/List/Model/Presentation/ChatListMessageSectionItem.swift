@@ -25,21 +25,19 @@ struct ChatListMessageSectionItem {
 
   let isRead: Bool
 
-  // MARK: - Init
-
-  init(entity: ChatListMessage) {
-    self.roomIdx = entity.roomIdx
-    self.nickname = entity.user.nickname
-    self.thumbnail = entity.user.thumbnail
-    self.message = entity.message
-    self.badge = entity.badge
-    self.isRead = entity.isRead
+  var profile: ChatListProfile {
+    return .init(thumbnail: self.thumbnail, badge: self.badge)
   }
 
-  // MARK: - Method
+  // MARK: - Init
 
-  func toProfile() -> ChatListProfile {
-    return .init(thumbnail: self.thumbnail, badge: self.badge)
+  init(chatListMessage: ChatListMessage) {
+    self.roomIdx = chatListMessage.roomIdx
+    self.nickname = chatListMessage.user.nickname
+    self.thumbnail = chatListMessage.user.thumbnail
+    self.message = chatListMessage.message
+    self.badge = chatListMessage.badge
+    self.isRead = chatListMessage.isRead
   }
 }
 
@@ -48,7 +46,7 @@ extension ChatListMessageSectionItem {
 
   static func dummy(idx: String = "1") -> Self {
     return .init(
-      entity: .init(
+      chatListMessage: .init(
         roomIdx: idx,
         user: .init(
           userIdx: idx,

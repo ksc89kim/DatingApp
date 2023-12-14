@@ -24,24 +24,18 @@ struct ChatChosenListResponse: Codable {
 
   let isFinal: Bool
 
+  var chatChosenList: ChatChosenList {
+    return .init(
+      items: self.users.map(\.chosenUser),
+      isFinal: self.isFinal
+    )
+  }
+
   // MARK: - Init
 
   init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: Keys.self)
     self.users = try container.decode([ChatChosenUserResponse].self, forKey: .users)
     self.isFinal = try container.decode(Bool.self, forKey: .isFinal)
-  }
-
-  // MARK: - Method
-
-  func toEntity() -> ChatChosenList {
-    let items = self.users.map { (user: ChatChosenUserResponse) -> ChatChosenUser in
-      return user.toEntity()
-    }
-
-    return .init(
-      items: items,
-      isFinal: self.isFinal
-    )
   }
 }
