@@ -27,6 +27,14 @@ struct CheckVersionResponse: Codable {
 
   private let linkURL: URL?
 
+  var checkVersion: CheckVersion {
+    return .init(
+      isForceUpdate: self.isForceUpdate,
+      message: self.message,
+      linkURL: self.linkURL
+    )
+  }
+
   // MARK: - Init
 
   init(from decoder: Decoder) throws {
@@ -34,15 +42,5 @@ struct CheckVersionResponse: Codable {
     self.isForceUpdate = try container.decode(Bool.self, forKey: .isForceUpdate)
     self.message = try container.decode(String.self, forKey: .message)
     self.linkURL = try container.decodeIfPresent(URL.self, forKey: .linkURL)
-  }
-
-  // MARK: - Method
-
-  func toEntity() -> CheckVersion {
-    return .init(
-      isForceUpdate: self.isForceUpdate,
-      message: self.message,
-      linkURL: self.linkURL
-    )
   }
 }

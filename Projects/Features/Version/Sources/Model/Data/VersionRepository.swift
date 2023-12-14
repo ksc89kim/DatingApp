@@ -30,6 +30,6 @@ final class VersionRepository: VersionRepositoryType {
       target: .checkVersion
     ).data
 
-    return response.toEntity()
+    return response.checkVersion
   }
 }
