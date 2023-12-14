@@ -23,7 +23,7 @@ struct ChatChosenSectionItem {
 
   // MARK: - Init
 
-  init(entity: ChatChosenUserEntity) {
+  init(entity: ChatChosenUser) {
     self.userIdx = entity.user.userIdx
     self.nickname = entity.user.nickname
     self.thumbnail = entity.user.thumbnail

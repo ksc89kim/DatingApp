@@ -123,7 +123,7 @@ final class ChatListViewModel: ViewModelType, Injectable {
   // MARK: - Method (Load Message)
 
   private func loadMessageList() async {
-    let entity: ChatListEntity? = await self.load(pagination: self.listMessagePagination)
+    let entity: ChatList? = await self.load(pagination: self.listMessagePagination)
     guard let entity else { return }
     await self.setListTitle(entity.totalCount)
     await self.setMessages(entity.items.map(ChatListMessageSectionItem.init))
@@ -144,7 +144,7 @@ final class ChatListViewModel: ViewModelType, Injectable {
   // MARK: - Method (Load Chosen)
 
   private func loadChosenList() async {
-    let entity: ChatChosenListEntity? = await self.load(pagination: self.chosenPagination)
+    let entity: ChatChosenList? = await self.load(pagination: self.chosenPagination)
     guard let entity else { return }
     await self.setChosenUsers(entity.items.map(ChatChosenSectionItem.init))
   }
@@ -254,10 +254,10 @@ final class ChatListViewModel: ViewModelType, Injectable {
   }
 
   private func updateItems(_ response: (any PaginationResponse)?) async {
-    if let listEntity = response as? ChatListEntity {
+    if let listEntity = response as? ChatList {
       let items = listEntity.items.map(ChatListMessageSectionItem.init)
       await self.setMessages(self.state.messages + items)
-    } else if let chosenEntity = response as? ChatChosenListEntity {
+    } else if let chosenEntity = response as? ChatChosenList {
       let items = chosenEntity.items.map(ChatChosenSectionItem.init)
       await self.setChosenUsers(self.state.chosenUsers + items)
     }

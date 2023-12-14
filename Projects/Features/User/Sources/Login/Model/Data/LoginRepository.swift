@@ -24,7 +24,7 @@ final class LoginRepository: LoginRepositoryType {
 
   // MARK: - Method
   
-  func login() async throws -> LoginEntity {
+  func login() async throws -> LoginInfo {
     let response = try await self.networking.request(
       LoginResponse.self,
       target: .login

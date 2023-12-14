@@ -1,5 +1,5 @@
 //
-//  SignupEntity.swift
+//  SignupInfo.swift
 //  UserTesting
 //
 //  Created by kim sunchul on 11/15/23.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct SignupEntity {
+public struct SignupInfo {
 
   // MARK: - Property
 

@@ -19,7 +19,7 @@ final class MockLoginRepository: LoginRepositoryType {
 
   // MARK: - Method
 
-  func login() async throws -> LoginEntity {
+  func login() async throws -> LoginInfo {
     if let error = self.error {
       throw error
     }

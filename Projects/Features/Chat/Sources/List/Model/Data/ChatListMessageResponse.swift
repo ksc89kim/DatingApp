@@ -46,7 +46,7 @@ struct ChatListMessageResponse: Codable {
 
   // MARK: - Method
 
-  func toEntity() -> ChatListMessageEntity {
+  func toEntity() -> ChatListMessage {
     return .init(
       roomIdx: self.roomIdx,
       user: self.user.toEntity(),

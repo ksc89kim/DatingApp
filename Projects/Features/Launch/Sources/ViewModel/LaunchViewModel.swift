@@ -198,7 +198,7 @@ final class LaunchViewModel: ViewModelType, Injectable {
     )
   }
 
-  private func makeForceUpdateAlert(entity: CheckVersionEntity) -> BaseAlert {
+  private func makeForceUpdateAlert(entity: CheckVersion) -> BaseAlert {
     return .init(
       title: "",
       message: entity.message,

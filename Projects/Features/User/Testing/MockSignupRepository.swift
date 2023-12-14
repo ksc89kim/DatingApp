@@ -19,7 +19,7 @@ final class MockSignupRepository: SignupRepositoryType {
 
   // MARK: - Method
 
-  func signup(request: SignupRequest) async throws -> SignupEntity {
+  func signup(request: SignupRequest) async throws -> SignupInfo {
     if let error = self.error {
       throw error
     }

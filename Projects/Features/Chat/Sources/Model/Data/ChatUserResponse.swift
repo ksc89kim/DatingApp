@@ -38,7 +38,7 @@ struct ChatUserResponse: Codable {
 
   // MARK: - Method
 
-  func toEntity() -> ChatUserEntity {
+  func toEntity() -> ChatUser {
     return .init(
       userIdx: self.userIdx,
       nickname: self.nickname,

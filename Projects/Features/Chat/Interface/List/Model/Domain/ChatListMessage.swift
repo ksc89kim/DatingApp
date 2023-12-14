@@ -1,5 +1,5 @@
 //
-//  ChatListMessageEntity.swift
+//  ChatListMessage.swift
 //  ChatInterface
 //
 //  Created by kim sunchul on 11/27/23.
@@ -8,13 +8,13 @@
 
 import Foundation
 
-public struct ChatListMessageEntity {
+public struct ChatListMessage {
 
   // MARK: - Property
 
   public let roomIdx: String
 
-  public let user: ChatUserEntity
+  public let user: ChatUser
 
   public let message: String
 
@@ -26,7 +26,7 @@ public struct ChatListMessageEntity {
 
   public init(
     roomIdx: String,
-    user: ChatUserEntity,
+    user: ChatUser,
     message: String,
     badge: Bool,
     isRead: Bool

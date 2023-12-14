@@ -38,7 +38,7 @@ struct CheckVersionResponse: Codable {
 
   // MARK: - Method
 
-  func toEntity() -> CheckVersionEntity {
+  func toEntity() -> CheckVersion {
     return .init(
       isForceUpdate: self.isForceUpdate,
       message: self.message,

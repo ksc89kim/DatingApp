@@ -1,5 +1,5 @@
 //
-//  ChatChosenEntity.swift
+//  ChatList.swift
 //  ChatInterface
 //
 //  Created by kim sunchul on 11/27/23.
@@ -9,20 +9,24 @@
 import Foundation
 import Core
 
-public struct ChatChosenListEntity: PaginationResponse {
+public struct ChatList: PaginationResponse {
 
   // MARK: - Property
 
-  public var items: [ChatChosenUserEntity]
+  public var items: [ChatListMessage]
+
+  public let totalCount: Int
 
   public var isFinal: Bool
 
   // MARK: - Init
-
+  
   public init(
-    items: [ChatChosenUserEntity],
+    totalCount: Int,
+    items: [ChatListMessage],
     isFinal: Bool
   ) {
+    self.totalCount = totalCount
     self.items = items
     self.isFinal = isFinal
   }

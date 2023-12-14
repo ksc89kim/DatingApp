@@ -24,7 +24,7 @@ final class SignupRepository: SignupRepositoryType {
 
   // MARK: - Method
 
-  func signup(request: SignupRequest) async throws -> SignupEntity {
+  func signup(request: SignupRequest) async throws -> SignupInfo {
     let response = try await self.networking.request(
       SignupResponse.self,
       target: .signup(request.paramters)

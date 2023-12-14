@@ -1,5 +1,5 @@
 //
-//  ChatUserEntity.swift
+//  ChatUser.swift
 //  ChatInterface
 //
 //  Created by kim sunchul on 11/27/23.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct ChatUserEntity {
+public struct ChatUser {
 
   // MARK: - Property
 

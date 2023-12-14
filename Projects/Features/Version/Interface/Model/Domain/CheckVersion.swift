@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct CheckVersionEntity {
+public struct CheckVersion {
 
   // MARK: - Property
 

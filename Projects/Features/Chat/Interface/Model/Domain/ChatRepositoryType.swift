@@ -13,9 +13,9 @@ public protocol ChatRepositoryType: AnyObject, Injectable {
 
   // MARK: - Method
 
-  func chatList(request: ChatListRequest) async throws -> ChatListEntity
+  func chatList(request: ChatListRequest) async throws -> ChatList
 
-  func chosenList(request: ChatChosenListRequest) async throws -> ChatChosenListEntity
+  func chosenList(request: ChatChosenListRequest) async throws -> ChatChosenList
 
   func deleteMessage(roomIdx: String) async throws
 }

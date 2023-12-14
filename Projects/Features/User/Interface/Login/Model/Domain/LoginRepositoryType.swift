@@ -13,5 +13,5 @@ public protocol LoginRepositoryType: AnyObject, Injectable {
 
   // MARK: - Method
 
-  func login() async throws -> LoginEntity
+  func login() async throws -> LoginInfo
 }

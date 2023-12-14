@@ -27,7 +27,7 @@ final class MockChatRepository: ChatRepositoryType {
 
   // MARK: - Method
 
-  func chatList(request: ChatListRequest) async throws -> ChatListEntity {
+  func chatList(request: ChatListRequest) async throws -> ChatList {
     guard !self.isEmpty else {
       return .init(totalCount: 100, items: [], isFinal: true)
     }
@@ -45,10 +45,10 @@ final class MockChatRepository: ChatRepositoryType {
       limit: request.limit
     )
 
-    let items: [ChatListMessageEntity] = (startIndex...endIdnex).map { index in
+    let items: [ChatListMessage] = (startIndex...endIdnex).map { index in
       return .init(
         roomIdx: "room.\(index)",
-        user: ChatUserEntity(
+        user: ChatUser(
           userIdx: "user.\(index)",
           nickname: "테스트",
           thumbnail: nil
@@ -66,7 +66,7 @@ final class MockChatRepository: ChatRepositoryType {
     )
   }
   
-  func chosenList(request: ChatChosenListRequest) async throws -> ChatChosenListEntity {
+  func chosenList(request: ChatChosenListRequest) async throws -> ChatChosenList {
     guard !self.isEmpty else {
       return .init(items: [], isFinal: true)
     }
@@ -84,8 +84,8 @@ final class MockChatRepository: ChatRepositoryType {
       limit: request.limit
     )
 
-    let items: [ChatChosenUserEntity] = (startIndex...endIdnex).map { index in
-      let user = ChatUserEntity(
+    let items: [ChatChosenUser] = (startIndex...endIdnex).map { index in
+      let user = ChatUser(
         userIdx: "\(index)",
         nickname: "테스트임",
         thumbnail: nil

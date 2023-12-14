@@ -24,7 +24,7 @@ final class ChatRepository: ChatRepositoryType {
 
   // MARK: - Method
 
-  func chatList(request: ChatListRequest) async throws -> ChatListEntity {
+  func chatList(request: ChatListRequest) async throws -> ChatList {
     let response = try await self.networking.request(
       ChatListResponse.self,
       target: .chatList(page: request.page, limit: request.limit)
@@ -33,7 +33,7 @@ final class ChatRepository: ChatRepositoryType {
     return response.toEntity()
   }
 
-  func chosenList(request: ChatChosenListRequest) async throws -> ChatChosenListEntity {
+  func chosenList(request: ChatChosenListRequest) async throws -> ChatChosenList {
     let response = try await self.networking.request(
       ChatChosenListResponse.self,
       target: .chosenList(page: request.page, limit: request.limit)

@@ -1,5 +1,5 @@
 //
-//  ChatChosenUserEntity.swift
+//  ChatChosenUser.swift
 //  ChatInterface
 //
 //  Created by kim sunchul on 11/27/23.
@@ -8,17 +8,17 @@
 
 import Foundation
 
-public struct ChatChosenUserEntity {
+public struct ChatChosenUser {
 
   // MARK: - Property
 
-  public let user: ChatUserEntity
+  public let user: ChatUser
 
   public let badge: Bool
 
   // MARK: - Init
 
-  public init(user: ChatUserEntity, badge: Bool) {
+  public init(user: ChatUser, badge: Bool) {
     self.user = user
     self.badge = badge
   }

@@ -70,7 +70,7 @@ struct LaunchContentView: View {
     case .launchViewForNeedUpdate:
       DIContainer.register {
         InjectItem(LaunchWorkerBuilderKey.self) {
-          let entity: CheckVersionEntity = .init(
+          let entity: CheckVersion = .init(
             isForceUpdate: false,
             message: "업데이트가 필요합니다.",
             linkURL: .init(string: "https://www.naver.com")!

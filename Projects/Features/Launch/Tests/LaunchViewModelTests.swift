@@ -153,7 +153,7 @@ final class LaunchViewModelTests: XCTestCase {
 
   /// 강제 업데이트 알럿 테스트
   func testPresentForceUpdateAlert() async {
-    let entity = CheckVersionEntity(
+    let entity = CheckVersion(
       isForceUpdate: true,
       message: "업데이트가 필요합니다.",
       linkURL: .init(fileURLWithPath: "")

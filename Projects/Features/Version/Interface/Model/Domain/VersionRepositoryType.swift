@@ -13,5 +13,5 @@ public protocol VersionRepositoryType: AnyObject, Injectable {
 
   // MARK: - Method
 
-  func checkVersion() async throws -> CheckVersionEntity?
+  func checkVersion() async throws -> CheckVersion?
 }

@@ -13,5 +13,5 @@ public protocol SignupRepositoryType: AnyObject, Injectable {
 
   // MARK: - Method
 
-  func signup(request: SignupRequest) async throws -> SignupEntity
+  func signup(request: SignupRequest) async throws -> SignupInfo
 }

@@ -27,7 +27,7 @@ struct ChatListMessageSectionItem {
 
   // MARK: - Init
 
-  init(entity: ChatListMessageEntity) {
+  init(entity: ChatListMessage) {
     self.roomIdx = entity.roomIdx
     self.nickname = entity.user.nickname
     self.thumbnail = entity.user.thumbnail

@@ -1,5 +1,5 @@
 //
-//  LoginEntity.swift
+//  LoginInfo.swift
 //  User
 //
 //  Created by kim sunchul on 10/6/23.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct LoginEntity {
+public struct LoginInfo {
 
   // MARK: - Property
 
