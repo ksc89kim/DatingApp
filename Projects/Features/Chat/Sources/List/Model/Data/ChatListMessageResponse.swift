@@ -23,15 +23,15 @@ struct ChatListMessageResponse: Codable {
 
   // MARK: - Property
 
-  let roomIdx: String
+  private let roomIdx: String
 
-  let user: ChatUserResponse
+  private let user: ChatUserResponse
 
-  let badge: Bool
+  private let badge: Bool
 
-  let message: String
+  private let message: String
 
-  let isRead: Bool
+  private let isRead: Bool
 
   var chatMessage: ChatListMessage {
     return .init(

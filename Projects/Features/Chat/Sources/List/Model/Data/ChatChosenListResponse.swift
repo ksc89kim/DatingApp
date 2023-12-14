@@ -20,9 +20,9 @@ struct ChatChosenListResponse: Codable {
 
   // MARK: - Property
 
-  let users: [ChatChosenUserResponse]
+  private let users: [ChatChosenUserResponse]
 
-  let isFinal: Bool
+  private let isFinal: Bool
 
   var chatChosenList: ChatChosenList {
     return .init(

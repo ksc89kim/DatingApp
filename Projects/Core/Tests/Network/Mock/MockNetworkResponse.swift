@@ -9,5 +9,8 @@
 import Foundation
 
 struct MockNetworkResponse: Codable {
+
+  // MARK: - Property
+  
   let isNeedUpdate: Bool
 }

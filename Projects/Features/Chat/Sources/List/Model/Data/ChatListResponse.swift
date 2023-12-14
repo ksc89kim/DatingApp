@@ -21,11 +21,11 @@ struct ChatListResponse: Codable {
 
   // MARK: - Property
 
-  let messages: [ChatListMessageResponse]
+  private let messages: [ChatListMessageResponse]
 
-  let totalCount: Int
+  private let totalCount: Int
 
-  let isFinal: Bool
+  private let isFinal: Bool
 
   var chatMessageList: ChatList {
     return .init(

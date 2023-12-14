@@ -13,7 +13,7 @@ struct LoginResponse: Codable {
 
   // MARK: - Property
 
-  let token: String
+  private let token: String
 
   var info: LoginInfo {
     return .init(token: self.token)

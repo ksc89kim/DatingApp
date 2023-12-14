@@ -13,9 +13,9 @@ struct ChatChosenUserResponse: Codable {
 
   // MARK: - Property
 
-  let user: ChatUserResponse
-  
-  let badge: Bool
+  private let user: ChatUserResponse
+
+  private let badge: Bool
 
   var chosenUser: ChatChosenUser {
     return .init(user: self.user.chatUser, badge: self.badge)

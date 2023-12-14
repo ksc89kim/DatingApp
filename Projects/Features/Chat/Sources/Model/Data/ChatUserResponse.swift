@@ -21,11 +21,11 @@ struct ChatUserResponse: Codable {
 
   // MARK: - Property
 
-  let nickname: String
+  private let nickname: String
 
-  let userIdx: String
+  private let userIdx: String
 
-  let thumbnail: URL?
+  private let thumbnail: URL?
 
   var chatUser: ChatUser {
     return .init(
