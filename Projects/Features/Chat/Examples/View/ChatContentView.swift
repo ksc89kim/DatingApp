@@ -31,6 +31,7 @@ struct ChatContentView: View {
       .navigationDestination(for: ChatExampleItem.self) { item in
         switch item {
         case .chatList: ChatListView()
+        case .chatRoom: ChatRoomView(roomIdx: "123")
         }
       }
       .listStyle(.sidebar)

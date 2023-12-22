@@ -4,6 +4,7 @@ import XCTest
 @testable import ChatInterface
 @testable import Chat
 @testable import ChatTesting
+@testable import AppStateInterface
 
 final class ChatListViewModelTests: XCTestCase {
 
@@ -17,6 +18,7 @@ final class ChatListViewModelTests: XCTestCase {
     super.setUp()
 
     self.repository = .init()
+    AppStateDIRegister.register()
 
     DIContainer.register { [weak self] in
       InjectItem(ChatRepositoryKey.self) {
@@ -200,5 +202,18 @@ final class ChatListViewModelTests: XCTestCase {
     await viewModel.trigger(.load)
 
     XCTAssertTrue(viewModel.state.isEmpty)
+  }
+
+  func testPresentChatRoom() {
+    let viewModel: ChatListViewModel = .init(
+      listPagination: Pagination(),
+      chosenPagination: Pagination()
+    )
+    let roomIdx = "test1"
+
+    viewModel.trigger(.presentRoom(roomIdx: roomIdx))
+
+    let firstPath = AppState.instance.chatRouter.paths.first
+    XCTAssertEqual(firstPath, .chatRoom(idx: roomIdx))
   }
 }

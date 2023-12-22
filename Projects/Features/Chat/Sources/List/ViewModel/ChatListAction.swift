@@ -15,4 +15,5 @@ enum ChatListAction {
   case loadChosenList
   case loadChosenListMore(index: Int)
   case deleteMessage(roomIdx: String)
+  case presentRoom(roomIdx: String)
 }

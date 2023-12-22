@@ -18,6 +18,6 @@ extension ChatExampleSection {
 
   static let examples: ChatExampleSection = .init(
     name: "채팅",
-    items: [.chatList]
+    items: [.chatList, .chatRoom]
   )
 }

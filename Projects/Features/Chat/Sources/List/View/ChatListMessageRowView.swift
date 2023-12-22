@@ -41,6 +41,7 @@ struct ChatListMessageRowView: View {
       }
       Spacer()
     }
+    .contentShape(Rectangle())
     .accessibilityElement(children: .combine)
     .padding(.vertical, 10)
   }

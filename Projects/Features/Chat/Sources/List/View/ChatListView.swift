@@ -80,6 +80,11 @@ struct ChatListView: View {
         id: \.element.roomIdx
       ) { index, item in
         ChatListMessageRowView(item: item)
+          .onTapGesture {
+            self.viewModel.trigger(
+              .presentRoom(roomIdx: item.roomIdx)
+            )
+          }
           .onAppear {
             self.viewModel.trigger(.loadMessageListMore(index: index))
           }

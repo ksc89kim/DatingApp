@@ -9,5 +9,10 @@
 import Foundation
 
 public enum ChatRoutePath: RoutePathType {
-  case chatRoom
+  case chatRoom(idx: String)
+}
+
+
+extension ChatRoutePath: Hashable {
+
 }

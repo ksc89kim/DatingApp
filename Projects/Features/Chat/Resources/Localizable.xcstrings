@@ -1,10 +1,10 @@
 {
   "sourceLanguage" : "ko",
   "strings" : {
-    "" : {
+    "Delete" : {
 
     },
-    "Delete" : {
+    "Hello, World! %@" : {
 
     },
     "대화하고 있는 사람이 없어요!" : {

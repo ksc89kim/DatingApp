@@ -10,6 +10,7 @@ import Foundation
 import Core
 import DI
 import ChatInterface
+import AppStateInterface
 
 final class ChatListViewModel: ViewModelType, Injectable {
 
@@ -29,6 +30,9 @@ final class ChatListViewModel: ViewModelType, Injectable {
 
   @Inject(ChatRepositoryKey.self)
   private var chatRepository: ChatRepositoryType
+
+  @Inject(AppStateKey.self)
+  private var appState: AppState
 
   private var listMessagePagination: PaginationType
 
@@ -80,6 +84,7 @@ final class ChatListViewModel: ViewModelType, Injectable {
     case .deleteMessage(roomIdx: let roomIdx):
       self.deleteMessage(roomIdx: roomIdx)
     case .loadChosenList, .loadMessageList: break
+    case .presentRoom(let roomIdx): self.presentRoom(roomIdx: roomIdx)
     }
   }
 
@@ -100,6 +105,7 @@ final class ChatListViewModel: ViewModelType, Injectable {
     case .deleteMessage(roomIdx: let roomIdx):
       await self.deleteMessage(roomIdx: roomIdx)
     case .load: await self.load()
+    case .presentRoom: break
     }
   }
 
@@ -198,6 +204,12 @@ final class ChatListViewModel: ViewModelType, Injectable {
     let isMessagesEmpty = self.state.messages.isEmpty
     let isChosenUsersEmpty = self.state.chosenUsers.isEmpty
     self.state.isEmpty = isMessagesEmpty && isChosenUsersEmpty
+  }
+
+  // MARK: - Method (Room)
+
+  private func presentRoom(roomIdx: String) {
+    self.appState.chatRouter.append(path: .chatRoom(idx: roomIdx))
   }
 
   // MARK: - Method (ETC)
