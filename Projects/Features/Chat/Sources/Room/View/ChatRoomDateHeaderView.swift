@@ -16,7 +16,7 @@ struct ChatRoomDateHeaderView: View {
 
   private let dateFormater: DateFormatter = {
     let formmater = DateFormatter()
-    formmater.dateFormat = "yyyy. mm. dd"
+    formmater.dateFormat = "yyyy. MM. dd"
     return formmater
   }()
 
