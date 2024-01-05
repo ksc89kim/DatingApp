@@ -10,12 +10,14 @@ import SwiftUI
 
 struct ChatRoomView: View {
 
-  var roomIdx: String
-
   // MARK: - Property
 
+  var roomIdx: String
+
   var body: some View {
-    Text("Hello, World! \(self.roomIdx)")
+    ZStack {
+      ChatRoomMessageListView()
+    }
   }
 }
 

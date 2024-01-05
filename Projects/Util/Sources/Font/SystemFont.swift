@@ -52,6 +52,7 @@ public extension SystemFont {
     case placeHolder
     case bottomButton
     case logo
+    case text
 
     // MARK: - Property
 
@@ -64,6 +65,7 @@ public extension SystemFont {
       case .placeHolder: .regular
       case .bottomButton: .bold
       case .logo: .bold
+      case .text: .medium
       }
     }
 
@@ -76,6 +78,7 @@ public extension SystemFont {
       case .placeHolder: 12
       case .bottomButton: 14
       case .logo: 32
+      case .text: 14
       }
     }
   }
