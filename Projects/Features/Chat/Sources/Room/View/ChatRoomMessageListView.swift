@@ -13,26 +13,36 @@ struct ChatRoomMessageListView: View {
 
   // MARK: - Property
 
-  var messages: [ChatMessage] = [
-    .init(
-      user: .init(userIdx: "33", nickname: "", thumbnail: nil),
-      messageKind: .text("안녕"),
-      isSender: false,
-      date: .now
-    ),
-    .init(
-      user: .init(userIdx: "11", nickname: "", thumbnail: nil),
-      messageKind: .text("안녕?"),
-      isSender: true,
-      date: .now
-    ),
-    .init(
-      user: .init(userIdx: "11", nickname: "", thumbnail: nil),
-      messageKind: .text("잘지내?"),
-      isSender: true,
-      date: .now
-    )
-  ]
+  var messages: [ChatMessage] = {
+    let date: Date = .now
+    return [
+      .init(
+        user: .init(userIdx: "33", nickname: "", thumbnail: nil),
+        messageKind: .text("안녕"),
+        isSender: false,
+        date: date
+      ),
+      .init(
+        user: .init(userIdx: "11", nickname: "", thumbnail: nil),
+        messageKind: .text("안녕?"),
+        isSender: true,
+        date: date
+      ),
+      .init(
+        user: .init(userIdx: "11", nickname: "", thumbnail: nil),
+        messageKind: .text("잘지내?"),
+        isSender: true,
+        date: date
+      ),
+      .init(
+        user: .init(userIdx: "33", nickname: "", thumbnail: nil),
+        messageKind: .text("그럭저럭"),
+        isSender: false,
+        date: date.addingTimeInterval(3700)
+      )
+    ]
+  }()
+    
 
   var body: some View {
     ScrollView {
@@ -77,7 +87,7 @@ struct ChatRoomMessageListView: View {
     guard self.messages.indices ~= (index-1) else { return false }
     let currDate = self.messages[index].date.timeIntervalSinceReferenceDate
     let prevDate =  self.messages[index - 1].date.timeIntervalSinceReferenceDate
-    return prevDate - currDate > 3600
+    return (currDate - prevDate) > 3600
   }
 }
 

@@ -14,10 +14,18 @@ struct ChatRoomView: View {
 
   var roomIdx: String
 
+  @State
+  var newMessage: String = ""
+
   var body: some View {
-    ZStack {
+    VStack {
       ChatRoomMessageListView()
+      ChatRoomInputView(
+        messageText: self.$newMessage,
+        onSend: {}
+      )
     }
+    .background(Color.white)
   }
 }
 

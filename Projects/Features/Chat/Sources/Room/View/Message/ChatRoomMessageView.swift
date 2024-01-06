@@ -79,6 +79,7 @@ struct ChatRoomMessageView: View {
     Text(self.message)
       .padding(self.backgroundPadding)
       .systemScaledFont(style: .text)
+      .foregroundColor(Color.black)
       .background(ChatAsset.Assets.chatMessageOtherBackground.swiftUIColor)
       .cornerRadius(18, corners: self.bigCornerRadius)
       .cornerRadius(4, corners: self.smallCorenrRadius)

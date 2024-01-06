@@ -34,7 +34,7 @@ struct ChatRoomMessageContainerView: View {
   ChatRoomMessageContainerView(
     message: .init(
       user: .init(userIdx: "", nickname: "", thumbnail: nil),
-      messageKind: .text("test"),
+      messageKind: .text("안녕하세요"),
       isSender: false,
       date: .init()
     ), 

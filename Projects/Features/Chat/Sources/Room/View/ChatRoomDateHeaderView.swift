@@ -16,7 +16,7 @@ struct ChatRoomDateHeaderView: View {
 
   private let dateFormater: DateFormatter = {
     let formmater = DateFormatter()
-    formmater.dateFormat = "yyyy. MM. dd"
+    formmater.dateFormat = "yyyy. MM. dd a h:mm"
     return formmater
   }()
 
@@ -24,6 +24,7 @@ struct ChatRoomDateHeaderView: View {
     Text(self.dateFormater.string(from: self.date))
       .foregroundStyle(ChatAsset.Assets.chatMessageDateHeader.swiftUIColor)
       .systemScaledFont(font: .medium, size: 14)
+      .padding()
   }
 }
 

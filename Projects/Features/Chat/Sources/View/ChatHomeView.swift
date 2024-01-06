@@ -26,6 +26,7 @@ struct ChatHomeView: View, Injectable {
       .navigationDestination(for: ChatRoutePath.self) { path in
         switch path {
         case .chatRoom(let idx): ChatRoomView(roomIdx: idx)
+            .toolbar(.hidden, for: .tabBar)
         }
       }
       .toolbar {
