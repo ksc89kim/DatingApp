@@ -32,6 +32,7 @@ struct ChatListView: View {
         self.listView
       }
     }
+    .background(.white)
     .onAppear {
       self.viewModel.trigger(.load)
     }
@@ -67,6 +68,7 @@ struct ChatListView: View {
         )
       )
     }
+    .background(.white)
     .listRowInsets(EdgeInsets())
     .listRowSeparator(.hidden)
   }
@@ -103,6 +105,7 @@ struct ChatListView: View {
           }
       }
     }
+    .background(.white)
     .listRowInsets(EdgeInsets())
     .listRowSeparator(.hidden)
   }

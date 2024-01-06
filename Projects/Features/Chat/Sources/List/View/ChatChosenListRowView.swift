@@ -22,6 +22,7 @@ struct ChatChosenListRowView: View {
   var body: some View {
     VStack(alignment: .leading) {
       Text("친구 요청 목록")
+        .foregroundStyle(.black)
         .accessibilityAddTraits(.isHeader)
         .systemScaledFont(font: .semibold, size: 16)
         .padding(.leading, 15)

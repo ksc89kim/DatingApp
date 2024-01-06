@@ -26,10 +26,12 @@ struct ChatListMessageRowView: View {
         .padding(.trailing, 13)
       VStack(alignment: .leading, spacing: 8) {
         Text(self.item.nickname)
+          .foregroundStyle(.black)
           .systemScaledFont(font: .bold, size: 16)
           .accessibilityLabel("유저 닉네임")
           .accessibilityValue(self.item.nickname)
         Text(self.item.message)
+          .foregroundStyle(.black)
           .systemScaledFont(font: .regular, size: 14)
           .accessibilityLabel("메시지")
           .accessibilityValue(self.item.message)

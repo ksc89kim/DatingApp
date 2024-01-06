@@ -20,6 +20,7 @@ struct ChatChosenListRowItemView: View {
     VStack(spacing: 12) {
       ChatChosenProfileView(profile: self.item.profile)
       Text(self.item.nickname)
+        .foregroundStyle(.black)
         .systemScaledFont(font: .bold, size: 12)
         .accessibilityLabel("유저 닉네임")
         .accessibilityValue(self.item.nickname)

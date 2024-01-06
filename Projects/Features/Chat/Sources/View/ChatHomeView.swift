@@ -31,6 +31,7 @@ struct ChatHomeView: View, Injectable {
       .toolbar {
         ToolbarItem(placement: .navigationBarLeading) {
           Text("채팅")
+            .foregroundStyle(.black)
             .systemScaledFont(style: .boldLargeTitle)
             .accessibilityAddTraits(.isHeader)
         }
