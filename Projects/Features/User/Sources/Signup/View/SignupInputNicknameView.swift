@@ -22,6 +22,7 @@ struct SignupInputNicknameView: View {
   var body: some View {
     VStack(alignment: .leading) {
       Text("닉네임을 만들어볼까요?")
+        .foregroundStyle(.black)
         .systemScaledFont(font: .bold, size: 24)
         .padding(.bottom, 8)
         .accessibilitySortPriority(3)
@@ -41,7 +42,10 @@ struct SignupInputNicknameView: View {
               weight: .semibold
             )
           )
+          .foregroundStyle(UtilAsset.MainColor.placeHolder2.swiftUIColor)
       )
+      .foregroundStyle(.black)
+      .tint(.black)
       Divider()
         .padding(.bottom, 4)
       Text("최대 \(self.limitCount)자")

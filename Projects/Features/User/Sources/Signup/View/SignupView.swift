@@ -32,6 +32,7 @@ struct SignupView: View, Injectable {
       }
       .padding(.horizontal, 18)
     }
+    .background(.white)
     .alert(isPresented: .constant(self.viewModel.state.isPresentAlert) ) {
       return self.buildAlert(self.viewModel.state.alert)
     }
