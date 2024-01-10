@@ -30,7 +30,7 @@ extension ChatAPI: NetworkTargetType {
     switch self {
     case .chatList: return "/chat_list"
     case .chosenList: return "/chosen_list"
-    case .deleteMessageRoom: return "/delete_message"
+    case .deleteMessageRoom: return "/delete_message_room"
     }
   }
 
