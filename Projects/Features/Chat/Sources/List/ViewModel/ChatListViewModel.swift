@@ -20,7 +20,7 @@ final class ChatListViewModel: ViewModelType, Injectable {
     static let load = "loadKey"
     static let loadMessageListMore = "loadMessageListMoreKey"
     static let loadChosenListMore = "loadChosenListMoreKey"
-    static let deleteMessage = "deleteMessageKey"
+    static let deleteMessageRoom = "deleteMessageRoomKey"
   }
 
   // MARK: - Property
@@ -81,8 +81,8 @@ final class ChatListViewModel: ViewModelType, Injectable {
         index: index,
         taskKey: TaskKey.loadChosenListMore
       )
-    case .deleteMessage(roomIdx: let roomIdx):
-      self.deleteMessage(roomIdx: roomIdx)
+    case .deleteMessageRoom(roomIdx: let roomIdx):
+      self.deleteMessageRoom(roomIdx: roomIdx)
     case .loadChosenList, .loadMessageList: break
     case .presentRoom(let roomIdx): self.presentRoom(roomIdx: roomIdx)
     }
@@ -102,8 +102,8 @@ final class ChatListViewModel: ViewModelType, Injectable {
         pagination: self.chosenPagination,
         index: index
       )
-    case .deleteMessage(roomIdx: let roomIdx):
-      await self.deleteMessage(roomIdx: roomIdx)
+    case .deleteMessageRoom(roomIdx: let roomIdx):
+      await self.deleteMessageRoom(roomIdx: roomIdx)
     case .load: await self.load()
     case .presentRoom: break
     }
@@ -164,18 +164,18 @@ final class ChatListViewModel: ViewModelType, Injectable {
 
   // MARK: - Method (Delete Message)
 
-  private func deleteMessage(roomIdx: String) {
-    self.taskBag[TaskKey.deleteMessage]?.cancel()
+  private func deleteMessageRoom(roomIdx: String) {
+    self.taskBag[TaskKey.deleteMessageRoom]?.cancel()
 
     Task { [weak self] in
-      await self?.deleteMessage(roomIdx: roomIdx)
+      await self?.deleteMessageRoom(roomIdx: roomIdx)
     }
-    .store(in: self.taskBag, for: TaskKey.deleteMessage)
+    .store(in: self.taskBag, for: TaskKey.deleteMessageRoom)
   }
 
-  private func deleteMessage(roomIdx: String) async {
+  private func deleteMessageRoom(roomIdx: String) async {
     do {
-      try await self.chatRepository.deleteMessage(roomIdx: roomIdx)
+      try await self.chatRepository.deleteMessageRoom(roomIdx: roomIdx)
       await self.removeMessage(roomIdx: roomIdx)
     } catch {
       await self.handleError(error)

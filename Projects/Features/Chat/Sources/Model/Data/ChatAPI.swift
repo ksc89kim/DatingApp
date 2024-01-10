@@ -12,7 +12,7 @@ import Core
 enum ChatAPI {
   case chatList(page: Int, limit: Int)
   case chosenList(page: Int, limit: Int)
-  case deleteMessage(roomIdx: String)
+  case deleteMessageRoom(roomIdx: String)
 }
 
 
@@ -30,7 +30,7 @@ extension ChatAPI: NetworkTargetType {
     switch self {
     case .chatList: return "/chat_list"
     case .chosenList: return "/chosen_list"
-    case .deleteMessage: return "/delete_message"
+    case .deleteMessageRoom: return "/delete_message"
     }
   }
 
@@ -50,7 +50,7 @@ extension ChatAPI: NetworkTargetType {
         "page": page,
         "limit": limit
       ]
-    case .deleteMessage(let roomIdx):
+    case .deleteMessageRoom(let roomIdx):
       return [
         "roomIdx": roomIdx
       ]
@@ -68,7 +68,7 @@ extension ChatAPI: NetworkTargetType {
     switch self {
     case .chatList: return self.chatListSampleData
     case .chosenList: return self.chosenListSampleData
-    case .deleteMessage: return self.deleteSampleData
+    case .deleteMessageRoom: return self.deleteSampleData
     }
   }
 

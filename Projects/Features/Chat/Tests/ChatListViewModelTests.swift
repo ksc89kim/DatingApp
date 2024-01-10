@@ -95,8 +95,8 @@ final class ChatListViewModelTests: XCTestCase {
     XCTAssertEqual(viewModel.state.listTitle, "100개의 대화방")
   }
 
-  /// 메시지 삭제하기
-  func testDeleteMessage() async {
+  /// 메시지방 삭제하기
+  func testDeleteMessageRoom() async {
     let pagination = Pagination()
     let viewModel: ChatListViewModel = .init(
       listPagination: pagination,
@@ -104,7 +104,7 @@ final class ChatListViewModelTests: XCTestCase {
     )
 
     await viewModel.trigger(.loadMessageList)
-    await viewModel.trigger(.deleteMessage(roomIdx: "room.1"))
+    await viewModel.trigger(.deleteMessageRoom(roomIdx: "room.1"))
 
     XCTAssertEqual(viewModel.state.messages.count, pagination.state.limit - 1)
   }

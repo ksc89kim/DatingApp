@@ -60,7 +60,7 @@ struct ChatListView: View {
       ChatChosenListRowView(
         items: self.viewModel.state.chosenUsers,
         appearIndex: Binding(
-          get: { self.chosenAppearIndex},
+          get: { self.chosenAppearIndex },
           set: { newValue in
             self.viewModel.trigger(.loadChosenListMore(index: newValue))
             self.chosenAppearIndex = newValue
@@ -95,7 +95,7 @@ struct ChatListView: View {
               role: .destructive,
               action: {
                 self.viewModel.trigger(
-                  .deleteMessage(roomIdx: item.roomIdx)
+                  .deleteMessageRoom(roomIdx: item.roomIdx)
                 )
               },
               label: {

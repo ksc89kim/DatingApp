@@ -42,10 +42,10 @@ final class ChatRepository: ChatRepositoryType {
     return response.chatChosenList
   }
 
-  func deleteMessage(roomIdx: String) async throws {
+  func deleteMessageRoom(roomIdx: String) async throws {
     _ = try await self.networking.request(
       EmptyResponse.self,
-      target: .deleteMessage(roomIdx: roomIdx)
+      target: .deleteMessageRoom(roomIdx: roomIdx)
     )
   }
 }

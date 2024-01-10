@@ -104,7 +104,7 @@ final class MockChatRepository: ChatRepositoryType {
     return (page * limit) + limit
   }
 
-  func deleteMessage(roomIdx: String) async throws {
+  func deleteMessageRoom(roomIdx: String) async throws {
     if let error {
       throw error
     }
