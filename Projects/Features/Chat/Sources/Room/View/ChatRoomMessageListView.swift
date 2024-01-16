@@ -10,88 +10,111 @@ import SwiftUI
 import ChatInterface
 
 struct ChatRoomMessageListView: View {
-
+  
+  // MARK: - Define
+  
+  enum Constant {
+    static let bottomID = "Bottom"
+  }
+  
   // MARK: - Property
-
-  var messages: [ChatMessage] = {
-    let date: Date = .now
-    return [
-      .init(
-        user: .init(userIdx: "33", nickname: "", thumbnail: nil),
-        messageKind: .text("안녕"),
-        isSender: false,
-        date: date
-      ),
-      .init(
-        user: .init(userIdx: "11", nickname: "", thumbnail: nil),
-        messageKind: .text("안녕?"),
-        isSender: true,
-        date: date
-      ),
-      .init(
-        user: .init(userIdx: "11", nickname: "", thumbnail: nil),
-        messageKind: .text("잘지내?"),
-        isSender: true,
-        date: date
-      ),
-      .init(
-        user: .init(userIdx: "33", nickname: "", thumbnail: nil),
-        messageKind: .text("그럭저럭"),
-        isSender: false,
-        date: date.addingTimeInterval(3700)
-      )
-    ]
-  }()
-    
-
+  
+  @Binding
+  var messages: [ChatMessageSectionItem]
+  
+  @Binding
+  var scrollToBottom: Bool
+  
+  @Binding
+  var appearIndex: Int
+  
   var body: some View {
-    ScrollView {
-      ScrollViewReader { _ in
-        LazyVStack(spacing: 0) {
+    ScrollViewReader { proxy in
+      List {
+        Section {
+          Spacer()
+            .frame(height: 14)
+            .id(Constant.bottomID)
           ForEach(
-            self.messages.enumerated().map { $0 },
-            id: \.1.id
-          ) { offset, message in
-            let isFirstInGroup = self.isFirstInGroup(at: offset)
-            if self.shouldShowDateHeader(at: offset) {
-              ChatRoomDateHeaderView(date: message.date)
-            }
+            self.messages,
+            id: \.message.id
+          ) { (item: ChatMessageSectionItem) in
+            let isFirstInGroup = self.isFirstInGroup(at: item.index)
             ChatRoomMessageContainerView(
-              message: message,
+              message: item.message,
               isFirstInGroup: isFirstInGroup
             )
-            .id(message.id)
+            .onAppear {
+              self.appearIndex = item.index
+            }
+            .id(item.message.id)
             .modifier(
               ChatRoomDirectionalModifier(
-                isSender: message.isSender,
+                isSender: item.message.isSender,
                 isFirstInGroup: isFirstInGroup
               )
             )
+            if self.shouldShowDateHeader(at: item.index) {
+              ChatRoomDateHeaderView(date: item.message.date)
+            }
           }
         }
+        .rotationEffect(Angle(degrees: 180))
+        .listRowSeparator(.hidden)
+        .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
       }
+      .listStyle(.plain)
+      .environment(\.defaultMinListRowHeight, 0)
+      .onChange(of: self.scrollToBottom) { _, newValue in
+        if newValue {
+          proxy.scrollTo(Constant.bottomID)
+          self.scrollToBottom = false
+        }
+      }
+      .rotationEffect(Angle(degrees: 180))
     }
   }
-
+  
   // MARK: - Method
-
+  
   private func isFirstInGroup(at index: Int) -> Bool {
-    guard self.messages.indices ~= (index-1) else { return true }
-    let currUserID = self.messages[index].user.userIdx
-    let prevUserID =  self.messages[index - 1].user.userIdx
-    return currUserID != prevUserID
+    let prevIndex = index + 1
+    guard self.messages.indices ~= prevIndex else { return true }
+    let currMessage: ChatMessage = self.messages[index].message
+    let prevMessage: ChatMessage = self.messages[prevIndex].message
+    let currUserIdx = currMessage.user.userIdx
+    let prevUserIdx =  prevMessage.user.userIdx
+    return currUserIdx != prevUserIdx
   }
-
+  
   private func shouldShowDateHeader(at index: Int) -> Bool {
-    guard index != 0 else { return true }
-    guard self.messages.indices ~= (index-1) else { return false }
-    let currDate = self.messages[index].date.timeIntervalSinceReferenceDate
-    let prevDate =  self.messages[index - 1].date.timeIntervalSinceReferenceDate
+    let prevIndex = index + 1
+    guard index < (self.messages.count - 1) else { return true }
+    guard self.messages.indices ~= prevIndex else { return false }
+    let currMessage: ChatMessage = self.messages[index].message
+    let prevMessage: ChatMessage = self.messages[prevIndex].message
+    let currDate = currMessage.date.timeIntervalSinceReferenceDate
+    let prevDate = prevMessage.date.timeIntervalSinceReferenceDate
     return (currDate - prevDate) > 3600
   }
 }
 
 
 #Preview {
-  ChatRoomMessageListView()
+  ChatRoomMessageListView(
+    messages: .constant([
+      .init(
+        message: .init(
+          messageIdx: "",
+          user: .init(userIdx: "11", nickname: "하이룽", thumbnail: nil),
+          messageKind: .text("하이룽"),
+          isSender: false,
+          date: .now
+        ),
+        index: 0
+      )
+    ]),
+    scrollToBottom: .constant(true),
+    appearIndex: .constant(0)
+  )
 }

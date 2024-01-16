@@ -23,3 +23,8 @@ public enum ChatRepositoryKey: InjectionKey {
 public enum ChatListViewModelKey: InjectionKey {
   public typealias Value = ViewModelType
 }
+
+
+public enum ChatRoomViewModelKey: InjectionKey {
+  public typealias Value = ViewModelType
+}

@@ -20,9 +20,9 @@ public struct PaginationState {
 
   public var limit: Int
 
-  var finished: Bool = false
+  public var finished: Bool = false
 
-  var isLoading: Bool = false
+  public var isLoading: Bool = false
 
   // MARK: - Init
 
@@ -32,7 +32,8 @@ public struct PaginationState {
     itemsFromEndThreshold: Int = 15,
     limit: Int = 30,
     finished: Bool = false,
-    isLoading: Bool = false
+    isLoading: Bool = false,
+    threshold: ((Self, Int) -> Bool)? = nil
   ) {
     self.page = page
     self.itemsLoadedCount = itemsLoadedCount

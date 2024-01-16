@@ -7,29 +7,54 @@
 //
 
 import SwiftUI
+import DI
+import ChatInterface
 
 struct ChatRoomView: View {
-
+  
   // MARK: - Property
-
-  var roomIdx: String
-
+  
+  let roomIdx: String
+  
+  @StateObject
+  private var viewModel: ChatRoomViewModel = DIContainer.resolve(
+    for: ChatRoomViewModelKey.self
+  )
+  
   @State
-  var newMessage: String = ""
-
+  private var appearListIndex: Int =  0
+  
   var body: some View {
     VStack {
-      ChatRoomMessageListView()
+      ChatRoomMessageListView(
+        messages: self.$viewModel.state.items,
+        scrollToBottom: self.$viewModel.state.scrollToBottm,
+        appearIndex: .init(
+          get: {
+            return self.appearListIndex
+          },
+          set: { newValue in
+            self.viewModel.trigger(.loadMoreMessages(index: newValue))
+            self.appearListIndex = newValue
+          }
+        )
+      )
       ChatRoomInputView(
-        messageText: self.$newMessage,
-        onSend: {}
+        messageText: self.$viewModel.state.newMessage,
+        onSend: {
+          self.viewModel.trigger(.sendMessage)
+        }
       )
     }
     .background(Color.white)
+    .onAppear {
+      self.viewModel.trigger(.loadMeta(roomIdx: self.roomIdx))
+    }
   }
 }
 
 
 #Preview {
-  ChatRoomView(roomIdx: "123")
+  ChatDIRegister.register()
+  return ChatRoomView(roomIdx: "123")
 }

@@ -24,6 +24,8 @@ final class MockChatRepository: ChatRepositoryType {
   var isEmpty: Bool = false
 
   var error: Error?
+  
+  private var date: Date = .now
 
   // MARK: - Method
 
@@ -105,8 +107,69 @@ final class MockChatRepository: ChatRepositoryType {
   }
 
   func deleteMessageRoom(roomIdx: String) async throws {
+    if let error { throw error }
+  }
+  
+  func chatRoomMeta(roomIdx: String) async throws -> ChatRoomMeta {
+    guard !self.isEmpty else {
+      return .init(isFinal: true, messages: [])
+    }
+    
     if let error {
       throw error
     }
+    
+    let messages: [ChatMessage] = (1...30).map { index in
+      let isSender: Bool = .random()
+
+      let user = ChatUser(
+        userIdx: self.chatMessageUserIdx(isSender: isSender),
+        nickname: "테스트임",
+        thumbnail: nil
+      )
+      return .init(
+        messageIdx: "\(UUID())",
+        user: user,
+        messageKind: .text("테스트\(index)"),
+        isSender: isSender,
+        date: self.date.addingTimeInterval(TimeInterval(index * 100))
+      )
+    }
+      
+    return .init(isFinal: self.isFianl, messages: messages)
+  }
+  
+  func chatMessagese(request: ChatMessagesRequest) async throws -> ChatMessages {
+    guard !self.isEmpty else {
+      return .init(isFinal: true, messages: [])
+    }
+    
+    if let error {
+      throw error
+    }
+    
+    self.date = self.date.addingTimeInterval(-TimeInterval(7200))
+            
+    let messages: [ChatMessage] = (0...30).map { index in
+      let isSender: Bool = .random()
+      let user = ChatUser(
+        userIdx: self.chatMessageUserIdx(isSender: isSender),
+        nickname: "테스트임",
+        thumbnail: nil
+      )
+      return .init(
+        messageIdx: "\(UUID())",
+        user: user,
+        messageKind: .text("테스트\(index)"),
+        isSender: isSender,
+        date: self.date.addingTimeInterval(TimeInterval(index * 100))
+      )
+    }
+    
+    return .init(isFinal: self.isFianl, messages: messages)
+  }
+  
+  private func chatMessageUserIdx(isSender: Bool) -> String {
+    return isSender ? "me" : "other"
   }
 }

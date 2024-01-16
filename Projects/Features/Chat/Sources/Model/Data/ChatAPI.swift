@@ -13,6 +13,8 @@ enum ChatAPI {
   case chatList(page: Int, limit: Int)
   case chosenList(page: Int, limit: Int)
   case deleteMessageRoom(roomIdx: String)
+  case chatRoomMeta(roomIdx: String)
+  case chatMessages(lastID: String, limit: Int)
 }
 
 
@@ -31,6 +33,8 @@ extension ChatAPI: NetworkTargetType {
     case .chatList: return "/chat_list"
     case .chosenList: return "/chosen_list"
     case .deleteMessageRoom: return "/delete_message_room"
+    case .chatMessages: return "/chat_messages"
+    case .chatRoomMeta: return "/chat_room_meta"
     }
   }
 
@@ -54,6 +58,15 @@ extension ChatAPI: NetworkTargetType {
       return [
         "roomIdx": roomIdx
       ]
+    case .chatMessages(let lastID, let limit):
+      return [
+        "last_id": lastID,
+        "limit": limit
+      ]
+    case .chatRoomMeta(let roomIdx):
+      return [
+        "room_idx": roomIdx
+      ]
     }
   }
 
@@ -69,6 +82,8 @@ extension ChatAPI: NetworkTargetType {
     case .chatList: return self.chatListSampleData
     case .chosenList: return self.chosenListSampleData
     case .deleteMessageRoom: return self.deleteSampleData
+    case .chatMessages: return self.chatMessagesSampleData
+    case .chatRoomMeta: return self.chatRoomMetaSampleData
     }
   }
 
@@ -172,6 +187,36 @@ extension ChatAPI: NetworkTargetType {
       "code": 201,
       "message": "",
       "data": {
+      }
+    }
+    """.data(using: .utf16)!
+  }
+  
+  private var chatMessagesSampleData: Data {
+    return """
+    {
+      "code": 201,
+      "message": "",
+      "data": {
+        "messages": [
+          {
+          }
+        ]
+      }
+    }
+    """.data(using: .utf16)!
+  }
+  
+  private var chatRoomMetaSampleData: Data {
+    return """
+    {
+      "code": 201,
+      "message": "",
+      "data": {
+        "messages": [
+          {
+          }
+        ]
       }
     }
     """.data(using: .utf16)!

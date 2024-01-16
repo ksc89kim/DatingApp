@@ -18,4 +18,8 @@ public protocol ChatRepositoryType: AnyObject, Injectable {
   func chosenList(request: ChatChosenListRequest) async throws -> ChatChosenList
 
   func deleteMessageRoom(roomIdx: String) async throws
+  
+  func chatRoomMeta(roomIdx: String) async throws -> ChatRoomMeta
+  
+  func chatMessagese(request: ChatMessagesRequest) async throws -> ChatMessages
 }

@@ -34,6 +34,7 @@ struct ChatContentView: View {
         case .chatRoom: ChatRoomView(roomIdx: "123")
         }
       }
+      .toolbarTitleDisplayMode(.inline)
       .listStyle(.sidebar)
     }
   }
@@ -51,6 +52,9 @@ struct ChatContentView: View {
       }
       InjectItem(ChatRepositoryKey.self) {
         MockChatRepository()
+      }
+      InjectItem(ChatRoomViewModelKey.self) {
+        ChatRoomViewModel(pagination: Pagination())
       }
     }
   }

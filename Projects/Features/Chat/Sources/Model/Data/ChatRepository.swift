@@ -48,4 +48,22 @@ final class ChatRepository: ChatRepositoryType {
       target: .deleteMessageRoom(roomIdx: roomIdx)
     )
   }
+  
+  func chatRoomMeta(roomIdx: String) async throws -> ChatRoomMeta {
+    let response = try await self.networking.request(
+      ChatRoomMetaResponse.self,
+      target: .chatRoomMeta(roomIdx: roomIdx)
+    ).data
+    
+    return response.meta
+  }
+  
+  func chatMessagese(request: ChatMessagesRequest) async throws -> ChatMessages {
+    let response = try await self.networking.request(
+      ChatMessagesResponse.self,
+      target: .chatMessages(lastID: request.messageIdx, limit: request.limit)
+    ).data
+    
+    return response.chatMessages
+  }
 }

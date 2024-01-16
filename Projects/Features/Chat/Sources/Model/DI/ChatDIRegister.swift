@@ -30,6 +30,9 @@ public struct ChatDIRegister {
           chosenPagination: Pagination()
         )
       }
+      InjectItem(ChatRoomViewModelKey.self) {
+        return ChatRoomViewModel(pagination: Pagination())
+      }
     }
   }
 }

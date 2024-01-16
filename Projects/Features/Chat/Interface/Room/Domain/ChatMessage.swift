@@ -12,7 +12,7 @@ public struct ChatMessage: Identifiable {
 
   // MARK: - Property
 
-  public let id: UUID = .init()
+  public let id: String
 
   public let user: ChatUser
 
@@ -25,11 +25,13 @@ public struct ChatMessage: Identifiable {
   // MARK: - Init
 
   public init(
+    messageIdx: String,
     user: ChatUser,
     messageKind: ChatMessageKind,
     isSender: Bool,
     date: Date
   ) {
+    self.id = messageIdx
     self.user = user
     self.messageKind = messageKind
     self.isSender = isSender
