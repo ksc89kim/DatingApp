@@ -9,7 +9,7 @@
 import Foundation
 
 enum ChatRoomAction {
-  case loadMeta(roomIdx: String)
+  case loadRoomInfo(roomIdx: String)
   case sendMessage
   case loadMoreMessages(index: Int)
 }

@@ -193,32 +193,64 @@ extension ChatAPI: NetworkTargetType {
   }
   
   private var chatMessagesSampleData: Data {
-    return """
-    {
-      "code": 201,
-      "message": "",
-      "data": {
-        "messages": [
-          {
-          }
-        ]
-      }
+    var list = ""
+    for i in 0 ..< 30 {
+      let id = UUID()
+      let isSender: Bool = .random()
+      let data = """
+              {
+                "message_idx": "\(id)",
+                "user": {
+                  "user_idx": "\(isSender ? "me": "other")",
+                  "nickname": "\(self.names[i])",
+                  "thumbnail": "\(self.thumbnails[i])"
+                },
+                "message_kind": {
+                  "type": "text",
+                  "content": "테스트 \(i)"
+                },
+                "is_sender": \(isSender),
+                "date": "2024-01-27T12:00:00Z"
+              },
+
+      """
+      list += data
     }
-    """.data(using: .utf16)!
+
+    list.removeLast()
+    list.removeLast()
+    var result = """
+            {
+              "code": 201,
+              "message": "",
+              "data": {
+                "messages": [
+
+            """
+    result += list
+    result += """
+              ],
+              "is_final": false
+            }
+          }
+        """
+    return result.data(using: .utf16)!
   }
   
   private var chatRoomMetaSampleData: Data {
     return """
-    {
-      "code": 201,
-      "message": "",
-      "data": {
-        "messages": [
           {
+            "code": 201,
+            "message": "",
+            "data": {
+              "partner": {
+                "user_idx": "other",
+                "nickname": "\(self.names[0])",
+                "thumbnail": "\(self.thumbnails[0])"
+              },
+              "socket_url": "ws://example.com/socket"
+            }
           }
-        ]
-      }
-    }
-    """.data(using: .utf16)!
+      """.data(using: .utf16)!
   }
 }

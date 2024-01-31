@@ -12,13 +12,20 @@ public struct ChatMessagesRequest {
 
   // MARK: - Property
 
+  public let roomIdx: String
+
   public let messageIdx: String
 
   public let limit: Int
-
+  
   // MARK: - Init
 
-  public init(messageIdx: String, limit: Int) {
+  public init(
+    roomIdx: String,
+    messageIdx: String,
+    limit: Int
+  ) {
+    self.roomIdx = roomIdx
     self.messageIdx = messageIdx
     self.limit = limit
   }

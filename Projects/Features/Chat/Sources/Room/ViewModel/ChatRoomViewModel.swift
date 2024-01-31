@@ -16,8 +16,9 @@ final class ChatRoomViewModel: ViewModelType, Injectable {
   // MARK: - Define
   
   private enum TaskKey {
-    static let loadMeta = "loadMeta"
+    static let loadRoomInfo = "loadRoomInfo"
     static let loadMoreMessages = "loadMoreMessages"
+    static let socketKey = "socketKey"
   }
   
   // MARK: - Property
@@ -28,8 +29,13 @@ final class ChatRoomViewModel: ViewModelType, Injectable {
   @Inject(ChatRepositoryKey.self)
   private var repository: ChatRepositoryType
   
+  @Inject(ChatSocketManagerTypeKey.self)
+  private var socketManager: ChatSocketManagerType
+  
   private let taskBag: AnyCancelTaskDictionaryBag = .init()
   
+  private let sendMessageTaskBag: AnyCancelTaskBag = .init()
+
   private var pagination: PaginationType
   
   // MARK: - Init
@@ -39,11 +45,11 @@ final class ChatRoomViewModel: ViewModelType, Injectable {
     self.pagination.dataSource = self
   }
   
-  // MARK: - Method
+  // MARK: - Trigger Method
   
   func trigger(_ action: ChatRoomAction) {
     switch action {
-    case .loadMeta(let roomIdx): self.loadMeta(roomIdx: roomIdx)
+    case .loadRoomInfo(let roomIdx): self.loadRoomInfo(roomIdx: roomIdx)
     case .sendMessage: self.sendMessage()
     case .loadMoreMessages(let index): self.loadMoreMessages(index: index)
     }
@@ -51,35 +57,73 @@ final class ChatRoomViewModel: ViewModelType, Injectable {
   
   public func trigger(_ action: ChatRoomAction) async {
     switch action {
-    case .loadMeta(let roomIdx): await self.loadMeta(roomIdx: roomIdx)
-    case .sendMessage: break
+    case .loadRoomInfo(let roomIdx): await self.loadRoomInfo(roomIdx: roomIdx)
+    case .sendMessage: await self.sendMessage()
     case .loadMoreMessages(let index): await self.loadMoreMessages(index: index)
     }
   }
   
-  private func loadMeta(roomIdx: String) {
-    self.taskBag[TaskKey.loadMeta]?.cancel()
+  // MARK: - Load Room Info Method
+  
+  private func loadRoomInfo(roomIdx: String) {
+    self.taskBag[TaskKey.loadRoomInfo]?.cancel()
     
     Task { [weak self] in
-      await self?.loadMeta(roomIdx: roomIdx)
+      await self?.loadRoomInfo(roomIdx: roomIdx)
     }
-    .store(in: self.taskBag, for: TaskKey.loadMeta)
+    .store(in: self.taskBag, for: TaskKey.loadRoomInfo)
   }
   
-  private func loadMeta(roomIdx: String) async {
-    do {
-      self.pagination.state.isLoading = true
-      let meta = try await self.repository.chatRoomMeta(roomIdx: roomIdx)
-      self.pagination.state.finished = meta.isFinal
-      await self.setItems(messages: meta.messages)
-      self.pagination.state.isLoading = false
-    } catch {
-      
+  private func loadRoomInfo(roomIdx: String) async {
+    await MainActor.run {
+      self.state.roomIdx = roomIdx
     }
+    do {
+      async let meta = try await self.repository.chatRoomMeta(
+        roomIdx: roomIdx
+      )
+      async let messages = try await self.loadMessages()
+      let (metaResult, messagesResult) = try await (meta, messages)
+      try self.connectForSocket(url: metaResult.socketURL)
+      await MainActor.run {
+        self.state.partner = metaResult.partner
+      }
+      await self.setItems(messages: messagesResult)
+    } catch {
+    }
+  }
+  
+  private func connectForSocket(url: URL?) throws {
+    guard let url = url else { throw URLError(.unsupportedURL) }
+    self.socketManager.disconnect()
+    self.taskBag[TaskKey.socketKey]?.cancel()
+    self.socketManager.connect(url: url)
+    
+    Task.detached(priority: .background) { [weak self] in
+      if let events = self?.socketManager.events() {
+        for try await event in events {
+          switch event {
+          case .connected: break
+          case .message(let message): await self?.insertItem(message: message)
+          case .error(let error): print(error)
+          }
+        }
+      }
+    }
+    .store(in: self.taskBag, for: TaskKey.socketKey)
+  }
+  
+  // MARK: - Load Messages Method
+  
+  private func loadMessages() async throws -> [ChatMessage] {
+    let response = try await self.pagination.load()
+    guard let messages = response?.items as? [ChatMessage] else { return [] }
+    return messages
   }
   
   private func loadMoreMessages(index: Int) {
-    guard self.pagination.isAvailableLoadMore(index: index) else { return }
+    guard self.pagination.isAvailableLoadMore(index: index),
+            !self.state.items.isEmpty else { return }
     self.taskBag[TaskKey.loadMoreMessages]?.cancel()
     
     Task { [weak self] in
@@ -99,27 +143,30 @@ final class ChatRoomViewModel: ViewModelType, Injectable {
     }
   }
   
+  // MARK: - Send Message Method
+  
   private func sendMessage() {
-    let chatMessage: ChatMessage = .init(
-      messageIdx: "\(UUID())",
-      user: .init(userIdx: "me", nickname: "", thumbnail: nil),
-      messageKind: .text(self.state.newMessage),
-      isSender: true,
-      date: .now
-    )
-    
-    self.state.items.insert(.init(message: chatMessage, index: 0), at: 0)
-    self.state.items = self.state.items.enumerated().map { (
-      offset: Int,
-      item: ChatMessageSectionItem
-    ) -> ChatMessageSectionItem in
-      var item = item
-      item.index = offset
-      return item
+    Task { [weak self] in
+      await self?.sendMessage()
     }
-    self.state.scrollToBottm = true
-    self.state.newMessage = ""
+    .store(in: self.sendMessageTaskBag)
   }
+  
+  private func sendMessage() async {
+    do {
+      try await self.socketManager.sendMessage(
+        request: .init(message: self.state.newMessage, userIdx: "me")
+      )
+      await MainActor.run {
+        self.state.scrollToBottm = true
+        self.state.newMessage = ""
+      }
+    } catch {
+      
+    }
+  }
+  
+  // MARK: - MainActor Methods (State)
   
   @MainActor
   private func setItems(messages: [ChatMessage]) {
@@ -139,8 +186,14 @@ final class ChatRoomViewModel: ViewModelType, Injectable {
   }
   
   @MainActor
-  private func scrollToBottom() {
-    self.state.scrollToBottm = true
+  private func insertItem(message: ChatMessage) {
+    self.state.items.insert(.init(message: message, index: 0), at: 0)
+    self.state.items = self.state.items.enumerated()
+      .map { (offset: Int, item: ChatMessageSectionItem) -> ChatMessageSectionItem in
+        var item = item
+        item.index = offset
+        return item
+      }
   }
 }
 
@@ -150,9 +203,14 @@ final class ChatRoomViewModel: ViewModelType, Injectable {
 extension ChatRoomViewModel: PaginationDataSource {
   
   func load(request: PaginationRequest) async throws -> any PaginationResponse {
-    let messageIdx = self.state.items.last?.message.id ?? ""
+    let messageIdx = self.state.items.last?.message.id ?? "last_page"
+    
     return try await self.repository.chatMessagese(
-      request: .init(messageIdx: messageIdx, limit: request.limit)
+      request: .init(
+        roomIdx: self.state.roomIdx,
+        messageIdx: messageIdx,
+        limit: request.limit
+      )
     )
   }
 }

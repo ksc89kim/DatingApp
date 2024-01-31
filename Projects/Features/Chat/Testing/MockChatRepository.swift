@@ -111,32 +111,16 @@ final class MockChatRepository: ChatRepositoryType {
   }
   
   func chatRoomMeta(roomIdx: String) async throws -> ChatRoomMeta {
-    guard !self.isEmpty else {
-      return .init(isFinal: true, messages: [])
-    }
-    
-    if let error {
-      throw error
-    }
-    
-    let messages: [ChatMessage] = (1...30).map { index in
-      let isSender: Bool = .random()
-
-      let user = ChatUser(
-        userIdx: self.chatMessageUserIdx(isSender: isSender),
-        nickname: "테스트임",
-        thumbnail: nil
-      )
-      return .init(
-        messageIdx: "\(UUID())",
-        user: user,
-        messageKind: .text("테스트\(index)"),
-        isSender: isSender,
-        date: self.date.addingTimeInterval(TimeInterval(index * 100))
-      )
-    }
+    if let error { throw error }
       
-    return .init(isFinal: self.isFianl, messages: messages)
+    return .init(
+      partner: .init(
+        userIdx: self.chatMessageUserIdx(isSender: false),
+        nickname: "테스트",
+        thumbnail: nil
+      ),
+      socketURL: URL(string: "ws://example.com/socket")
+    )
   }
   
   func chatMessagese(request: ChatMessagesRequest) async throws -> ChatMessages {
@@ -150,7 +134,7 @@ final class MockChatRepository: ChatRepositoryType {
     
     self.date = self.date.addingTimeInterval(-TimeInterval(7200))
             
-    let messages: [ChatMessage] = (0...30).map { index in
+    let messages: [ChatMessage] = (1...30).map { index in
       let isSender: Bool = .random()
       let user = ChatUser(
         userIdx: self.chatMessageUserIdx(isSender: isSender),

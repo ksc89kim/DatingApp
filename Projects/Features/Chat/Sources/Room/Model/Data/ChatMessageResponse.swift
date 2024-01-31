@@ -51,6 +51,7 @@ struct ChatMessageResponse: Codable {
     self.user = try container.decode(ChatUserResponse.self, forKey: .user)
     self.messageKind = try container.decode(ChatMessageKindResponse.self, forKey: .messageKind)
     self.isSender = try container.decode(Bool.self, forKey: .isSender)
-    self.date = try container.decode(Date.self, forKey: .date)
+    let dateString = try container.decode(String.self, forKey: .date)
+    self.date = ChatDate.date(from: dateString) ?? .now
   }
 }

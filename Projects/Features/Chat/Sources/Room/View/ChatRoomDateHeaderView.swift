@@ -14,17 +14,8 @@ struct ChatRoomDateHeaderView: View {
 
   let date: Date
 
-  private let dateFormater: DateFormatter = {
-    let formmater = DateFormatter()
-    formmater.dateStyle = .medium
-    formmater.timeStyle = .short
-    formmater.timeZone = NSTimeZone.local
-    formmater.doesRelativeDateFormatting = true
-    return formmater
-  }()
-
   var body: some View {
-    Text(self.dateFormater.string(from: self.date))
+    Text(ChatDate.string(from: self.date))
       .frame(maxWidth: .infinity)
       .foregroundStyle(ChatAsset.Assets.chatMessageDateHeader.swiftUIColor)
       .systemScaledFont(font: .medium, size: 14)

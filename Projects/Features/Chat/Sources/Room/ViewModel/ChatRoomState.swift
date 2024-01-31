@@ -7,14 +7,19 @@
 //
 
 import Foundation
+import ChatInterface
 
 struct ChatRoomState {
   
   // MARK: - Property
+  
+  var roomIdx: String  = ""
   
   var items: [ChatMessageSectionItem] = []
   
   var newMessage: String = ""
   
   var scrollToBottm: Bool = false
+  
+  var partner: ChatUser?
 }

@@ -11,7 +11,7 @@ final class ChatListViewModelTests: XCTestCase {
   // MARK: - Property
 
   private var repository: MockChatRepository!
-
+  
   // MARK: - Method
 
   override func setUp() {
@@ -56,8 +56,7 @@ final class ChatListViewModelTests: XCTestCase {
     )
 
     XCTAssertEqual(viewModel.state.messages.count, pagination.state.limit + 1)
-    let page = pagination.state.page
-    XCTAssertEqual(page, 1)
+    XCTAssertEqual(pagination.state.page, 1)
   }
 
   /// 메시지 리스트의 마지막 페이지 이후 호출 테스트
@@ -138,11 +137,10 @@ final class ChatListViewModelTests: XCTestCase {
     )
 
     XCTAssertEqual(viewModel.state.chosenUsers.count, pagination.state.limit + 1)
-    let page = pagination.state.page
-    XCTAssertEqual(page, 1)
+    XCTAssertEqual(pagination.state.page, 1)
   }
 
-  /// 나를 선택한 친구 리스트 페이지 이후 호출 테스트
+  /// 나를 선택한 친구 리스트 마지막 페이지 이후 호출 테스트
   func testChosenListPageOver() async {
     let pagination = Pagination()
     let threshold = pagination.state.itemsFromEndThreshold
@@ -204,6 +202,7 @@ final class ChatListViewModelTests: XCTestCase {
     XCTAssertTrue(viewModel.state.isEmpty)
   }
 
+  /// 채팅방 이동
   func testPresentChatRoom() {
     let viewModel: ChatListViewModel = .init(
       listPagination: Pagination(),

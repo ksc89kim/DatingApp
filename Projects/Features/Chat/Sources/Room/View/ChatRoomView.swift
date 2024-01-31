@@ -48,7 +48,7 @@ struct ChatRoomView: View {
     }
     .background(Color.white)
     .onAppear {
-      self.viewModel.trigger(.loadMeta(roomIdx: self.roomIdx))
+      self.viewModel.trigger(.loadRoomInfo(roomIdx: self.roomIdx))
     }
   }
 }

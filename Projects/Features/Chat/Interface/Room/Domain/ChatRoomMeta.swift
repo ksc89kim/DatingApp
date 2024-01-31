@@ -9,17 +9,18 @@
 import Foundation
 
 public struct ChatRoomMeta {
+    
+  public let socketURL: URL?
   
-  // MARK: - Property
-  
-  public let isFinal: Bool
-  
-  public let messages: [ChatMessage]
+  public let partner: ChatUser
   
   // MARK: - Init
   
-  public init(isFinal: Bool, messages: [ChatMessage]) {
-    self.isFinal = isFinal
-    self.messages = messages
+  public init(
+    partner: ChatUser,
+    socketURL: URL?
+  ) {
+    self.partner = partner
+    self.socketURL = socketURL
   }
 }

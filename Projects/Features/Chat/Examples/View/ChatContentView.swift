@@ -56,6 +56,9 @@ struct ChatContentView: View {
       InjectItem(ChatRoomViewModelKey.self) {
         ChatRoomViewModel(pagination: Pagination())
       }
+      InjectItem(ChatSocketManagerTypeKey.self) {
+        MockChatSocketManager()
+      }
     }
   }
 }
