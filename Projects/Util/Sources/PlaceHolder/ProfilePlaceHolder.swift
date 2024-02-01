@@ -8,12 +8,36 @@
 
 import SwiftUI
 
-struct ProfilePlaceHolder: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+public struct ProfilePlaceHolder: View {
+  
+  // MARK: - Define
+  
+  typealias ColorAssets = UtilAsset.UtilColor
+  
+  // MARK: - Property
+  
+  public var body: some View {
+    GeometryReader { geometry in
+      Circle()
+        .foregroundColor(ColorAssets.profilePlaceholder.swiftUIColor)
+        .overlay {
+          Image(systemName: "person.fill")
+            .resizable()
+            .scaledToFit()
+            .frame(
+              width: geometry.size.width * 0.5,
+              height: geometry.size.height * 0.5
+            )
+            .foregroundColor(ColorAssets.profilePlaceholderPerson.swiftUIColor)
+        }
     }
+  }
+  
+  // MARK: - Init
+  
+  public init() {}
 }
 
 #Preview {
-    ProfilePlaceHolder()
+  ProfilePlaceHolder()
 }
