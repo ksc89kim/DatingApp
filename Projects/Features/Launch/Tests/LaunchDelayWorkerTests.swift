@@ -17,9 +17,9 @@ final class LaunchDelayWorkerTests: XCTestCase {
     let twoSecondsWorker = LaunchDelayWorker(delayTime: 2.0)
     let zeroPointFiveWorker = LaunchDelayWorker(delayTime: 0.5)
 
-    XCTAssertEqual(oneSecondsWorker.nanoseconds, 1_000_000_000)
-    XCTAssertEqual(twoSecondsWorker.nanoseconds, 2_000_000_000)
-    XCTAssertEqual(zeroPointFiveWorker.nanoseconds, 500_000_000)
+    XCTAssertEqual(oneSecondsWorker.nanoseconds, 1.0.nanoseconds)
+    XCTAssertEqual(twoSecondsWorker.nanoseconds, 2.0.nanoseconds)
+    XCTAssertEqual(zeroPointFiveWorker.nanoseconds, 0.5.nanoseconds)
   }
 
   /// Timer 시간에 맞춰 지연이 되는지 확인하는 테스트

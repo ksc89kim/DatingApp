@@ -26,7 +26,7 @@ final class LaunchDelayWorker: LaunchWorkable {
   private let delayTime: TimeInterval
 
   var nanoseconds: UInt64 {
-    return UInt64(self.delayTime * 1_000_000_000)
+    return self.delayTime.nanoseconds
   }
 
   // MARK: - Init
