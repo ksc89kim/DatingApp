@@ -9,6 +9,7 @@
 import SwiftUI
 import DI
 import ChatInterface
+import Util
 
 struct ChatRoomView: View {
   
@@ -50,8 +51,16 @@ struct ChatRoomView: View {
     .onAppear {
       self.viewModel.trigger(.loadRoomInfo(roomIdx: self.roomIdx))
     }
+    .alert(isPresented:
+        .constant(self.viewModel.state.isPresentAlert)
+    ) {
+      self.buildAlert(self.viewModel.state.alert)
+    }
   }
 }
+
+
+extension ChatRoomView: AlertBuildable { }
 
 
 #Preview {

@@ -8,6 +8,7 @@
 
 import Foundation
 import ChatInterface
+import Util
 
 struct ChatRoomState {
   
@@ -22,4 +23,8 @@ struct ChatRoomState {
   var scrollToBottm: Bool = false
   
   var partner: ChatUser?
+  
+  var alert: BaseAlert = .empty
+
+  var isPresentAlert: Bool = false
 }

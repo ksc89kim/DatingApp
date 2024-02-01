@@ -21,6 +21,8 @@ final class ChatRoomViewModelTests: XCTestCase {
   private var repository: MockChatRepository!
   
   private var socketManager: MockChatSocketManager!
+  
+  private var roomIdx: String = "test"
 
   // MARK: - Method
 
@@ -44,15 +46,15 @@ final class ChatRoomViewModelTests: XCTestCase {
   /// 채팅방 정보 요청
   func testLoadRoomInfo() async {
     let viewModel = ChatRoomViewModel(pagination: Pagination())
-    let roomIdx = "test"
     
-    await viewModel.trigger(.loadRoomInfo(roomIdx: roomIdx))
+    await viewModel.trigger(.loadRoomInfo(roomIdx: self.roomIdx))
     
     XCTAssertFalse(viewModel.state.items.isEmpty)
-    XCTAssertEqual(viewModel.state.roomIdx, roomIdx)
+    XCTAssertEqual(viewModel.state.roomIdx, self.roomIdx)
     XCTAssertNotNil(viewModel.state.partner)
+    XCTAssertEqual(self.socketManager.state, .connected)
   }
-  
+    
   /// 채팅방 메시지  더보기 요청
   func testLoadMoreMessages() async {
     let pagination = Pagination()
@@ -96,9 +98,45 @@ final class ChatRoomViewModelTests: XCTestCase {
     XCTAssertEqual(self.socketManager.sendMessage, sendMessage)
   }
   
-  func testReciveMessage() async {
+  /// 채팅방 메시지 받기
+  func testReciveMessage() async throws {
     let pagination = Pagination()
+    self.socketManager.reciveDelayTime = 0.05
+
+    let viewModel = ChatRoomViewModel(pagination: pagination)
+    await viewModel.trigger(.loadRoomInfo(roomIdx: self.roomIdx))
+    
+    XCTAssertEqual(viewModel.state.items.count, 30)
+    XCTAssertEqual(self.socketManager.state, .connected)
+    try await Task.sleep(nanoseconds: (self.socketManager.reciveDelayTime + 0.01).nanoseconds)
+    
+    XCTAssertEqual(viewModel.state.items.count, 31)
+  }
+  
+  /// 채팅방 소켓 연결 실패
+  func testSocketConnectError() async throws {
+    let pagination = Pagination()
+    self.socketManager.reciveDelayTime = 0.05
+    self.socketManager.connectError = URLError(.unsupportedURL)
     let viewModel = ChatRoomViewModel(pagination: pagination)
 
+    await viewModel.trigger(.loadRoomInfo(roomIdx: self.roomIdx))
+    try await Task.sleep(nanoseconds: self.socketManager.reciveDelayTime.nanoseconds)
+    viewModel.state.alert.primaryAction.completion?()
+    
+    XCTAssertTrue(viewModel.state.isPresentAlert)
+    XCTAssertEqual(self.socketManager.state, .disconnected)
+  }
+  
+  /// 기본 에러 처리
+  func testDefaultErrorAlert() async {
+    let pagination = Pagination()
+    self.repository.error = MockChatRepository.NetworkError.default
+    let viewModel = ChatRoomViewModel(pagination: pagination)
+
+    await viewModel.trigger(.loadMoreMessages(index: pagination.state.itemsFromEndThreshold))
+    
+    XCTAssertTrue(viewModel.state.isPresentAlert)
+    XCTAssertEqual(self.socketManager.state, .idle)
   }
 }

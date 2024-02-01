@@ -7,9 +7,11 @@
 //
 
 import Foundation
+import AppStateInterface
 import ChatInterface
 import Core
 import DI
+import Util
 
 final class ChatRoomViewModel: ViewModelType, Injectable {
   
@@ -25,6 +27,9 @@ final class ChatRoomViewModel: ViewModelType, Injectable {
   
   @Published
   public var state: ChatRoomState = .init()
+  
+  @Inject(AppStateKey.self)
+  private var appState: AppState
   
   @Inject(ChatRepositoryKey.self)
   private var repository: ChatRepositoryType
@@ -90,6 +95,7 @@ final class ChatRoomViewModel: ViewModelType, Injectable {
       }
       await self.setItems(messages: messagesResult)
     } catch {
+      await self.handleError(error)
     }
   }
   
@@ -105,7 +111,7 @@ final class ChatRoomViewModel: ViewModelType, Injectable {
           switch event {
           case .connected: break
           case .message(let message): await self?.insertItem(message: message)
-          case .error(let error): print(error)
+          case .error(let error): await self?.handleError(error)
           }
         }
       }
@@ -139,7 +145,7 @@ final class ChatRoomViewModel: ViewModelType, Injectable {
         await self.appendItems(messages: messages)
       }
     } catch {
-      
+      await self.handleError(error)
     }
   }
   
@@ -162,7 +168,7 @@ final class ChatRoomViewModel: ViewModelType, Injectable {
         self.state.newMessage = ""
       }
     } catch {
-      
+      await self.handleError(error)
     }
   }
   
@@ -194,6 +200,28 @@ final class ChatRoomViewModel: ViewModelType, Injectable {
         item.index = offset
         return item
       }
+  }
+  
+  @MainActor
+  private func handleError(_ error: Error) {
+    if error is URLError {
+      self.state.alert = .init(
+        title: "",
+        message: error.localizedDescription,
+        primaryAction: .init(
+          title: .confirm,
+          type: .default,
+          completion: { [weak self] in
+            guard let `self` = self else { return }
+            self.socketManager.disconnect()
+            self.appState.chatRouter.remove(path: .chatRoom(idx: self.state.roomIdx))
+          }
+        )
+      )
+    } else {
+      self.state.alert = .message(error.localizedDescription)
+    }
+    self.state.isPresentAlert = true
   }
 }
 

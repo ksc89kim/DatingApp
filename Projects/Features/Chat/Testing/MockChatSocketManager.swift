@@ -11,6 +11,15 @@ import ChatInterface
 
 final class MockChatSocketManager: ChatSocketManagerType {
   
+  // MARK: - Define
+  
+  enum State {
+    case idle
+    case connect
+    case connected
+    case disconnected
+  }
+  
   // MARK: - Property
   
   private var eventStream: AsyncThrowingStream<ChatWebSocketEvent, Error>?
@@ -19,24 +28,36 @@ final class MockChatSocketManager: ChatSocketManagerType {
   
   private var timer: Timer?
   
+  var connectError: URLError?
+  
+  var reciveDelayTime: TimeInterval = 5.0
+  
   var sendMessage: String?
+  
+  var state: State = .idle
   
   // MARK: - Method
   
   func connect(url: URL) {
+    self.state = .connect
     self.eventStream = AsyncThrowingStream { continuation in
       self.eventContinuation = continuation
-      Task { [weak self] in
-        await self?.receiveMessages()
+      if let connectError {
+        self.eventContinuation?.yield(.error(connectError))
+      } else {
+        Task { [weak self] in
+          await self?.receiveMessages()
+        }
       }
     }
   }
   
-  func disconnect() { 
+  func disconnect() {
     self.eventContinuation?.finish()
     self.eventStream = nil
     self.timer?.invalidate()
     self.timer = nil
+    self.state = .disconnected
   }
   
   func sendMessage(request: ChatMessageRequest) async throws {
@@ -53,7 +74,8 @@ final class MockChatSocketManager: ChatSocketManagerType {
   
   @MainActor
   private func receiveMessages() {
-    self.timer = Timer.scheduledTimer(withTimeInterval: 5.0, repeats: true) { _ in
+    self.state = .connected
+    self.timer = Timer.scheduledTimer(withTimeInterval: self.reciveDelayTime, repeats: true) { _ in
       let idx =  "\(UUID())"
       let chatMessage: ChatMessage = .init(
         messageIdx: "\(UUID())",
