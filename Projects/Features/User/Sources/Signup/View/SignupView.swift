@@ -24,7 +24,12 @@ struct SignupView: View, Injectable {
 
   var body: some View {
     VStack(alignment: .leading) {
-      self.backButton
+      BackButton(
+        touchPadding: .init(top: 14, leading: 18, bottom: 14, trailing: 18)
+      ) {
+        self.viewModel.trigger(.previous)
+      }
+      .accessibilitySortPriority(5)
       VStack(alignment: .leading) {
         self.progressView
         self.currentMainView
@@ -39,23 +44,6 @@ struct SignupView: View, Injectable {
     .onAppear {
       self.viewModel.trigger(.initUI)
     }
-  }
-
-  @ViewBuilder
-  private var backButton: some View {
-    Button(
-      action: { self.viewModel.trigger(.previous) },
-      label: {
-        Image(systemName: "chevron.backward")
-          .resizable()
-          .frame(width: 10, height: 18)
-          .foregroundColor(UtilAsset.MainColor.background.swiftUIColor)
-          .padding(.horizontal, 18)
-          .padding(.vertical, 14)
-      }
-    )
-    .accessibilityLabel("뒤로 가기")
-    .accessibilitySortPriority(5)
   }
 
   @ViewBuilder
