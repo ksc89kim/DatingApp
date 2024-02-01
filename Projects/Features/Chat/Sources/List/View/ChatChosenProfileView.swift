@@ -16,9 +16,8 @@ struct ChatChosenProfileView: View {
   private typealias Assets = ChatAsset.Assets
 
   // MARK: - Property
-
+  
   let profile: ChatListProfile
-  // MARK: - Property
 
   var body: some View {
     ZStack(alignment: .trailing) {

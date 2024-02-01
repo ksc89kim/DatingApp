@@ -8,6 +8,7 @@
 
 import SwiftUI
 import Kingfisher
+import Util
 
 struct ChatListMessageProfileView: View {
 
@@ -23,18 +24,7 @@ struct ChatListMessageProfileView: View {
     KFAnimatedImage(profile.thumbnail)
       .cancelOnDisappear(true)
       .placeholder {
-        Circle()
-          .foregroundColor(
-            Assets.chatChosenPlaceholder.swiftUIColor
-          )
-          .overlay {
-            Image(systemName: "person.fill")
-              .resizable()
-              .frame(width: 30, height: 30)
-              .foregroundColor(
-                Assets.chatChosenPlaceholderPerson.swiftUIColor
-              )
-          }
+        ProfilePlaceHolder()
       }
       .fade(duration: 1)
       .frame(width: 65, height: 65)
