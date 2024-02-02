@@ -10,28 +10,30 @@ import Foundation
 import ChatInterface
 
 final class ChatSocketManager: NSObject, ChatSocketManagerType {
-
+  
   // MARK: - Property
+  
+  private var urlSession: URLSession?
   
   private var webSocketTask: URLSessionWebSocketTask?
   
   private var eventStream: AsyncThrowingStream<ChatWebSocketEvent, Error>?
   
   private var eventContinuation: AsyncThrowingStream<ChatWebSocketEvent, Error>.Continuation?
-
+  
   // MARK: - Method
   
   func connect(url: URL) {
-    let urlSession = URLSession(
+    self.urlSession = URLSession(
       configuration: .default,
       delegate: self,
       delegateQueue: OperationQueue()
     )
-    self.webSocketTask = urlSession.webSocketTask(with: url)
+    self.webSocketTask = self.urlSession?.webSocketTask(with: url)
     self.webSocketTask?.resume()
     
-    self.eventStream = AsyncThrowingStream { continuation in
-      self.eventContinuation = continuation
+    self.eventStream = AsyncThrowingStream { [weak self] continuation in
+      self?.eventContinuation = continuation
       Task { [weak self] in
         await self?.receiveMessages()
       }
@@ -39,10 +41,13 @@ final class ChatSocketManager: NSObject, ChatSocketManagerType {
   }
   
   func disconnect() {
-    self.webSocketTask?.cancel(with: .normalClosure, reason: nil)
+    self.webSocketTask?.cancel(with: .goingAway, reason: nil)
     self.eventContinuation?.finish()
+    self.urlSession?.finishTasksAndInvalidate()
     self.eventStream = nil
     self.eventContinuation = nil
+    self.urlSession = nil
+    self.webSocketTask = nil
   }
   
   func sendMessage(request: ChatMessageRequest) async throws {
@@ -66,7 +71,7 @@ final class ChatSocketManager: NSObject, ChatSocketManagerType {
           break
         }
       } catch {
-        self.eventContinuation?.yield(.error(error))
+//        self.eventContinuation?.yield(.error(error))
         break
       }
     }
@@ -96,14 +101,5 @@ extension ChatSocketManager: URLSessionWebSocketDelegate {
     didOpenWithProtocol protocol: String?
   ) {
     self.eventContinuation?.yield(.connected)
-  }
-  
-  func urlSession(
-    _ session: URLSession,
-    webSocketTask: URLSessionWebSocketTask,
-    didCloseWith closeCode: URLSessionWebSocketTask.CloseCode,
-    reason: Data?
-  ) {
-    self.webSocketTask = nil
   }
 }

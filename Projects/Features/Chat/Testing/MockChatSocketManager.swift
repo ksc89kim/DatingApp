@@ -40,10 +40,10 @@ final class MockChatSocketManager: ChatSocketManagerType {
   
   func connect(url: URL) {
     self.state = .connect
-    self.eventStream = AsyncThrowingStream { continuation in
-      self.eventContinuation = continuation
-      if let connectError {
-        self.eventContinuation?.yield(.error(connectError))
+    self.eventStream = AsyncThrowingStream { [weak self] continuation in
+      self?.eventContinuation = continuation
+      if let connectError = self?.connectError {
+        self?.eventContinuation?.yield(.error(connectError))
       } else {
         Task { [weak self] in
           await self?.receiveMessages()
