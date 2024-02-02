@@ -57,6 +57,7 @@ final class ChatRoomViewModel: ViewModelType, Injectable {
     case .loadRoomInfo(let roomIdx): self.loadRoomInfo(roomIdx: roomIdx)
     case .sendMessage: self.sendMessage()
     case .loadMoreMessages(let index): self.loadMoreMessages(index: index)
+    case .back: self.back()
     }
   }
   
@@ -65,6 +66,7 @@ final class ChatRoomViewModel: ViewModelType, Injectable {
     case .loadRoomInfo(let roomIdx): await self.loadRoomInfo(roomIdx: roomIdx)
     case .sendMessage: await self.sendMessage()
     case .loadMoreMessages(let index): await self.loadMoreMessages(index: index)
+    case .back: break
     }
   }
   
@@ -172,6 +174,10 @@ final class ChatRoomViewModel: ViewModelType, Injectable {
     }
   }
   
+  private func back() {
+    self.appState.chatRouter.remove(path: .chatRoom(idx: self.state.roomIdx))
+  }
+  
   // MARK: - MainActor Methods (State)
   
   @MainActor
@@ -212,9 +218,7 @@ final class ChatRoomViewModel: ViewModelType, Injectable {
           title: .confirm,
           type: .default,
           completion: { [weak self] in
-            guard let `self` = self else { return }
-            self.socketManager.disconnect()
-            self.appState.chatRouter.remove(path: .chatRoom(idx: self.state.roomIdx))
+            self?.back()
           }
         )
       )
@@ -222,6 +226,10 @@ final class ChatRoomViewModel: ViewModelType, Injectable {
       self.state.alert = .message(error.localizedDescription)
     }
     self.state.isPresentAlert = true
+  }
+  
+  deinit {
+    self.socketManager.disconnect()
   }
 }
 

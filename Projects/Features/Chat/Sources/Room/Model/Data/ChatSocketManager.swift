@@ -71,7 +71,7 @@ final class ChatSocketManager: NSObject, ChatSocketManagerType {
           break
         }
       } catch {
-//        self.eventContinuation?.yield(.error(error))
+        self.eventContinuation?.yield(.error(error))
         break
       }
     }

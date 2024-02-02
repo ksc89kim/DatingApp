@@ -12,4 +12,5 @@ enum ChatRoomAction {
   case loadRoomInfo(roomIdx: String)
   case sendMessage
   case loadMoreMessages(index: Int)
+  case back
 }

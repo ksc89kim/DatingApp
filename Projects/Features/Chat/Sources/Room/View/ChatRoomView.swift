@@ -48,6 +48,16 @@ struct ChatRoomView: View {
       )
     }
     .background(Color.white)
+    .toolbar {
+      ToolbarItemGroup(placement: .navigationBarLeading) {
+        BackButton(
+          touchPadding: .init(top: 14, leading: 0, bottom: 14, trailing: 8)
+        ) {
+          self.viewModel.trigger(.back)
+        }
+        ChatRoomProfileView(partner: self.viewModel.state.partner)
+      }
+    }
     .onAppear {
       self.viewModel.trigger(.loadRoomInfo(roomIdx: self.roomIdx))
     }
