@@ -14,7 +14,7 @@ public struct BackButton: View {
   
   private let action: () -> Void
   
-  private let size: CGSize
+  private let size: CGFloat
   
   private let touchPadding: EdgeInsets
   
@@ -23,8 +23,7 @@ public struct BackButton: View {
       action: self.action,
       label: {
         Image(systemName: "chevron.backward")
-          .resizable()
-          .frame(width: self.size.width, height: self.size.height)
+          .font(.system(size: self.size, weight: .bold))
           .padding(self.touchPadding)
           .foregroundColor(UtilAsset.MainColor.background.swiftUIColor)
       }
@@ -35,7 +34,7 @@ public struct BackButton: View {
   // MARK: - Init
   
   public init(
-    size: CGSize = .init(width: 10, height: 18),
+    size: CGFloat = 16,
     touchPadding: EdgeInsets = .init(top: 0, leading: 0, bottom: 0, trailing: 0),
     action: @escaping () -> Void
   ) {
