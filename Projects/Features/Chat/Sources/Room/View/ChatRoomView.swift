@@ -17,7 +17,7 @@ struct ChatRoomView: View {
   
   let roomIdx: String
   
-  @StateObject
+  @ObservedObject
   private var viewModel: ChatRoomViewModel = DIContainer.resolve(
     for: ChatRoomViewModelKey.self
   )

@@ -14,7 +14,7 @@ import DI
 
 struct ChatListView: View {
 
-  @StateObject
+  @ObservedObject
   private var viewModel: ChatListViewModel = DIContainer.resolve(
     for: ChatListViewModelKey.self
   )

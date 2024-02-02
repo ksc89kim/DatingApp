@@ -17,7 +17,7 @@ struct SignupView: View, Injectable {
 
   // MARK: - Property
 
-  @StateObject
+  @ObservedObject
   private var viewModel: SignupViewModel = DIContainer.resolve(
     for: SignupViewModelKey.self
   )

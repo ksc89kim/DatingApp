@@ -13,7 +13,7 @@ import Util
 
 struct ChatHomeView: View, Injectable {
 
-  @StateObject
+  @ObservedObject
   private var appState: AppState = DIContainer.resolve(
     for: AppStateKey.self
   )
@@ -27,6 +27,7 @@ struct ChatHomeView: View, Injectable {
         switch path {
         case .chatRoom(let idx): ChatRoomView(roomIdx: idx)
             .toolbar(.hidden, for: .tabBar)
+            .navigationBarBackButtonHidden()
         }
       }
       .toolbar {

@@ -14,12 +14,12 @@ import OnboardingInterface
 
 struct OnboardingView: View, Injectable {
 
-  @StateObject 
+  @ObservedObject
   private var viewModel: OnboardingViewModel = DIContainer.resolve(
     for: OnboardingViewModelKey.self
   )
 
-  @StateObject 
+  @ObservedObject
   private var appState: AppState = DIContainer.resolve(
     for: AppStateKey.self
   )

@@ -19,7 +19,7 @@ struct ContentView: View {
 
   // MARK: - Property
 
-  @StateObject
+  @ObservedObject
   var appState: AppState = DIContainer.resolve(
     for: AppStateKey.self
   )

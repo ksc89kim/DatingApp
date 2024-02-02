@@ -17,7 +17,8 @@ struct LaunchView: View, Injectable {
 
   // MARK: - Property
 
-  @StateObject private var viewModel: LaunchViewModel = DIContainer.resolve(
+  @ObservedObject
+  private var viewModel: LaunchViewModel = DIContainer.resolve(
     for: LaunchViewModelKey.self
   )
 
