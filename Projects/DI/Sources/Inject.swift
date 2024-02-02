@@ -11,11 +11,13 @@ public final class Inject<Value> {
 
   public var wrappedValue: Value {
     get {
-      self.storage ?? {
-        let value: Value = lazyValue()
-        self.storage = value
-        return value
-      }()
+      if let storage = self.storage {
+        return storage
+      } else {
+        let lazyValue = self.lazyValue()
+        self.storage = lazyValue
+        return lazyValue
+      }
     }
     set {
       self.storage = newValue
