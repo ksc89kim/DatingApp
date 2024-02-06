@@ -37,17 +37,24 @@ final class ChatRoomViewModel: ViewModelType, Injectable {
   @Inject(ChatSocketManagerTypeKey.self)
   private var socketManager: ChatSocketManagerType
   
+  private var pagination: PaginationType
+  
+  private var sectionProvider: ChatRoomSectionProvider
+  
   private let taskBag: AnyCancelTaskDictionaryBag = .init()
   
   private let sendMessageTaskBag: AnyCancelTaskBag = .init()
 
-  private var pagination: PaginationType
-  
   // MARK: - Init
   
-  public init(pagination: PaginationType) {
+  public init(
+    pagination: PaginationType,
+    provider: ChatRoomSectionProvider
+  ) {
     self.pagination = pagination
+    self.sectionProvider = provider
     self.pagination.dataSource = self
+    self.sectionProvider.delegate = self
   }
   
   // MARK: - Trigger Method
@@ -95,7 +102,7 @@ final class ChatRoomViewModel: ViewModelType, Injectable {
       await MainActor.run {
         self.state.partner = metaResult.partner
       }
-      await self.setItems(messages: messagesResult)
+      await self.sectionProvider.setItems(messagesResult)
     } catch {
       await self.handleError(error)
     }
@@ -112,7 +119,7 @@ final class ChatRoomViewModel: ViewModelType, Injectable {
         for try await event in events {
           switch event {
           case .connected: break
-          case .message(let message): await self?.insertItem(message: message)
+          case .message(let message): await self?.sectionProvider.insertItem(message)
           case .error(let error): await self?.handleError(error)
           }
         }
@@ -144,7 +151,7 @@ final class ChatRoomViewModel: ViewModelType, Injectable {
     do {
       let response = try await self.pagination.loadMoreIfNeeded(index: index)
       if let messages = response?.items as? [ChatMessage] {
-        await self.appendItems(messages: messages)
+        await self.sectionProvider.appendItems(messages)
       }
     } catch {
       await self.handleError(error)
@@ -176,36 +183,6 @@ final class ChatRoomViewModel: ViewModelType, Injectable {
   
   private func back() {
     self.appState.chatRouter.remove(path: .chatRoom(idx: self.state.roomIdx))
-  }
-  
-  // MARK: - MainActor Methods (State)
-  
-  @MainActor
-  private func setItems(messages: [ChatMessage]) {
-    let items = messages.reversed().enumerated().map { offset, message in
-      ChatMessageSectionItem(message: message, index: offset)
-    }
-    self.state.items = items
-  }
-  
-  @MainActor
-  private func appendItems(messages: [ChatMessage]) {
-    let startIndex = self.state.items.count
-    let items = messages.reversed().enumerated().map { offset, message in
-      ChatMessageSectionItem(message: message, index: startIndex + offset)
-    }
-    self.state.items.append(contentsOf: items)
-  }
-  
-  @MainActor
-  private func insertItem(message: ChatMessage) {
-    self.state.items.insert(.init(message: message, index: 0), at: 0)
-    self.state.items = self.state.items.enumerated()
-      .map { (offset: Int, item: ChatMessageSectionItem) -> ChatMessageSectionItem in
-        var item = item
-        item.index = offset
-        return item
-      }
   }
   
   @MainActor
@@ -248,5 +225,19 @@ extension ChatRoomViewModel: PaginationDataSource {
         limit: request.limit
       )
     )
+  }
+}
+
+
+// MARK: - ChatRoomSectionProviderDelegate
+
+extension ChatRoomViewModel: ChatRoomSectionProviderDelegate {
+  
+  func items() -> [ChatMessageSectionItem] {
+    return self.state.items
+  }
+  
+  func setItems(items: [ChatMessageSectionItem]) {
+    self.state.items = items
   }
 }

@@ -31,7 +31,10 @@ public struct ChatDIRegister {
         )
       }
       InjectItem(ChatRoomViewModelKey.self) {
-        return ChatRoomViewModel(pagination: Pagination())
+        return ChatRoomViewModel(
+          pagination: Pagination(),
+          provider: ChatRoomSectionProvider()
+        )
       }
       InjectItem(ChatSocketManagerTypeKey.self) {
         return ChatSocketManager()

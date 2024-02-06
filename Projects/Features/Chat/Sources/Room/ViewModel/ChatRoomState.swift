@@ -15,7 +15,7 @@ struct ChatRoomState {
   // MARK: - Property
   
   var roomIdx: String  = ""
-  
+    
   var items: [ChatMessageSectionItem] = []
   
   var newMessage: String = ""

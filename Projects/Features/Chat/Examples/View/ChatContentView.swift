@@ -54,7 +54,10 @@ struct ChatContentView: View {
         MockChatRepository()
       }
       InjectItem(ChatRoomViewModelKey.self) {
-        ChatRoomViewModel(pagination: Pagination())
+        ChatRoomViewModel(
+          pagination: Pagination(),
+          provider: ChatRoomSectionProvider()
+        )
       }
       InjectItem(ChatSocketManagerTypeKey.self) {
         MockChatSocketManager()
