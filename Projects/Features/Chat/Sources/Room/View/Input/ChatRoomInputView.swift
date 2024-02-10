@@ -46,6 +46,8 @@ struct ChatRoomInputView: View {
           )
       )
       .fixedSize(horizontal: false, vertical: true)
+      .accessibilityLabel("메시지를 입력해주세요")
+      .accessibilityHint("텍스트 필드")
   }
   
   @ViewBuilder
@@ -61,6 +63,7 @@ struct ChatRoomInputView: View {
         }
         .tint(UtilAsset.MainColor.background.swiftUIColor)
     }
+    .accessibilityLabel("메시지 보내기")
   }
 }
 

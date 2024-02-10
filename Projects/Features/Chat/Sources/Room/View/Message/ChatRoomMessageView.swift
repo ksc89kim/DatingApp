@@ -66,6 +66,9 @@ struct ChatRoomMessageView: View {
   @ViewBuilder
   private var senderMessage: some View {
     Text(self.message)
+      .accessibilityLabel("내가 보낸 메시지")
+      .accessibilityRemoveTraits(.isStaticText)
+      .accessibilityValue(self.message)
       .padding(self.backgroundPadding)
       .systemScaledFont(style: .text)
       .foregroundStyle(UtilAsset.MainColor.text.swiftUIColor)
@@ -77,6 +80,9 @@ struct ChatRoomMessageView: View {
   @ViewBuilder
   private var otherMessage: some View {
     Text(self.message)
+      .accessibilityLabel("상대방이 보낸 메시지")
+      .accessibilityRemoveTraits(.isStaticText)
+      .accessibilityValue(self.message)
       .padding(self.backgroundPadding)
       .systemScaledFont(style: .text)
       .foregroundColor(Color.black)

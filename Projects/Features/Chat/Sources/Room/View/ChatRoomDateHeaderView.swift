@@ -20,6 +20,7 @@ struct ChatRoomDateHeaderView: View {
       .foregroundStyle(ChatAsset.Assets.chatMessageDateHeader.swiftUIColor)
       .systemScaledFont(font: .medium, size: 14)
       .padding()
+      .accessibilityRemoveTraits(.isStaticText)
   }
 }
 

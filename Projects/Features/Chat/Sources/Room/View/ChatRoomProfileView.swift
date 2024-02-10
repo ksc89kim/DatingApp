@@ -33,7 +33,11 @@ struct ChatRoomProfileView: View {
         .cornerRadius(17)
       Text(self.partner?.nickname ?? "")
         .systemScaledFont(font: .bold, size: 16)
+        
     }
+    .accessibilityElement(children: .combine)
+    .accessibilityLabel("사용자 프로필")
+    .accessibilityValue(self.partner?.nickname ?? "")
   }
 }
 
