@@ -67,7 +67,7 @@ final class SignupViewModelTests: XCTestCase {
     if let mock = viewModel.state.currentMain as? MockSignupMain {
       XCTAssertEqual(mock.title, "A")
       XCTAssertFalse(viewModel.state.bottomButton.isDisable)
-      XCTAssertEqual(viewModel.state.progress.value, 0.5)
+      XCTAssertEqual(viewModel.state.progress.value, 0)
       XCTAssertFalse(viewModel.state.progress.isAnimation)
     } else {
       XCTFail()
@@ -122,7 +122,8 @@ final class SignupViewModelTests: XCTestCase {
       mains: [
         MockSignupMain(isBottomDisable: false, title: "A"),
         MockSignupMain(isBottomDisable: false, title: "B"),
-        MockSignupMain(isBottomDisable: true, title: "C")
+        MockSignupMain(isBottomDisable: true, title: "C"),
+        MockSignupMain(isBottomDisable: false, title: "D")
       ],
       tokenManager: self.mockTokenManager
     )
@@ -132,6 +133,7 @@ final class SignupViewModelTests: XCTestCase {
 
     if let mock = viewModel.state.currentMain as? MockSignupMain {
       XCTAssertEqual(mock.title, "C")
+      XCTAssertEqual(viewModel.state.progress.value, 0.5)
       XCTAssertTrue(viewModel.state.bottomButton.isDisable)
     } else {
       XCTFail()
