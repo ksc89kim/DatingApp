@@ -30,7 +30,8 @@ struct UserContentView: View {
       .navigationBarTitle("데모", displayMode: .inline)
       .navigationDestination(for: UserExampleItem.self) { item in
         switch item {
-        case .signup: SignupView()
+        case .signup: 
+          SignupView()
         }
       }
       .listStyle(.sidebar)
@@ -41,13 +42,15 @@ struct UserContentView: View {
   
   init() {
     AppStateDIRegister.register()
-
+    let tokenManager: MockTokenManager = .init(token: "TEST")
     DIContainer.register {
       InjectItem(LoginRepositoryTypeKey.self) { MockLoginRepository() }
-      InjectItem(LoginKey.self) { Login(tokenManager: MockTokenManager()) }
+      InjectItem(LoginKey.self) {
+        Login(tokenManager: tokenManager)
+      }
       InjectItem(SignupRepositoryTypeKey.self) { MockSignupRepository() }
       InjectItem(SignupViewModelKey.self) { 
-        SignupViewModel(tokenManager: MockTokenManager())
+        SignupViewModel(tokenManager: tokenManager)
       }
     }
   }

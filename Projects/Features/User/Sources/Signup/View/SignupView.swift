@@ -85,30 +85,12 @@ struct SignupView: View, Injectable {
 
   @ViewBuilder
   private var nextButton: some View {
-    Button(
-      action: {
+    SignupNextButton(
+      isLoading: self.viewModel.state.bottomButton.isLoading,
+      isDisable: self.viewModel.state.bottomButton.isDisable,
+      title: "다음") {
         self.viewModel.trigger(.next)
-      },
-      label: {
-        RoundedRectangle(cornerRadius: 12)
-          .frame(maxWidth: .infinity, maxHeight: 48)
-          .foregroundColor(UtilAsset.MainColor.background.swiftUIColor)
-          .overlay {
-            if self.viewModel.state.bottomButton.isLoading {
-              ProgressView()
-                .tint(Color.white)
-            } else {
-              Text("다음")
-                .systemScaledFont(style: .bottomButton)
-                .foregroundStyle(UtilAsset.MainColor.text.swiftUIColor)
-            }
-          }
       }
-    )
-    .buttonStyle(PressedButtonStyle())
-    .disabled(self.viewModel.state.bottomButton.isDisable)
-    .opacity(self.viewModel.state.bottomButton.isDisable ? 0.7 : 1.0)
-    .padding(.vertical, 18)
   }
 }
 
@@ -121,7 +103,8 @@ extension SignupView: AlertBuildable { }
     InjectItem(SignupViewModelKey.self) {
       SignupViewModel(tokenManager: MockTokenManager())
     }
-    InjectItem(SignupRepositoryTypeKey.self) { SignupRepository(networking: .init())
+    InjectItem(SignupRepositoryTypeKey.self) { 
+      SignupRepository(networking: .init())
     }
   }
   
