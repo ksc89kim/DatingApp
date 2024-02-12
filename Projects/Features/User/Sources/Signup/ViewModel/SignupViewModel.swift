@@ -145,7 +145,7 @@ final class SignupViewModel: ViewModelType, Injectable {
   private func updateMainViewTypeIfNeeded() {
     guard self.mains.indices ~= self.index else { return }
     self.state.currentMain = self.mains[self.index]
-    self.state.progress.value = Double(self.index) / Double(self.mains.count)
+    self.state.progress.value = Double(self.index + 1) / Double(self.mains.count)
     self.state.bottomButton.isDisable = self.mains[self.index].isBottomDisable
   }
 
