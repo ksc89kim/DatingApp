@@ -32,7 +32,12 @@ public struct UserDIRegister {
         return LoginLaunchWorker(loginable: login)
       }
       InjectItem(SignupViewKey.self) { SignupView() }
-      InjectItem(SignupViewModelKey.self) { SignupViewModel(tokenManager: TokenManager()) }
+      InjectItem(SignupViewModelKey.self) {
+        SignupViewModel(
+          mains: [SignupNickname()], 
+          tokenManager: TokenManager()
+        )
+      }
       InjectItem(SignupRepositoryTypeKey.self) {
         SignupRepository(
           networking: .init(stubClosure: Networking<UserAPI>.immediatelyStub)

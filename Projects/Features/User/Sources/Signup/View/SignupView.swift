@@ -14,14 +14,14 @@ import UserInterface
 import AppStateInterface
 
 struct SignupView: View, Injectable {
-
+  
   // MARK: - Property
-
+  
   @ObservedObject
   private var viewModel: SignupViewModel = DIContainer.resolve(
     for: SignupViewModelKey.self
   )
-
+  
   var body: some View {
     VStack(alignment: .leading) {
       BackButton(
@@ -45,7 +45,7 @@ struct SignupView: View, Injectable {
       self.viewModel.trigger(.initUI)
     }
   }
-
+  
   @ViewBuilder
   private var progressView: some View {
     ProgressView(value: self.viewModel.state.progress.value)
@@ -59,7 +59,7 @@ struct SignupView: View, Injectable {
       .disabled(true)
       .padding(.bottom, 24)
   }
-
+  
   @ViewBuilder
   private var currentMainView: some View {
     if let main = self.viewModel.state.currentMain {
@@ -82,15 +82,16 @@ struct SignupView: View, Injectable {
       Spacer()
     }
   }
-
+  
   @ViewBuilder
   private var nextButton: some View {
     SignupNextButton(
       isLoading: self.viewModel.state.bottomButton.isLoading,
       isDisable: self.viewModel.state.bottomButton.isDisable,
-      title: "다음") {
-        self.viewModel.trigger(.next)
-      }
+      title: "다음"
+    ) {
+      self.viewModel.trigger(.next)
+    }
   }
 }
 
@@ -101,7 +102,10 @@ extension SignupView: AlertBuildable { }
 #Preview {
   DIContainer.register {
     InjectItem(SignupViewModelKey.self) {
-      SignupViewModel(tokenManager: MockTokenManager())
+      SignupViewModel(
+        mains: [SignupNickname()],
+        tokenManager: MockTokenManager()
+      )
     }
     InjectItem(SignupRepositoryTypeKey.self) { 
       SignupRepository(networking: .init())

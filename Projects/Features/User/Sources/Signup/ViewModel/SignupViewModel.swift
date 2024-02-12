@@ -40,10 +40,8 @@ final class SignupViewModel: ViewModelType, Injectable {
   // MARK: - Init
 
   init(
-    mains: [SignupMain] = [
-      SignupNickname()
-    ],
     index: Int = 0,
+    mains: [SignupMain],
     tokenManager: TokenManagerType
   ) {
     self.mains = mains
