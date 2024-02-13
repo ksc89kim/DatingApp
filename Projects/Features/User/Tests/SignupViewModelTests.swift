@@ -76,7 +76,10 @@ final class SignupViewModelTests: XCTestCase {
 
   /// 초기화가 진행되지 않을 경우 Main nill 확인
   func testCurrentMainNil() {
-    let viewModel = SignupViewModel(tokenManager: self.mockTokenManager)
+    let viewModel = SignupViewModel(
+      mains: [MockSignupMain(isBottomDisable: false, title: "A")],
+      tokenManager: self.mockTokenManager
+    )
 
     XCTAssertNil(viewModel.state.currentMain)
   }
@@ -179,7 +182,12 @@ final class SignupViewModelTests: XCTestCase {
 
   /// 가입하기
   func testSignup() async {
-    let viewModel = SignupViewModel(tokenManager: self.mockTokenManager)
+    let viewModel = SignupViewModel(
+      mains: [
+        MockSignupMain(isBottomDisable: false, title: "A")
+      ],
+      tokenManager: self.mockTokenManager
+    )
     AppState.instance.entranceRouter.set(paths: [.onboarding, .signup])
 
     await viewModel.trigger(.next)
@@ -192,8 +200,12 @@ final class SignupViewModelTests: XCTestCase {
   /// 가입 통신 에러 알럿 테스트
   func testPresentAlertWhenSignupError() async {
     self.signupError = MockNetworkError.networkError
-    let viewModel = SignupViewModel(tokenManager: self.mockTokenManager)
-
+    let viewModel = SignupViewModel(
+      mains: [
+        MockSignupMain(isBottomDisable: false, title: "A")
+      ],
+      tokenManager: self.mockTokenManager
+    )
     await viewModel.trigger(.next)
 
     XCTAssertTrue(viewModel.state.isPresentAlert)
@@ -208,8 +220,12 @@ final class SignupViewModelTests: XCTestCase {
   /// 로그인 통신 에러 알럿 테스트
   func testPresentAlertWhenLoginError() async {
     self.loginError = MockNetworkError.networkError
-    let viewModel = SignupViewModel(tokenManager: self.mockTokenManager)
-
+    let viewModel = SignupViewModel(
+      mains: [
+        MockSignupMain(isBottomDisable: false, title: "A")
+      ],
+      tokenManager: self.mockTokenManager
+    )
     await viewModel.trigger(.next)
 
     XCTAssertTrue(viewModel.state.isPresentAlert)
