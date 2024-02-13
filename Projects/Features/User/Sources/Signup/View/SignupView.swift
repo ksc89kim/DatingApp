@@ -62,25 +62,22 @@ struct SignupView: View, Injectable {
   
   @ViewBuilder
   private var currentMainView: some View {
-    if let main = self.viewModel.state.currentMain {
-      switch main {
-      case let signupNickname as SignupNickname:
-        let binding: Binding<String> = .init(
-          get: { signupNickname.nickname },
-          set: { nickname in
-            self.viewModel.trigger(.nickname(nickname))
-          }
-        )
-        SignupInputNicknameView(
-          nickname: binding,
-          limitCount: signupNickname.limitCount
-        )
-        .transition(.opacity)
-      default: Spacer()
+    Group {
+      if let main = self.viewModel.state.currentMain {
+        switch main {
+        case let signupNickname as SignupNickname:
+          self.nicknameView(signupNickname: signupNickname)
+        default: Spacer()
+        }
+      } else {
+        Spacer()
       }
-    } else {
-      Spacer()
     }
+    .frame(
+      maxWidth: .infinity,
+      maxHeight: .infinity,
+      alignment: .topLeading
+    )
   }
   
   @ViewBuilder
@@ -92,6 +89,23 @@ struct SignupView: View, Injectable {
     ) {
       self.viewModel.trigger(.next)
     }
+  }
+  
+  // MARK: - Method
+  
+  @ViewBuilder
+  func nicknameView(signupNickname: SignupNickname) -> some View {
+    let binding: Binding<String> = .init(
+      get: { signupNickname.nickname },
+      set: { nickname in
+        self.viewModel.trigger(.nickname(nickname))
+      }
+    )
+    SignupNicknameInputView(
+      nickname: binding,
+      limitCount: signupNickname.limitCount
+    )
+    .transition(.opacity)
   }
 }
 

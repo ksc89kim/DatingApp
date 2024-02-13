@@ -1,5 +1,5 @@
 //
-//  SignupInputNicknameVie.swift
+//  SignupNicknameInputView.swift
 //  User
 //
 //  Created by kim sunchul on 11/11/23.
@@ -55,11 +55,6 @@ struct SignupNicknameInputView: View {
         .accessibilityValue("\(self.limitCount)자")
         .accessibilitySortPriority(1)
     }
-    .frame(
-      maxWidth: .infinity,
-      maxHeight: .infinity,
-      alignment: .topLeading
-    )
   }
 }
 
