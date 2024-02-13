@@ -9,7 +9,7 @@
 import SwiftUI
 import Util
 
-struct SignupInputNicknameView: View {
+struct SignupNicknameInputView: View {
 
   @Binding
   var nickname: String
@@ -65,5 +65,5 @@ struct SignupInputNicknameView: View {
 
 
 #Preview {
-  SignupInputNicknameView(nickname: .constant(""))
+  SignupNicknameInputView(nickname: .constant(""))
 }
