@@ -49,9 +49,9 @@ struct UserContentView: View {
         Login(tokenManager: tokenManager)
       }
       InjectItem(SignupRepositoryTypeKey.self) { MockSignupRepository() }
-      InjectItem(SignupViewModelKey.self) { 
+      InjectItem(SignupViewModelKey.self) {
         SignupViewModel(
-          mains: [SignupNickname()],
+          container: .init(index: 0, mains: [SignupNickname()]), 
           tokenManager: tokenManager
         )
       }

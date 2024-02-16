@@ -34,7 +34,7 @@ public struct UserDIRegister {
       InjectItem(SignupViewKey.self) { SignupView() }
       InjectItem(SignupViewModelKey.self) {
         SignupViewModel(
-          mains: [SignupNickname()], 
+          container: .init(index: 0, mains: [SignupNickname()]),
           tokenManager: TokenManager()
         )
       }

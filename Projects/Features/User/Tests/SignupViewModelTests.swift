@@ -55,10 +55,13 @@ final class SignupViewModelTests: XCTestCase {
   /// UI 초기화
   func testInitUI() async {
     let viewModel = SignupViewModel(
-      mains: [
-        MockSignupMain(isBottomDisable: false, title: "A"),
-        MockSignupMain(isBottomDisable: false, title: "B")
-      ],
+      container: .init(
+        index: 0,
+        mains: [
+          MockSignupMain(isBottomDisable: false, title: "A"),
+          MockSignupMain(isBottomDisable: false, title: "B")
+        ]
+      ),
       tokenManager: self.mockTokenManager
     )
 
@@ -77,7 +80,12 @@ final class SignupViewModelTests: XCTestCase {
   /// 초기화가 진행되지 않을 경우 Main nill 확인
   func testCurrentMainNil() {
     let viewModel = SignupViewModel(
-      mains: [MockSignupMain(isBottomDisable: false, title: "A")],
+      container: .init(
+        index: 0,
+        mains: [
+          MockSignupMain(isBottomDisable: false, title: "A")
+        ]
+      ),
       tokenManager: self.mockTokenManager
     )
 
@@ -87,7 +95,7 @@ final class SignupViewModelTests: XCTestCase {
   /// 닉네임 설정 테스트
   func testSetNickname() async {
     let viewModel = SignupViewModel(
-      mains: [SignupNickname()],
+      container: .init(index: 0, mains: [SignupNickname()]),
       tokenManager: self.mockTokenManager
     )
     await viewModel.trigger(.initUI)
@@ -105,7 +113,7 @@ final class SignupViewModelTests: XCTestCase {
   /// 닉네임 0자 일때, 바텀 버튼 disable
   func testDisableBottomButtonWhenNoNickname() async {
     let viewModel = SignupViewModel(
-      mains: [SignupNickname()],
+      container: .init(index: 0, mains: [SignupNickname()]),
       tokenManager: self.mockTokenManager
     )
 
@@ -122,11 +130,14 @@ final class SignupViewModelTests: XCTestCase {
   /// 메인 페이지 다음 테스트
   func testNext() async {
     let viewModel = SignupViewModel(
-      mains: [
-        MockSignupMain(isBottomDisable: false, title: "A"),
-        MockSignupMain(isBottomDisable: false, title: "B"),
-        MockSignupMain(isBottomDisable: true, title: "C")
-      ],
+      container: .init(
+        index: 0,
+        mains: [
+          MockSignupMain(isBottomDisable: false, title: "A"),
+          MockSignupMain(isBottomDisable: false, title: "B"),
+          MockSignupMain(isBottomDisable: true, title: "C")
+        ]
+      ),
       tokenManager: self.mockTokenManager
     )
 
@@ -144,11 +155,14 @@ final class SignupViewModelTests: XCTestCase {
   /// 메인 페이지 뒤로가기 테스트
   func testPrevious() async {
     let viewModel = SignupViewModel(
-      mains: [
-        MockSignupMain(isBottomDisable: false, title: "A"),
-        MockSignupMain(isBottomDisable: true, title: "B"),
-        MockSignupMain(isBottomDisable: false, title: "C")
-      ],
+      container: .init(
+        index: 0,
+        mains: [
+          MockSignupMain(isBottomDisable: false, title: "A"),
+          MockSignupMain(isBottomDisable: true, title: "B"),
+          MockSignupMain(isBottomDisable: false, title: "C")
+        ]
+      ),
       tokenManager: self.mockTokenManager
     )
     await viewModel.trigger(.next)
@@ -167,9 +181,12 @@ final class SignupViewModelTests: XCTestCase {
   /// 첫 메인 페이지 일 경우, 뒤로 가기 눌렀을 때, SignupView 제거
   func testRemoveSignupViewWhenFirstMainPage() async {
     let viewModel = SignupViewModel(
-      mains: [
-        MockSignupMain(isBottomDisable: false, title: "A")
-      ],
+      container: .init(
+        index: 0,
+        mains: [
+          MockSignupMain(isBottomDisable: false, title: "A")
+        ]
+      ),
       tokenManager: self.mockTokenManager
     )
     AppState.instance.entranceRouter.set(paths: [.onboarding, .signup])
@@ -183,9 +200,12 @@ final class SignupViewModelTests: XCTestCase {
   /// 가입하기
   func testSignup() async {
     let viewModel = SignupViewModel(
-      mains: [
-        MockSignupMain(isBottomDisable: false, title: "A")
-      ],
+      container: .init(
+        index: 0,
+        mains: [
+          MockSignupMain(isBottomDisable: false, title: "A")
+        ]
+      ),
       tokenManager: self.mockTokenManager
     )
     AppState.instance.entranceRouter.set(paths: [.onboarding, .signup])
@@ -201,9 +221,12 @@ final class SignupViewModelTests: XCTestCase {
   func testPresentAlertWhenSignupError() async {
     self.signupError = MockNetworkError.networkError
     let viewModel = SignupViewModel(
-      mains: [
-        MockSignupMain(isBottomDisable: false, title: "A")
-      ],
+      container: .init(
+        index: 0,
+        mains: [
+          MockSignupMain(isBottomDisable: false, title: "A")
+        ]
+      ),
       tokenManager: self.mockTokenManager
     )
     await viewModel.trigger(.next)
@@ -221,9 +244,12 @@ final class SignupViewModelTests: XCTestCase {
   func testPresentAlertWhenLoginError() async {
     self.loginError = MockNetworkError.networkError
     let viewModel = SignupViewModel(
-      mains: [
-        MockSignupMain(isBottomDisable: false, title: "A")
-      ],
+      container: .init(
+        index: 0,
+        mains: [
+          MockSignupMain(isBottomDisable: false, title: "A")
+        ]
+      ),
       tokenManager: self.mockTokenManager
     )
     await viewModel.trigger(.next)

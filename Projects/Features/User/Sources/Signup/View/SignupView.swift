@@ -117,7 +117,7 @@ extension SignupView: AlertBuildable { }
   DIContainer.register {
     InjectItem(SignupViewModelKey.self) {
       SignupViewModel(
-        mains: [SignupNickname()],
+        container: .init(index: 0, mains: [SignupNickname()]),
         tokenManager: MockTokenManager()
       )
     }

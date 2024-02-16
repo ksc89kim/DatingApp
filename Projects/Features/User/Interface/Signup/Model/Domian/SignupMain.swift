@@ -7,18 +7,15 @@
 //
 
 import Foundation
+import Core
 
-public protocol SignupMain {
-
+public protocol SignupMain: ProgressMain {
+  
   // MARK: - Property
   
-  var isBottomDisable: Bool { get set }
-
   var repository: SignupRepositoryType? { get set }
 
   // MARK: - Method
-
-  func complete() async
 
   func mergeRequest(_ request: SignupRequest) -> SignupRequest
 }
