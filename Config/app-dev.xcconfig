@@ -9,3 +9,5 @@
 // https://help.apple.com/xcode/#/dev745c5c974
 
 #include "./shared.xcconfig"
+
+APP_BUNDLE_ID=com.tronplay.dev

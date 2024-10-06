@@ -102,7 +102,7 @@ final class SignupViewModel: ViewModelType, Injectable {
     self.taskBag.cancel()
 
     Task { [weak self] in
-      self?.previous()
+      await self?.previous()
     }
     .store(in: self.taskBag)
   }

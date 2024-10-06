@@ -16,6 +16,7 @@ enum UserAPI {
 
 
 extension UserAPI: NetworkTargetType {
+  
 
   var method: Core.NetworkMethod {
     return .get

@@ -12,7 +12,7 @@ public protocol NetworkTargetType: TargetType {
 
   // MARK: - Property
 
-  var method: Method { get }
+  var method: NetworkMethod { get }
 
-  var task: Task { get }
+  var task: NetworkTask { get }
 }

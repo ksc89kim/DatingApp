@@ -10,8 +10,10 @@ import Foundation
 
 public protocol ProgressMainContainerDelegate: AnyObject {
   
+  @MainActor
   func dismiss() async
   
+  @MainActor
   func complete() async
   
   @MainActor

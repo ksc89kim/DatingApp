@@ -1,9 +1,4 @@
 import ProjectDescription
 import ProjectDescriptionHelpers
-import ProjectPathPlugin
 
-func targets() -> [Target] {
-  return Target.features(target: .{{ key }}, types: .all)
-}
-
-let project: Project = .feature(type: .{{ key }}, targets: targets())
+let project: Project = .feature(.{{ key }}) {}

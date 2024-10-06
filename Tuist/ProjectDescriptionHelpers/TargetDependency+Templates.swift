@@ -6,40 +6,10 @@
 //
 
 import ProjectDescription
-import ProjectPathPlugin
 
-public extension TargetDependency {
 
-  static var di: Self {
-    return .project(
-      target: "DI",
-      path: .relativeToPathType(.di)
-    )
-  }
-
-  static var core: Self {
-    return .project(
-      target: "Core",
-      path: .relativeToPathType(.core)
-    )
-  }
-
-  static var util: Self {
-    return .project(
-      target: "Util",
-      path: .relativeToPathType(.util)
-    )
-  }
-
-  static var moya: Self {
-    return .external(name: "Moya")
-  }
-
-  static var naviagationTransitions: Self {
-    return .external(name: "NavigationTransitions")
-  }
-
-  static var kingfisher: Self {
-    return .external(name: "Kingfisher")
-  }
+public enum external {
+  public static var moya: TargetDependency = .external(name: "Moya")
+  public static var naviagationTransitions: TargetDependency = .external(name: "NavigationTransitions")
+  public static var kingfisher: TargetDependency = .external(name: "Kingfisher")
 }

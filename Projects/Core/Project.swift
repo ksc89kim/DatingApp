@@ -1,39 +1,20 @@
 import ProjectDescription
 import ProjectDescriptionHelpers
-import ConfigurationPlugin
-import EnvironmentPlugin
 
-let name = "Core"
-
-func targets() -> [Target] {
-  return [
-    sourceTarget(),
-    testsTarget()
-  ]
-}
-
-func sourceTarget() -> Target {
-  return .Builder.makeSource(name: name)
-    .product(.framework)
-    .appendDependenciess([
-      .moya
-    ])
-    .build()
-}
-
-func testsTarget() -> Target {
-  return .Builder.makeTests(name: name)
-    .product(.unitTests)
-    .appendDependenciess([
-      .target(name: name)
-    ])
-    .build()
-}
-
-let project: Project = .init(
-  name: name,
-  organizationName: env.organizationName,
-  options: env.options,
-  settings: .base,
-  targets: targets()
+let configurationTargets: [ConfigurationTarget] = .default
+let type: ProjectType = .core
+let settings: Settings = .settings(
+  base: .base,
+  configurations: configurationTargets.configurations,
+  defaultSettings: .recommended
 )
+
+let project = Project.make(
+  name: type.name,
+  settings: settings
+) {
+  Target.sources(name: type.name) {
+    external.moya
+  }
+  Target.tests(name: type.name) {}
+}

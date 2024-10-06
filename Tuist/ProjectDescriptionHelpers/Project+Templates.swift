@@ -1,22 +1,56 @@
 import ProjectDescription
-import ProjectPathPlugin
-import EnvironmentPlugin
-import ConfigurationPlugin
 
 public extension Project {
-
+  
   static func feature(
-    type: ProjectPathType.Features,
+    _ projectType: ProjectType.Features,
+    type: Set<FeatureType> = .all,
     targets: [Target] = [],
-    settings: Settings? = .base
+    @ConfigurationBuilder<FeatureDependency> _ content: () -> [FeatureDependency]
   ) -> Project {
-
+    let featureDependencies = content()
+    let featureTargets = type.map { (type: FeatureType) -> Target in
+      let featureDependency = featureDependencies.first { featureDependency in featureDependency.type == type }
+      let baseDependencies = type.dependencyIfNeeded(projectType)
+      return .feature(
+        projectType,
+        type: type,
+        dependencies: (featureDependency?.dependecies ?? []) + baseDependencies
+      )
+    }
+    
     return .init(
-      name: type.rawValue,
+      name: projectType.rawValue,
+      options: .options(
+        defaultKnownRegions: env.defaultKnownRegions,
+        developmentRegion: env.developmentRegion
+      ),
+      settings: .settings(
+        base: .base,
+        configurations: [ConfigurationTarget].default.configurations,
+        defaultSettings: .recommended
+      ),
+      targets: featureTargets + targets
+    )
+  }
+  
+  static func make(
+    name: String,
+    options: Options = .options(
+      defaultKnownRegions: env.defaultKnownRegions,
+      developmentRegion: env.developmentRegion
+    ),
+    settings: Settings? = nil,
+    schems: [Scheme] = [],
+    @ConfigurationBuilder<Target> _ content: () -> [Target]
+  ) -> Project {
+    return .init(
+      name: name,
       organizationName: env.organizationName,
-      options: env.options,
+      options: options,
       settings: settings,
-      targets: targets
+      targets: content(),
+      schemes: schems
     )
   }
 }

@@ -7,9 +7,9 @@ guard let featureName = readLine(), !featureName.isEmpty else {
     exit(1)
 }
 
-Logger.instance.inputLog("ProjectPathType Features Key 이름을 선정해주세요")
+Logger.instance.inputLog("ProjectType Features Key 이름을 선정해주세요")
 guard let projectPathFeatureKey = readLine(), !projectPathFeatureKey.isEmpty else {
-    Logger.instance.errorLog("ProjectPathType Features Key 이름이 비어있습니다.")
+    Logger.instance.errorLog("ProjectType Features Key 이름이 비어있습니다.")
     exit(1)
 }
 
@@ -17,7 +17,7 @@ Logger.instance.ingLog("Feture 생성을 시작합니다.")
 Logger.instance.ingLog("##########################")
 
 let manager = FRBFileManager(
-    path: "Plugins/ProjectPathPlugin/ProjectDescriptionHelpers/ProjectPathType.swift"
+    path: "Tuist/ProjectDescriptionHelpers/Project/ProjectType.swift"
 )
 
 do {
@@ -31,21 +31,7 @@ do {
     exit(1)
 }
 
-Logger.instance.ingLog("ProjectPathType.Feature에 Key 추가 완료 됐습니다.")
-
-manager.path = URL(fileURLWithPath: "Workspace.swift")
-
-do {
-    try manager.updateFile(
-        finding: "projects: [",
-        inserting: "\n      " + "\"\\(ProjectPathType.features(." + projectPathFeatureKey + ").path)\","
-    )
-} catch {
-    Logger.instance.errorLog(error.localizedDescription)
-    exit(1)
-}
-
-Logger.instance.ingLog("Workspace.swift에 추가되었습니다.")
+Logger.instance.ingLog("ProjectType.Feature에 Key 추가 완료 됐습니다.")
 
 let bash = Bash()
 do {
@@ -58,24 +44,10 @@ do {
     exit(1)
 }
 
-manager.path = URL(fileURLWithPath: "Scripts/SwiftLint/SwiftLintSync.swift")
-
-do {
-    try manager.updateFile(
-        finding: "paths: [String] = [",
-        inserting: "\n    \"Projects/Features/" + featureName + "/.swiftlint.yml\","
-    )
-} catch {
-    Logger.instance.errorLog(error.localizedDescription)
-    exit(1)
-}
-
-Logger.instance.ingLog("SwiftLintSync script 파일에 경로를 추가했습니다.")
-
 do {
     let _ = try bash.run(
-            commandName: "swift", 
-            arguments: ["Scripts/SwiftLint/SwiftLintSync.swift"]
+            commandName: "tuist", 
+            arguments: ["edit"]
         )
 } catch {
     Logger.instance.errorLog(error.localizedDescription)

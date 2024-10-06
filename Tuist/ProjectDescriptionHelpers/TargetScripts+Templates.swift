@@ -6,12 +6,18 @@
 //
 
 import ProjectDescription
+import Foundation
 
 public extension TargetScript {
 
   static var swiftLint: Self {
     return .pre(
-      path: .relativeToRoot("Scripts/SwiftLint/SwiftLintRunScript.sh"),
+      script: """
+      ROOT_DIR=\(Environment.rootDir.getString(default: ""))
+              
+      ${ROOT_DIR}/swiftlint --config ${ROOT_DIR}/.swiftlint.yml
+              
+      """,
       name: "SwiftLint",
       basedOnDependencyAnalysis: false
     )

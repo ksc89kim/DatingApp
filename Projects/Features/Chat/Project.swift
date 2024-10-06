@@ -1,21 +1,9 @@
 import ProjectDescription
 import ProjectDescriptionHelpers
-import ProjectPathPlugin
 
-func targets() -> [Target] {
-
-  return Target.features(
-    target: .chat,
-    types: .all,
-    baseBuilder: .make(
-      featuresDependencies: .init(
-        source: [
-          .feature(target: .appState, type: .interface),
-          .kingfisher
-        ]
-      )
-    )
-  )
+let project: Project = .feature(.chat) {
+  dependency(type: .source) {
+    feature(.appState, type: .interface)
+    external.kingfisher
+  }
 }
-
-let project: Project = .feature(type: .chat, targets: targets())

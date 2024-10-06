@@ -1,19 +1,8 @@
 import ProjectDescription
 import ProjectDescriptionHelpers
-import ProjectPathPlugin
 
-func targets() -> [Target] {
-  return Target.features(
-    target: .version,
-    types: .all,
-    baseBuilder: .make(
-      featuresDependencies: .init(
-        interface: [
-          .feature(target: .launch, type: .interface)
-        ]
-      )
-    )
-  )
+let project: Project = .feature(.version) {
+  dependency(type: .interface) {
+    feature(.launch, type: .interface)
+  }
 }
-
-let project: Project = .feature(type: .version, targets: targets())
