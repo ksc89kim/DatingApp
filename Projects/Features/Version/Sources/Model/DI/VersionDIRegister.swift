@@ -19,7 +19,7 @@ public struct VersionDIRegister {
     DIContainer.register {
       InjectItem(VersionRepositoryTypeKey.self) {
         let repository = VersionRepository(
-          networking: .init(stubClosure: Networking<VersionAPI>.immediatelyStub)
+          networking: .init(stub: .immediatelyStub)
         )
         return repository
       }

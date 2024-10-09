@@ -20,7 +20,7 @@ public struct ChatDIRegister {
       InjectItem(ChatHomeViewKey.self) { ChatHomeView() }
       InjectItem(ChatRepositoryKey.self) {
         let repository = ChatRepository(
-          networking: .init(stubClosure: Networking<ChatAPI>.immediatelyStub)
+          networking: .init(stub: .immediatelyStub)
         )
         return repository
       }

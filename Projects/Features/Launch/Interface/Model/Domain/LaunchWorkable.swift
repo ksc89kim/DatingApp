@@ -66,7 +66,7 @@ public extension LaunchWorkable {
 
   func run() async throws {
     try Task.checkCancellation()
-
+        
     switch self.state {
     case .ready, .running:
       self.state = .running
@@ -77,6 +77,10 @@ public extension LaunchWorkable {
     }
 
     try Task.checkCancellation()
+    
+    guard !self.items.isEmpty else {
+      return
+    }
 
     try await withThrowingTaskGroup(of: Void.self) { group in
       for item in self.items {
@@ -85,8 +89,7 @@ public extension LaunchWorkable {
         }
       }
       
-      while try await group.next() != nil {
-      }
+      while try await group.next() != nil {}
     }
   }
 }

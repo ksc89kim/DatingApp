@@ -122,7 +122,7 @@ extension SignupView: AlertBuildable { }
       )
     }
     InjectItem(SignupRepositoryTypeKey.self) { 
-      SignupRepository(networking: .init())
+      SignupRepository(networking: .init(stub: .immediatelyStub))
     }
   }
   

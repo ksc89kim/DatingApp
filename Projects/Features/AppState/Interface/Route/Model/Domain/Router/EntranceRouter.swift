@@ -22,7 +22,7 @@ public struct EntranceRouter: RouteType {
 
   public init(paths: [EntranceRoutePath] = []) {
     self.paths = paths
-    self.navigationTransition = .fade(.cross).animation(.none)
+    self.navigationTransition = .fadeCross
   }
 
   public mutating func goMain() {

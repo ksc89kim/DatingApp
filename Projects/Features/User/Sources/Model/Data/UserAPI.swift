@@ -47,7 +47,7 @@ extension UserAPI: NetworkTargetType {
   var task: Core.NetworkTask {
     return .requestParameters(
       parameters: self.parameters,
-      encoding: URLEncoding.default
+      encoding: .url
     )
   }
 

@@ -19,7 +19,7 @@ public struct UserDIRegister {
     DIContainer.register {
       InjectItem(LoginRepositoryTypeKey.self) {
         let repository = LoginRepository(
-          networking: .init(stubClosure: Networking<UserAPI>.immediatelyStub)
+          networking: .init(stub: .immediatelyStub)
         )
         return repository
       }
@@ -40,7 +40,7 @@ public struct UserDIRegister {
       }
       InjectItem(SignupRepositoryTypeKey.self) {
         SignupRepository(
-          networking: .init(stubClosure: Networking<UserAPI>.immediatelyStub)
+          networking: .init(stub: .immediatelyStub)
         )
       }
     }
