@@ -60,6 +60,7 @@ struct ChatRoomMessageListView: View {
           }
         }
         .rotationEffect(Angle(degrees: 180))
+        .listRowBackground(Color.white)
         .listRowSeparator(.hidden)
         .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
       }
@@ -73,7 +74,9 @@ struct ChatRoomMessageListView: View {
         }
       }
       .rotationEffect(Angle(degrees: 180))
+      .background(Color.white)
     }
+    .background(Color.white)
   }
   
   // MARK: - Method
