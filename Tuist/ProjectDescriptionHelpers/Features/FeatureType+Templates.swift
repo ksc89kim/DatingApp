@@ -34,6 +34,14 @@ public extension FeatureType {
     case .examples: return .app
     }
   }
+    
+  var infoPlist: InfoPlist {
+      if self == .examples {
+          return .examples
+      } else {
+          return .default
+      }
+  }
   
   func name(_ type: ProjectType.Features) -> String {
     if case .source = self {

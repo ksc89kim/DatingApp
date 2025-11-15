@@ -20,7 +20,7 @@ public protocol RouteType: Injectable {
 
   var paths: [Path] { get set }
 
-  var navigationTransition: NavigationTransition { get set }
+  var navigationTransition: NavigationTransitionType { get set }
 }
 
 

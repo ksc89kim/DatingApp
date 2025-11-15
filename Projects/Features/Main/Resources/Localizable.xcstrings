@@ -1,18 +1,7 @@
 {
   "sourceLanguage" : "ko",
   "strings" : {
-    "Chat List" : {
 
-    },
-    "Friend" : {
-
-    },
-    "Home" : {
-
-    },
-    "My" : {
-
-    }
   },
-  "version" : "1.0"
+  "version" : "1.1"
 }

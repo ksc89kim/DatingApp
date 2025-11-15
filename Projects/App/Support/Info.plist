@@ -47,5 +47,7 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>프로필의 페이지에서 사진 선택시 권한이 필요합니다.</string>
 </dict>
 </plist>

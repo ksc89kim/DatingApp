@@ -15,7 +15,7 @@ public extension InfoPlist {
   
   static var examples: InfoPlist {
     return .extendingDefault(with: [
-      "UILaunchScreen" : .dictionary([:])
+      "UILaunchScreen" : .dictionary(["": ""])
     ])
   }
 }

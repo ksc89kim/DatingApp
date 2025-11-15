@@ -174,6 +174,7 @@ final class SignupViewModel: ViewModelType, Injectable {
 
 extension SignupViewModel: ProgressMainContainerDelegate {
   
+  @MainActor
   func dismiss() async {
     _ = self.appState.entranceRouter.popLast()
   }
@@ -199,7 +200,7 @@ extension SignupViewModel: ProgressMainContainerDelegate {
     self.state.currentMain = main as? SignupMain
     self.state.progress.value = value
     self.state.bottomButton.isDisable = main.isBottomDisable
-    if from != .updateFirstMain  {
+    if from != .updateFirstMain {
       self.state.progress.isAnimation = true
     }
   }
