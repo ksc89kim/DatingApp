@@ -32,7 +32,6 @@ struct ChatListView: View {
         self.listView
       }
     }
-    .background(.white)
     .onAppear {
       self.viewModel.trigger(.load)
     }
@@ -49,6 +48,7 @@ struct ChatListView: View {
       self.chosenSection
       self.messageSection
     }
+    .background(Color.white)
     .listSectionSpacing(24)
     .listStyle(.plain)
     .environment(\.defaultMinListRowHeight, 0)
@@ -68,8 +68,9 @@ struct ChatListView: View {
         )
       )
     }
-    .background(.white)
+    .padding(.vertical, 16)
     .listRowInsets(EdgeInsets())
+    .listRowBackground(Color.white)
     .listRowSeparator(.hidden)
   }
 
@@ -105,8 +106,8 @@ struct ChatListView: View {
           }
       }
     }
-    .background(.white)
     .listRowInsets(EdgeInsets())
+    .listRowBackground(Color.white)
     .listRowSeparator(.hidden)
   }
 }
