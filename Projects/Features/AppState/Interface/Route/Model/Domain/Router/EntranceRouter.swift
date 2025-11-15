@@ -16,13 +16,13 @@ public struct EntranceRouter: RouteType {
 
   public var paths: [EntranceRoutePath]
 
-  public var navigationTransition: NavigationTransition
+  public var navigationTransition: NavigationTransitionType
 
   // MARK: - Init
 
   public init(paths: [EntranceRoutePath] = []) {
     self.paths = paths
-    self.navigationTransition = .fadeCross
+      self.navigationTransition = .fadeCross
   }
 
   public mutating func goMain() {

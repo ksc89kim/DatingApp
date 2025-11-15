@@ -16,13 +16,13 @@ struct MockRouter: RouteType {
 
   var paths: [MockRoutePath]
 
-  var navigationTransition: NavigationTransition
+  var navigationTransition: NavigationTransitionType
 
   // MARK: - Init
 
   init(
     paths: [MockRoutePath] = [],
-    navigationTransition: NavigationTransition = .default
+    navigationTransition: NavigationTransitionType = .default
   ) {
     self.paths = paths
     self.navigationTransition = navigationTransition

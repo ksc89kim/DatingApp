@@ -16,8 +16,13 @@ struct UserExampleSection: Identifiable {
 
 extension UserExampleSection {
 
-  static let examples: UserExampleSection = .init(
+  static let signup: UserExampleSection = .init(
     name: "가입",
     items: [.signup]
+  )
+  
+  static let register: UserExampleSection = .init(
+    name: "프로필 등록",
+    items: [.register]
   )
 }

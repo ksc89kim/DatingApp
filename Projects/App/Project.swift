@@ -1,7 +1,7 @@
 import ProjectDescription
 import ProjectDescriptionHelpers
 
-let configurationTargets: [ConfigurationTarget] = .default
+nonisolated(unsafe) let configurationTargets: [ConfigurationTarget] = .default
 
 let settings: Settings = .settings(
   base: .app,

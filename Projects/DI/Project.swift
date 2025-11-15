@@ -1,8 +1,8 @@
 import ProjectDescription
 import ProjectDescriptionHelpers
 
-let configurationTargets: [ConfigurationTarget] = .default
-let type: ProjectType = .di
+nonisolated(unsafe) let configurationTargets: [ConfigurationTarget] = .default
+nonisolated(unsafe) let type: ProjectType = .di
 let settings: Settings = .settings(
   base: .base,
   configurations: configurationTargets.configurations,

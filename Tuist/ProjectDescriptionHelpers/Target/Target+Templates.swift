@@ -18,6 +18,7 @@ public extension Target {
       name: type.name(features),
       product: type.product,
       bundleId: type.bundleId(name: features.rawValue),
+      infoPlist: type.infoPlist,
       sources: type.sourceFileList,
       resources: type.resources,
       scripts: [.swiftLint],

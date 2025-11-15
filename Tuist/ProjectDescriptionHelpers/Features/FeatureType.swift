@@ -30,7 +30,7 @@ public enum FeatureType: String {
 
 public extension Set where Element == FeatureType {
   
-  static let all: Set<FeatureType> = [
+    nonisolated(unsafe) static let all: Set<FeatureType> = [
     .interface,
     .source,
     .testing,

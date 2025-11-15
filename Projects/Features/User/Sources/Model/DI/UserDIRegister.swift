@@ -12,9 +12,9 @@ import Core
 import UserInterface
 
 public struct UserDIRegister {
-
+  
   // MARK: - Method
-
+  
   public static func register() {
     DIContainer.register {
       InjectItem(LoginRepositoryTypeKey.self) {
@@ -41,6 +41,25 @@ public struct UserDIRegister {
       InjectItem(SignupRepositoryTypeKey.self) {
         SignupRepository(
           networking: .init(stub: .immediatelyStub)
+        )
+      }
+      InjectItem(UserRegisterRepositoryTypeKey.self) {
+        UserRegisterRepository(
+          networking: .init(stub: .immediatelyStub)
+        )
+      }
+      InjectItem(UserRegisterViewModelKey.self) {
+        UserRegisterViewModel(
+          container: .init(
+            index: 0,
+            mains: [
+              UserRegisterBirthday(),
+              UserRegisterHeight(),
+              UserRegisterSingleSelect.job,
+              UserRegisterMultipleSelect.game,
+              UserRegisterGallery()
+            ]
+          )
         )
       }
     }

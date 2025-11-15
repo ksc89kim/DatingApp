@@ -9,9 +9,10 @@ import SwiftUI
 struct UserContentView: View {
   
   // MARK: - Property
-  
+    
   let sections: [UserExampleSection] = [
-    .examples
+    .signup,
+    .register
   ]
   
   // MARK: - Body
@@ -30,8 +31,10 @@ struct UserContentView: View {
       .navigationBarTitle("데모", displayMode: .inline)
       .navigationDestination(for: UserExampleItem.self) { item in
         switch item {
-        case .signup: 
+        case .signup:
           SignupView()
+        case .register:
+          UserRegisterView()
         }
       }
       .listStyle(.sidebar)
@@ -51,8 +54,25 @@ struct UserContentView: View {
       InjectItem(SignupRepositoryTypeKey.self) { MockSignupRepository() }
       InjectItem(SignupViewModelKey.self) {
         SignupViewModel(
-          container: .init(index: 0, mains: [SignupNickname()]), 
+          container: .init(index: 0, mains: [SignupNickname()]),
           tokenManager: tokenManager
+        )
+      }
+      InjectItem(UserRegisterRepositoryTypeKey.self) {
+          UserRegisterRepository(networking: .init(stub: .neverStub))
+      }
+      InjectItem(UserRegisterViewModelKey.self) {
+        UserRegisterViewModel(
+          container: .init(
+            index: 0,
+            mains: [
+              UserRegisterBirthday(),
+              UserRegisterHeight(),
+              UserRegisterSingleSelect.job,
+              UserRegisterMultipleSelect.game,
+              UserRegisterGallery()
+            ]
+          )
         )
       }
     }

@@ -15,12 +15,12 @@ public struct ChatRouter: RouteType {
 
   public var paths: [ChatRoutePath]
 
-  public var navigationTransition: NavigationTransition
+  public var navigationTransition: NavigationTransitionType
 
   // MARK: - Init
 
   public init(paths: [ChatRoutePath] = []) {
     self.paths = paths
-    self.navigationTransition = .default
+      self.navigationTransition = .default
   }
 }

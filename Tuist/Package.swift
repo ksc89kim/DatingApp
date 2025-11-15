@@ -5,9 +5,9 @@ import PackageDescription
     import ProjectDescription
     import ProjectDescriptionHelpers
 
-    let targets: [ConfigurationTarget] = .default
+    nonisolated(unsafe) let targets: [ConfigurationTarget] = .default
 
-    let packageSettings = PackageSettings(
+    nonisolated(unsafe) let packageSettings = PackageSettings(
         // Customize the product types for specific package product
         // Default is .staticFramework
         // productTypes: ["Alamofire": .framework,] 
@@ -16,11 +16,11 @@ import PackageDescription
     )
 #endif
 
-let package = Package(
+nonisolated(unsafe) let package = Package(
     name: "Test",
     dependencies: [
       .package(url: "https://github.com/Moya/Moya.git", from: "15.0.3"),
-      .package(url: "https://github.com/davdroman/swiftui-navigation-transitions.git", from: "0.13.3"),
+      .package(url: "https://github.com/davdroman/swiftui-navigation-transitions.git", from: "0.16.1"),
       .package(url: "https://github.com/onevcat/Kingfisher.git", from: "7.10.0")
     ]
 )

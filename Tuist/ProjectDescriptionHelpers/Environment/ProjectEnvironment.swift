@@ -25,7 +25,7 @@ public struct ProjectEnvironment {
 }
 
 
-public let env = ProjectEnvironment(
+nonisolated(unsafe) public let env = ProjectEnvironment(
   name: "DatingApp",
   teamID: "tronplay",
   marketingVersion: "1.0.0",

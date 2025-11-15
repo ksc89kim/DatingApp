@@ -6,10 +6,10 @@
 //  Copyright © 2023 com.tronplay. All rights reserved.
 //
 
-import NavigationTransitions
+import SwiftUINavigationTransitions
 import SwiftUI
 
-public enum NavigationTransition {
+public enum NavigationTransitionType {
   case base
   case slide
   case fadeCross
@@ -52,7 +52,7 @@ public enum Interactivity {
 extension View {
   @MainActor
   public func navigationTransition(
-    _ transition: NavigationTransition,
+    _ transition: NavigationTransitionType,
     interactivity: Interactivity = .default
   ) -> some View {
     return self.navigationTransition(

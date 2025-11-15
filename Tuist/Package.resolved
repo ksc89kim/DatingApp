@@ -28,6 +28,15 @@
       }
     },
     {
+      "identity" : "objc-runtime-tools",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/davdroman/objc-runtime-tools",
+      "state" : {
+        "revision" : "d9e3aa914fbe37eb9328505507deab618548873f",
+        "version" : "0.2.0"
+      }
+    },
+    {
       "identity" : "reactiveswift",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ReactiveCocoa/ReactiveSwift.git",
@@ -46,6 +55,24 @@
       }
     },
     {
+      "identity" : "swift-once-macro",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/davdroman/swift-once-macro",
+      "state" : {
+        "revision" : "d7c66418a3a22588decd8faafca13bed72ee0421",
+        "version" : "1.0.1"
+      }
+    },
+    {
+      "identity" : "swift-syntax",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/swiftlang/swift-syntax",
+      "state" : {
+        "revision" : "4799286537280063c85a32f09884cfbca301b1a1",
+        "version" : "602.0.0"
+      }
+    },
+    {
       "identity" : "swiftui-introspect",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/siteline/swiftui-introspect",
@@ -59,8 +86,17 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/davdroman/swiftui-navigation-transitions.git",
       "state" : {
-        "revision" : "ad6ecab3f275fd0ff30959150dec0f14a5b7a245",
-        "version" : "0.13.4"
+        "revision" : "e2f0234ce42fed0f41c129717f06dc2fb5308c0a",
+        "version" : "0.16.1"
+      }
+    },
+    {
+      "identity" : "xctest-dynamic-overlay",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/pointfreeco/xctest-dynamic-overlay",
+      "state" : {
+        "revision" : "4c27acf5394b645b70d8ba19dc249c0472d5f618",
+        "version" : "1.7.0"
       }
     }
   ],

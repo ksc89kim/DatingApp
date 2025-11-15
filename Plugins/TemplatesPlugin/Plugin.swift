@@ -1,3 +1,3 @@
 import ProjectDescription
 
-let templatesPlugin = Plugin(name: "TemplatesPlugin")
+nonisolated(unsafe) let templatesPlugin = Plugin(name: "TemplatesPlugin")

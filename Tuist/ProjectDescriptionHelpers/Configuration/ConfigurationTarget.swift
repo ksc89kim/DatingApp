@@ -66,7 +66,7 @@ public extension ConfigurationTarget {
 
 public extension Array where Element == ConfigurationTarget {
   
-  static let `default`: [ConfigurationTarget] = [
+    nonisolated(unsafe) static let `default`: [ConfigurationTarget] = [
     .dev,
     .stage,
     .release
