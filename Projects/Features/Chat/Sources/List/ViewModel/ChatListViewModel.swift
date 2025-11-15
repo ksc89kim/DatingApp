@@ -121,9 +121,11 @@ final class ChatListViewModel: ViewModelType, Injectable {
   }
 
   private func load() async {
-    await self.loadMessageList()
-    await self.loadChosenList()
-    await self.checkEmptyView()
+    async let messageList: Void = self.loadMessageList()
+    async let chosenList: Void = self.loadChosenList()
+    
+    let result = await (messageList, chosenList)
+    let emptyList: Void = await self.checkEmptyView()
   }
 
   // MARK: - Method (Load Message)
