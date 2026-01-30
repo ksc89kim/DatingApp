@@ -10,6 +10,6 @@ import ProjectDescription
 
 public enum external {
     public static let moya: TargetDependency = .external(name: "Moya")
-    public static let naviagationTransitions: TargetDependency = .external(name: "SwiftUINavigationTransitions")
+    public static let navigationTransitions: TargetDependency = .external(name: "SwiftUINavigationTransitions")
     public static let kingfisher: TargetDependency = .external(name: "Kingfisher")
 }
