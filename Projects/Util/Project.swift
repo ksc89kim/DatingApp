@@ -17,7 +17,8 @@ let project = Project.make(
     name: type.name,
     resources: ["Resources/**"]
   ) {
-    external.naviagationTransitions
+    external.navigationTransitions
+    external.kingfisher
   }
   Target.tests(
     name: type.name
