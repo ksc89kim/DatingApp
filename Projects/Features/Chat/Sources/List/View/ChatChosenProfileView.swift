@@ -7,7 +7,7 @@
 //
 
 import SwiftUI
-import Kingfisher
+import Util
 
 struct ChatChosenProfileView: View {
 
@@ -21,23 +21,8 @@ struct ChatChosenProfileView: View {
 
   var body: some View {
     ZStack(alignment: .trailing) {
-      KFAnimatedImage(profile.thumbnail)
-        .cancelOnDisappear(true)
-        .placeholder {
-          RoundedRectangle(cornerRadius: 12)
-            .foregroundColor(
-              Assets.chatChosenPlaceholder.swiftUIColor
-            )
-            .overlay {
-              Image(systemName: "person.fill")
-                .resizable()
-                .frame(width: 30, height: 30)
-                .foregroundColor(
-                  Assets.chatChosenPlaceholderPerson.swiftUIColor
-                )
-            }
-        }
-        .fade(duration: 1)
+      LoadImage(url: profile.thumbnail,
+                placeHolderView: placeHolderView)
         .aspectRatio(contentMode: .fill)
         .frame(width: 95, height: 125)
         .cornerRadius(12)
@@ -53,6 +38,21 @@ struct ChatChosenProfileView: View {
     }
     .accessibilityLabel("유저 이미지")
     .accessibilityAddTraits(.isImage)
+  }
+  
+  private var placeHolderView: some View {
+    RoundedRectangle(cornerRadius: 12)
+      .foregroundColor(
+        Assets.chatChosenPlaceholder.swiftUIColor
+      )
+      .overlay {
+        Image(systemName: "person.fill")
+          .resizable()
+          .frame(width: 30, height: 30)
+          .foregroundColor(
+            Assets.chatChosenPlaceholderPerson.swiftUIColor
+          )
+      }
   }
 }
 
