@@ -34,6 +34,7 @@ public extension Target {
       name: name + "Tests",
       product: .unitTests,
       bundleId: .tests(name: name),
+      sources: ["Tests/**"],
       scripts: [.swiftLint],
       content
     )

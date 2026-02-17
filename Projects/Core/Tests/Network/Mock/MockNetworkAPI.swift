@@ -25,7 +25,7 @@ extension MockNetorkAPI: NetworkTargetType {
   var task: Core.NetworkTask {
     return .requestParameters(
       parameters: [:],
-      encoding: URLEncoding.default
+      encoding: .url
     )
   }
 

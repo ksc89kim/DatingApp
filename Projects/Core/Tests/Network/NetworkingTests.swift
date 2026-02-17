@@ -12,23 +12,15 @@ final class NetworkingTests: XCTestCase {
   override func setUp() {
     super.setUp()
 
-    self.networking = .init(
-      stubClosure: Networking<MockNetorkAPI>.immediatelyStub
-    )
+    self.networking = .init(stub: .immediatelyStub)
   }
 
-  func testRequestForCompletion() {
-
-    let expectation = XCTestExpectation(description: "Request Completion Expectation")
-
-    _ = self.networking.request(.test) { result in
-      if case .failure = result {
-        XCTFail()
-      }
-      expectation.fulfill()
-    }
-
-    wait(for: [expectation], timeout: 5.0)
+  func testRequestForBasic() async throws {
+    let result = try await self.networking.request(
+      MockNetworkResponse.self,
+      target: .test
+    )
+    XCTAssertEqual(result.code, 201)
   }
 
   func testRequestForAsync() async throws {
