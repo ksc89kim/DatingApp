@@ -18,6 +18,7 @@ public struct AppStateDIRegister {
       InjectItem(AppStateKey.self) { AppState.instance }
       InjectItem(EntranceRouteKey.self) { EntranceRouter() }
       InjectItem(ChatRouteKey.self) { ChatRouter() }
+      InjectItem(MatchingRouteKey.self) { MatchingRouter() }
     }
   }
 }

@@ -29,5 +29,6 @@ let project = Project.make(
     feature(.onboarding, type: .source)
     feature(.main, type: .source)
     feature(.chat, type: .source)
+    feature(.matching, type: .source)
   }
 }

@@ -22,3 +22,8 @@ public enum EntranceRouteKey: InjectionKey {
 public enum ChatRouteKey: InjectionKey {
   public typealias Value = ChatRouter
 }
+
+
+public enum MatchingRouteKey: InjectionKey {
+  public typealias Value = MatchingRouter
+}

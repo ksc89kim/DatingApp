@@ -46,11 +46,9 @@ public struct ChatHomeView<ProfileView: View>: View, Injectable {
         switch path {
         case .chatRoom(let idx):
           ChatRoomView(roomIdx: idx)
-            .toolbar(.hidden, for: .tabBar)
             .navigationBarBackButtonHidden()
         case .userProfile(let userID):
           self.buildProfileView(userID, .chatList)
-            .toolbar(.hidden, for: .tabBar)
             .navigationBarBackButtonHidden()
         }
       }
@@ -63,6 +61,11 @@ public struct ChatHomeView<ProfileView: View>: View, Injectable {
         }
       }
     }
+    .toolbar(
+      self.appState.chatRouter.paths.isEmpty ? .visible : .hidden,
+      for: .tabBar
+    )
+    .animation(.none, value: self.appState.chatRouter.paths.isEmpty)
   }
 }
 

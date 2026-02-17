@@ -18,6 +18,8 @@ import Onboarding
 import Main
 import Chat
 import ChatInterface
+import Matching
+import MatchingInterface
 
 struct DIRegister {
 
@@ -29,6 +31,7 @@ struct DIRegister {
     VersionDIRegister.register()
     UserDIRegister.register()
     ChatDIRegister.register()
+    MatchingDIRegister.register()
     self.registerCrossModuleDependencies()
   }
 
@@ -38,6 +41,16 @@ struct DIRegister {
     DIContainer.register {
       InjectItem(ChatHomeViewKey.self) {
         ChatHomeView { userID, entryType in
+          UserProfileView(
+            viewModel: UserProfileViewModel(
+              userID: userID,
+              entryType: entryType
+            )
+          )
+        }
+      }
+      InjectItem(MatchingHomeViewKey.self) {
+        MatchingHomeView { userID, entryType in
           UserProfileView(
             viewModel: UserProfileViewModel(
               userID: userID,

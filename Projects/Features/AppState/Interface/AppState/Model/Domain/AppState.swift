@@ -25,5 +25,10 @@ public final class AppState: ObservableObject, Injectable {
     for: ChatRouteKey.self
   )
 
+  @Published
+  public var matchingRouter: MatchingRouter = DIContainer.resolve(
+    for: MatchingRouteKey.self
+  )
+
   public static let instance: AppState = .init()
 }
