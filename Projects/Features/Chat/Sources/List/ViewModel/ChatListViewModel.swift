@@ -85,6 +85,8 @@ final class ChatListViewModel: ViewModelType, Injectable {
       self.deleteMessageRoom(roomIdx: roomIdx)
     case .loadChosenList, .loadMessageList: break
     case .presentRoom(let roomIdx): self.presentRoom(roomIdx: roomIdx)
+    case .presentProfile(let userID):
+      self.presentProfile(userID: userID)
     }
   }
 
@@ -105,7 +107,7 @@ final class ChatListViewModel: ViewModelType, Injectable {
     case .deleteMessageRoom(roomIdx: let roomIdx):
       await self.deleteMessageRoom(roomIdx: roomIdx)
     case .load: await self.load()
-    case .presentRoom: break
+    case .presentRoom, .presentProfile: break
     }
   }
 
@@ -211,7 +213,17 @@ final class ChatListViewModel: ViewModelType, Injectable {
   // MARK: - Method (Room)
 
   private func presentRoom(roomIdx: String) {
-    self.appState.chatRouter.append(path: .chatRoom(idx: roomIdx))
+    self.appState.chatRouter.append(
+      path: .chatRoom(idx: roomIdx)
+    )
+  }
+
+  // MARK: - Method (Profile)
+
+  private func presentProfile(userID: String) {
+    self.appState.chatRouter.append(
+      path: .userProfile(userID: userID)
+    )
   }
 
   // MARK: - Method (ETC)

@@ -25,4 +25,9 @@ extension UserExampleSection {
     name: "프로필 등록",
     items: [.register]
   )
+
+  static let profile: UserExampleSection = .init(
+    name: "프로필",
+    items: [.profile]
+  )
 }

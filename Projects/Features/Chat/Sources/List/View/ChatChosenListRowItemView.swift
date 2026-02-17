@@ -16,6 +16,8 @@ struct ChatChosenListRowItemView: View {
 
   let item: ChatChosenSectionItem
 
+  var onTap: (() -> Void)?
+
   var body: some View {
     VStack(spacing: 12) {
       ChatChosenProfileView(profile: self.item.profile)
@@ -27,6 +29,10 @@ struct ChatChosenListRowItemView: View {
     }
     .accessibilityElement(children: .combine)
     .padding(.leading, 8)
+    .contentShape(Rectangle())
+    .onTapGesture {
+      self.onTap?()
+    }
   }
 }
 

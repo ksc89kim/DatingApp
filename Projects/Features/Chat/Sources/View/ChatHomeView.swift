@@ -9,23 +9,47 @@
 import SwiftUI
 import DI
 import AppStateInterface
+import UserInterface
 import Util
 
-struct ChatHomeView: View, Injectable {
+public struct ChatHomeView<ProfileView: View>: View, Injectable {
+
+  // MARK: - Property
 
   @ObservedObject
   private var appState: AppState = DIContainer.resolve(
     for: AppStateKey.self
   )
 
-  var body: some View {
+  @ViewBuilder
+  private let buildProfileView: (String, UserProfileEntryType) -> ProfileView
+
+  // MARK: - Init
+
+  public init(
+    @ViewBuilder buildProfileView: @escaping (
+      String,
+      UserProfileEntryType
+    ) -> ProfileView
+  ) {
+    self.buildProfileView = buildProfileView
+  }
+
+  // MARK: - Body
+
+  public var body: some View {
     NavigationStack(path: self.$appState.chatRouter.paths) {
       VStack {
         ChatListView()
       }
       .navigationDestination(for: ChatRoutePath.self) { path in
         switch path {
-        case .chatRoom(let idx): ChatRoomView(roomIdx: idx)
+        case .chatRoom(let idx):
+          ChatRoomView(roomIdx: idx)
+            .toolbar(.hidden, for: .tabBar)
+            .navigationBarBackButtonHidden()
+        case .userProfile(let userID):
+          self.buildProfileView(userID, .chatList)
             .toolbar(.hidden, for: .tabBar)
             .navigationBarBackButtonHidden()
         }
@@ -46,5 +70,7 @@ struct ChatHomeView: View, Injectable {
 #Preview {
   AppStateDIRegister.register()
   ChatDIRegister.register()
-  return ChatHomeView()
+  return ChatHomeView { userID, _ in
+    Text("Profile: \(userID)")
+  }
 }

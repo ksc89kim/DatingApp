@@ -10,6 +10,7 @@ import Foundation
 
 public enum ChatRoutePath: RoutePathType {
   case chatRoom(idx: String)
+  case userProfile(userID: String)
 }
 
 

@@ -12,7 +12,8 @@ struct UserContentView: View {
     
   let sections: [UserExampleSection] = [
     .signup,
-    .register
+    .register,
+    .profile
   ]
   
   // MARK: - Body
@@ -35,6 +36,13 @@ struct UserContentView: View {
           SignupView()
         case .register:
           UserRegisterView()
+        case .profile:
+          UserProfileView(
+            viewModel: .init(
+              userID: "demo",
+              entryType: .matchRecommend
+            )
+          )
         }
       }
       .listStyle(.sidebar)
@@ -73,6 +81,11 @@ struct UserContentView: View {
               UserRegisterGallery()
             ]
           )
+        )
+      }
+      InjectItem(UserProfileRepositoryTypeKey.self) {
+        UserProfileRepository(
+          networking: .init(stub: .immediatelyStub)
         )
       }
     }

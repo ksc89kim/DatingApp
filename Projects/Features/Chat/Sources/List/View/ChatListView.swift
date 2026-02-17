@@ -62,10 +62,17 @@ struct ChatListView: View {
         appearIndex: Binding(
           get: { self.chosenAppearIndex },
           set: { newValue in
-            self.viewModel.trigger(.loadChosenListMore(index: newValue))
+            self.viewModel.trigger(
+              .loadChosenListMore(index: newValue)
+            )
             self.chosenAppearIndex = newValue
           }
-        )
+        ),
+        onTapProfile: { userID in
+          self.viewModel.trigger(
+            .presentProfile(userID: userID)
+          )
+        }
       )
     }
     .padding(.vertical, 16)

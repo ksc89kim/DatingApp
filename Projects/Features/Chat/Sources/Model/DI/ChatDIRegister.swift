@@ -17,7 +17,6 @@ public struct ChatDIRegister {
 
   public static func register() {
     DIContainer.register {
-      InjectItem(ChatHomeViewKey.self) { ChatHomeView() }
       InjectItem(ChatRepositoryKey.self) {
         let repository = ChatRepository(
           networking: .init(stub: .immediatelyStub)

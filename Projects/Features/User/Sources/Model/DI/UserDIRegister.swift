@@ -62,6 +62,12 @@ public struct UserDIRegister {
           )
         )
       }
+      InjectItem(UserProfileRepositoryTypeKey.self) {
+        UserProfileRepository(
+          networking: .init(stub: .immediatelyStub)
+        )
+      }
+
     }
   }
 }

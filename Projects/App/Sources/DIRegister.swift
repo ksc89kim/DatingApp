@@ -13,9 +13,11 @@ import Launch
 import Version
 import AppStateInterface
 import User
+import UserInterface
 import Onboarding
 import Main
 import Chat
+import ChatInterface
 
 struct DIRegister {
 
@@ -27,5 +29,23 @@ struct DIRegister {
     VersionDIRegister.register()
     UserDIRegister.register()
     ChatDIRegister.register()
+    self.registerCrossModuleDependencies()
+  }
+
+  // MARK: - Private
+
+  private func registerCrossModuleDependencies() {
+    DIContainer.register {
+      InjectItem(ChatHomeViewKey.self) {
+        ChatHomeView { userID, entryType in
+          UserProfileView(
+            viewModel: UserProfileViewModel(
+              userID: userID,
+              entryType: entryType
+            )
+          )
+        }
+      }
+    }
   }
 }

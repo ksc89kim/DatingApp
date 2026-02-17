@@ -19,6 +19,8 @@ struct ChatChosenListRowView: View {
   @Binding
   var appearIndex: Int
 
+  var onTapProfile: ((String) -> Void)?
+
   var body: some View {
     VStack(alignment: .leading) {
       Text("친구 요청 목록")
@@ -33,10 +35,15 @@ struct ChatChosenListRowView: View {
             self.items.enumerated().map { $0 },
             id: \.element.userIdx
           ) { offset, item in
-            ChatChosenListRowItemView(item: item)
-              .onAppear {
-                self.appearIndex = offset
+            ChatChosenListRowItemView(
+              item: item,
+              onTap: {
+                self.onTapProfile?(item.userIdx)
               }
+            )
+            .onAppear {
+              self.appearIndex = offset
+            }
           }
         }
         .padding(.leading, 7)
