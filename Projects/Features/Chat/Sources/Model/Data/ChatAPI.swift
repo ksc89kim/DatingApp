@@ -145,11 +145,10 @@ extension ChatAPI: NetworkTargetType {
   private var chosenListSampleData: Data {
     var list = ""
     for i in 0 ..< self.thumbnails.count {
-      let id = UUID()
       let data = """
               {
                 "user": {
-                  "user_idx": "user.\(id)",
+                  "user_idx": "user.\(i + 1)",
                   "nickname": "\(self.names[i])",
                   "thumbnail": "\(self.thumbnails[i])"
                 },
