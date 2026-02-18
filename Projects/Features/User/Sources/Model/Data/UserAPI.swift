@@ -109,34 +109,10 @@ extension UserAPI: NetworkTargetType {
 
   private func profileSampleData(for userID: String) -> Data {
     let index = self.extractIndex(from: userID)
-
-    let jobs = [
-      "개발자", "디자이너", "마케터", "교사", "간호사",
-      "요리사", "변호사", "회계사", "작곡가", "사진작가",
-      "약사", "건축가", "상담사", "번역가", "피트니스 트레이너"
-    ]
-    let mbtis = [
-      "INTJ", "INTP", "ENTJ", "ENTP",
-      "INFJ", "INFP", "ENFJ", "ENFP",
-      "ISTJ", "ISFJ", "ESTJ", "ESFJ",
-      "ISTP", "ISFP", "ESTP", "ESFP"
-    ]
-    let gameGenres = [
-      "[\"RPG\", \"FPS\", \"어드벤처\"]",
-      "[\"퍼즐\", \"시뮬레이션\"]",
-      "[\"MOBA\", \"전략\", \"RPG\"]",
-      "[\"리듬게임\", \"캐주얼\"]",
-      "[\"FPS\", \"배틀로얄\", \"서바이벌\"]",
-      "[\"어드벤처\", \"인디\", \"퍼즐\"]"
-    ]
-    let introduces = [
-      "안녕하세요! 게임을 좋아하는 사람입니다. 같이 게임하면서 이야기 나눠요 :)",
-      "맛집 탐방과 여행을 좋아합니다. 새로운 곳을 함께 탐험해요!",
-      "운동과 독서를 즐기는 사람이에요. 건강한 라이프스타일을 추구합니다.",
-      "음악 듣는 걸 좋아하고, 가끔 직접 연주도 해요. 취미가 비슷한 분 만나고 싶어요!",
-      "카페 투어와 사진 찍기를 좋아해요. 일상 속 소소한 행복을 나누고 싶습니다.",
-      "영화와 드라마 보는 걸 좋아해요. 같이 넷플릭스 볼 사람 구합니다!"
-    ]
+    let jobs = Self.sampleJobs
+    let mbtis = Self.sampleMbtis
+    let gameGenres = Self.sampleGameGenres
+    let introduces = Self.sampleIntroduces
 
     let nickname = "닉네임_\(index)"
     let baseYear = 1990 + (index - 1) % 13
@@ -174,6 +150,37 @@ extension UserAPI: NetworkTargetType {
     }
     """.data(using: .utf16)!
   }
+
+  private static let sampleJobs = [
+    "개발자", "디자이너", "마케터", "교사", "간호사",
+    "요리사", "변호사", "회계사", "작곡가", "사진작가",
+    "약사", "건축가", "상담사", "번역가", "피트니스 트레이너"
+  ]
+
+  private static let sampleMbtis = [
+    "INTJ", "INTP", "ENTJ", "ENTP",
+    "INFJ", "INFP", "ENFJ", "ENFP",
+    "ISTJ", "ISFJ", "ESTJ", "ESFJ",
+    "ISTP", "ISFP", "ESTP", "ESFP"
+  ]
+
+  private static let sampleGameGenres = [
+    "[\"RPG\", \"FPS\", \"어드벤처\"]",
+    "[\"퍼즐\", \"시뮬레이션\"]",
+    "[\"MOBA\", \"전략\", \"RPG\"]",
+    "[\"리듬게임\", \"캐주얼\"]",
+    "[\"FPS\", \"배틀로얄\", \"서바이벌\"]",
+    "[\"어드벤처\", \"인디\", \"퍼즐\"]"
+  ]
+
+  private static let sampleIntroduces = [
+    "안녕하세요! 게임을 좋아하는 사람입니다. 같이 게임하면서 이야기 나눠요 :)",
+    "맛집 탐방과 여행을 좋아합니다. 새로운 곳을 함께 탐험해요!",
+    "운동과 독서를 즐기는 사람이에요. 건강한 라이프스타일을 추구합니다.",
+    "음악 듣는 걸 좋아하고, 가끔 직접 연주도 해요. 취미가 비슷한 분 만나고 싶어요!",
+    "카페 투어와 사진 찍기를 좋아해요. 일상 속 소소한 행복을 나누고 싶습니다.",
+    "영화와 드라마 보는 걸 좋아해요. 같이 넷플릭스 볼 사람 구합니다!"
+  ]
 
   var emptySuccessSampleData: Data {
     return """

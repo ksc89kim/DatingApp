@@ -18,18 +18,15 @@ public struct UserDIRegister {
   public static func register() {
     DIContainer.register {
       InjectItem(LoginRepositoryTypeKey.self) {
-        let repository = LoginRepository(
-          networking: .init(stub: .immediatelyStub)
-        )
-        return repository
+        LoginRepository(networking: .init(stub: .immediatelyStub))
       }
       InjectItem(LoginKey.self) {
-        let tokenManager = TokenManager()
-        return Login(tokenManager: tokenManager)
+        Login(tokenManager: TokenManager())
       }
       InjectItem(LoginLaunchWorkerKey.self) {
-        let login: Loginable = DIContainer.resolve(for: LoginKey.self)
-        return LoginLaunchWorker(loginable: login)
+        LoginLaunchWorker(
+          loginable: DIContainer.resolve(for: LoginKey.self)
+        )
       }
       InjectItem(SignupViewKey.self) { SignupView() }
       InjectItem(SignupViewModelKey.self) {

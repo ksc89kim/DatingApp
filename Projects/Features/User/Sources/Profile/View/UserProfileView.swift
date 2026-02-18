@@ -92,79 +92,68 @@ public struct UserProfileView: View {
     safeAreaTop: CGFloat
   ) -> some View {
     ZStack {
-      if let errorMessage = self.viewModel.state
-        .errorMessage {
+      if let errorMessage = self.viewModel.state.errorMessage {
         UserProfileErrorView(
           message: errorMessage,
-          onRetry: {
-            self.viewModel.trigger(.loadProfile)
-          }
+          onRetry: { self.viewModel.trigger(.loadProfile) }
         )
       } else {
-        VStack(spacing: 0) {
-          ScrollView(.vertical) {
-            VStack(alignment: .leading, spacing: 0) {
-              UserProfileImageSection(
-                imageURLs: self.viewModel.state
-                  .profileImageURLs,
-                currentIndex: self.imageIndexBinding,
-                nickname: self.viewModel.state.nickname,
-                age: self.viewModel.state.age,
-                height: self.viewModel.state.height,
-                job: self.viewModel.state.job,
-                imageHeight: self.imageHeight,
-                safeAreaTop: safeAreaTop
-              )
-              UserProfileIntroduceSection(
-                introduce: self.viewModel.state
-                  .introduce
-              )
-              UserProfileBasicInfoSection(
-                age: self.viewModel.state.age,
-                height: self.viewModel.state.height,
-                job: self.viewModel.state.job,
-                mbti: self.viewModel.state.mbti
-              )
-              UserProfileInterestSection(
-                chips: self.viewModel.state
-                  .gameGenreChips,
-                selections: self.viewModel.state
-                  .gameGenreSelections
-              )
-            }
-            .padding(.bottom, 100)
-          }
-          .scrollBounceBehavior(.basedOnSize)
-          .ignoresSafeArea(edges: .top)
-        }
-        VStack {
-          Spacer()
-          UserProfileBottomButtonSection(
-            entryType: self.viewModel.state.entryType,
-            onSkip: {
-              self.viewModel.trigger(.skip)
-            },
-            onLike: {
-              self.viewModel.trigger(.like)
-            },
-            onOpenChat: {
-              self.viewModel.trigger(.openChat)
-            }
-          )
-        }
+        self.profileContent(safeAreaTop: safeAreaTop)
       }
       UserProfileFloatingNavigationBar(
         entryType: self.viewModel.state.entryType,
-        onBack: {
-          self.viewModel.trigger(.back)
-        },
-        onMore: {
-          self.viewModel.trigger(.showMoreMenu(true))
+        onBack: { self.viewModel.trigger(.back) },
+        onMore: { self.viewModel.trigger(.showMoreMenu(true)) }
+      )
+      UserProfileLoadingOverlay(isLoading: self.viewModel.state.isLoading)
+    }
+  }
+
+  private func profileContent(
+    safeAreaTop: CGFloat
+  ) -> some View {
+    ZStack {
+      VStack(spacing: 0) {
+        ScrollView(.vertical) {
+          VStack(alignment: .leading, spacing: 0) {
+            UserProfileImageSection(
+              imageURLs: self.viewModel.state.profileImageURLs,
+              currentIndex: self.imageIndexBinding,
+              nickname: self.viewModel.state.nickname,
+              age: self.viewModel.state.age,
+              height: self.viewModel.state.height,
+              job: self.viewModel.state.job,
+              imageHeight: self.imageHeight,
+              safeAreaTop: safeAreaTop
+            )
+            UserProfileIntroduceSection(
+              introduce: self.viewModel.state.introduce
+            )
+            UserProfileBasicInfoSection(
+              age: self.viewModel.state.age,
+              height: self.viewModel.state.height,
+              job: self.viewModel.state.job,
+              mbti: self.viewModel.state.mbti
+            )
+            UserProfileInterestSection(
+              chips: self.viewModel.state.gameGenreChips,
+              selections: self.viewModel.state.gameGenreSelections
+            )
+          }
+          .padding(.bottom, 100)
         }
-      )
-      UserProfileLoadingOverlay(
-        isLoading: self.viewModel.state.isLoading
-      )
+        .scrollBounceBehavior(.basedOnSize)
+        .ignoresSafeArea(edges: .top)
+      }
+      VStack {
+        Spacer()
+        UserProfileBottomButtonSection(
+          entryType: self.viewModel.state.entryType,
+          onSkip: { self.viewModel.trigger(.skip) },
+          onLike: { self.viewModel.trigger(.like) },
+          onOpenChat: { self.viewModel.trigger(.openChat) }
+        )
+      }
     }
   }
 

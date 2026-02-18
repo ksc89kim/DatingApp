@@ -135,7 +135,7 @@ private extension UserProfileImageSection {
     LinearGradient(
       gradient: Gradient(colors: [
         .clear,
-        .black.opacity(0.55),
+        .black.opacity(0.55)
       ]),
       startPoint: .center,
       endPoint: .bottom
@@ -178,7 +178,7 @@ private extension UserProfileImageSection {
   var ageHeightOverlayText: some View {
     let parts = [
       self.age.map { "\($0)" },
-      self.height.isEmpty ? nil : self.height,
+      self.height.isEmpty ? nil : self.height
     ].compactMap { $0 }
 
     if !parts.isEmpty {

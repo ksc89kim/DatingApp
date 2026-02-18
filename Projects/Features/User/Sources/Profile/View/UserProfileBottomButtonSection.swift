@@ -99,7 +99,7 @@ private extension UserProfileBottomButtonSection {
                   red: 194 / 255,
                   green: 57 / 255,
                   blue: 179 / 255
-                ),
+                )
               ],
               startPoint: .topLeading,
               endPoint: .bottomTrailing
@@ -173,7 +173,7 @@ private extension UserProfileBottomButtonSection {
   @ViewBuilder
   var editProfileButton: some View {
     Button {
-      // TODO: Navigate to edit profile
+      // 프로필 편집 화면으로 이동 (미구현)
     } label: {
       Text("프로필 편집")
         .systemScaledFont(

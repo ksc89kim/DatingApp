@@ -8,6 +8,8 @@ line_length: 100
 excluded:
   - Tuist
   - Derived
+  - "**/Derived"
+  - "**/Project.swift"
   - Plugins
   - Config
   - Scripts

@@ -78,5 +78,8 @@ public struct PhotoPicker: UIViewControllerRepresentable {
     return picker
   }
   
-  public func updateUIViewController(_ uiViewController: PHPickerViewController, context: Context) {}
+  public func updateUIViewController(
+    _ uiViewController: PHPickerViewController,
+    context: Context
+  ) {}
 }
