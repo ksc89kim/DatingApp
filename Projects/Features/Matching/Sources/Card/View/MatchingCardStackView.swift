@@ -19,6 +19,9 @@ struct MatchingCardStackView: View {
     for: MatchingCardViewModelKey.self
   )
 
+  @State
+  private var buttonSwipeDirection: SwipeDirection?
+
   // MARK: - Body
 
   var body: some View {
@@ -76,6 +79,9 @@ struct MatchingCardStackView: View {
           MatchingCardView(
             card: card,
             isTop: index == 0,
+            externalSwipe: index == 0
+              ? self.$buttonSwipeDirection
+              : .constant(nil),
             onSwipe: { direction in
               self.viewModel.trigger(
                 .swipe(direction: direction)
@@ -104,7 +110,7 @@ struct MatchingCardStackView: View {
     HStack(spacing: 40) {
       // Skip 버튼
       Button {
-        self.viewModel.trigger(.skip)
+        self.buttonSwipeDirection = .left
       } label: {
         Image(systemName: "xmark")
           .font(.system(size: 24, weight: .bold))
@@ -118,7 +124,7 @@ struct MatchingCardStackView: View {
 
       // Like 버튼
       Button {
-        self.viewModel.trigger(.like)
+        self.buttonSwipeDirection = .right
       } label: {
         Image(systemName: "heart.fill")
           .font(.system(size: 24, weight: .bold))

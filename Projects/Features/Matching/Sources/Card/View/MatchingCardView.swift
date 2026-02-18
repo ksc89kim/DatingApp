@@ -17,15 +17,15 @@ struct MatchingCardView: View {
 
   let isTop: Bool
 
+  @Binding
+  var externalSwipe: SwipeDirection?
+
   let onSwipe: (SwipeDirection) -> Void
 
   let onTap: () -> Void
 
   @State
   private var offset: CGSize = .zero
-
-  @State
-  private var isRemoved: Bool = false
 
   private var imageURL: URL? {
     guard let first = self.card.profileImages.first else {
@@ -62,6 +62,13 @@ struct MatchingCardView: View {
         if self.isTop {
           self.onTap()
         }
+      }
+      .onChange(of: self.externalSwipe) { _, direction in
+        guard self.isTop, let direction else { return }
+        self.performSwipeAnimation(
+          direction: direction,
+          screenWidth: geometry.size.width
+        )
       }
     }
   }
@@ -153,6 +160,25 @@ struct MatchingCardView: View {
       Double(abs(self.offset.width)) / 100,
       1.0
     )
+  }
+
+  private func performSwipeAnimation(
+    direction: SwipeDirection,
+    screenWidth: CGFloat
+  ) {
+    let targetX: CGFloat = direction == .right
+      ? screenWidth * 2
+      : -screenWidth * 2
+    withAnimation(.easeOut(duration: 0.3)) {
+      self.offset = CGSize(width: targetX, height: 0)
+    }
+    DispatchQueue.main.asyncAfter(
+      deadline: .now() + 0.3
+    ) {
+      self.onSwipe(direction)
+      self.offset = .zero
+      self.externalSwipe = nil
+    }
   }
 
   private func dragGesture(
