@@ -46,11 +46,18 @@ struct MatchingCardView: View {
       }
       .clipShape(RoundedRectangle(cornerRadius: 16))
       .shadow(radius: 4)
-      .offset(x: self.offset.width, y: self.offset.height * 0.4)
+      .offset(
+        x: self.offset.width,
+        y: self.offset.height * 0.4
+      )
       .rotationEffect(
         .degrees(Double(self.offset.width / 40))
       )
-      .gesture(self.isTop ? self.dragGesture(size: geometry.size) : nil)
+      .gesture(
+        self.isTop
+          ? self.dragGesture(size: geometry.size)
+          : nil
+      )
       .onTapGesture {
         if self.isTop {
           self.onTap()
@@ -62,7 +69,9 @@ struct MatchingCardView: View {
   // MARK: - Private
 
   @ViewBuilder
-  private func profileImageSection(size: CGSize) -> some View {
+  private func profileImageSection(
+    size: CGSize
+  ) -> some View {
     LoadImage(
       url: self.imageURL,
       placeHolderView: ProfilePlaceHolder()
@@ -74,7 +83,9 @@ struct MatchingCardView: View {
 
   private var gradientOverlay: some View {
     LinearGradient(
-      gradient: Gradient(colors: [.clear, .black.opacity(0.6)]),
+      gradient: Gradient(
+        colors: [.clear, .black.opacity(0.6)]
+      ),
       startPoint: .center,
       endPoint: .bottom
     )
@@ -138,10 +149,15 @@ struct MatchingCardView: View {
 
   private var nopeOpacity: Double {
     guard self.offset.width < 0 else { return 0 }
-    return min(Double(abs(self.offset.width)) / 100, 1.0)
+    return min(
+      Double(abs(self.offset.width)) / 100,
+      1.0
+    )
   }
 
-  private func dragGesture(size: CGSize) -> some Gesture {
+  private func dragGesture(
+    size: CGSize
+  ) -> some Gesture {
     DragGesture()
       .onChanged { value in
         self.offset = value.translation
@@ -155,7 +171,9 @@ struct MatchingCardView: View {
               height: value.translation.height
             )
           }
-          DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+          DispatchQueue.main.asyncAfter(
+            deadline: .now() + 0.3
+          ) {
             self.onSwipe(.right)
             self.offset = .zero
           }
@@ -166,7 +184,9 @@ struct MatchingCardView: View {
               height: value.translation.height
             )
           }
-          DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+          DispatchQueue.main.asyncAfter(
+            deadline: .now() + 0.3
+          ) {
             self.onSwipe(.left)
             self.offset = .zero
           }

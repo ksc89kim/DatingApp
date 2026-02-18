@@ -20,6 +20,6 @@ public struct MatchingRouter: RouteType {
 
   public init(paths: [MatchingRoutePath] = []) {
     self.paths = paths
-    self.navigationTransition = .default
+    self.navigationTransition = .slideUp
   }
 }

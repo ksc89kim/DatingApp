@@ -9,7 +9,7 @@ import Foundation
 import Core
 
 enum MatchingAPI {
-  case recommendations
+  case recommendations(page: Int)
   case like(userID: String)
   case skip(userID: String)
 }
@@ -42,8 +42,8 @@ extension MatchingAPI: NetworkTargetType {
 
   var parameters: [String: Any] {
     switch self {
-    case .recommendations:
-      return [:]
+    case .recommendations(let page):
+      return ["page": page]
     case .like(let userID):
       return ["user_id": userID]
     case .skip(let userID):
@@ -126,7 +126,8 @@ extension MatchingAPI: NetworkTargetType {
           """
     result += list
     result += """
-            ]
+            ],
+            "has_more": true
           }
         }
       """

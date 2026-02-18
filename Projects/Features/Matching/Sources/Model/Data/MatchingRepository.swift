@@ -23,10 +23,10 @@ final class MatchingRepository: MatchingRepositoryType {
 
   // MARK: - Method
 
-  func fetchRecommendations() async throws -> MatchingRecommendationResponse {
+  func fetchRecommendations(page: Int) async throws -> MatchingRecommendationResponse {
     let response = try await self.networking.request(
       MatchingRecommendationResponse.self,
-      target: .recommendations
+      target: .recommendations(page: page)
     ).data
 
     return response

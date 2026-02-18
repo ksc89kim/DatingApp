@@ -32,7 +32,7 @@ public final class MockMatchingRepository: MatchingRepositoryType {
 
   // MARK: - Method
 
-  public func fetchRecommendations() async throws
+  public func fetchRecommendations(page: Int) async throws
     -> MatchingRecommendationResponse {
     if let error = self.fetchRecommendationsError {
       throw error

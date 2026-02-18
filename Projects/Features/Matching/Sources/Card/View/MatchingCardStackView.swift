@@ -51,7 +51,9 @@ struct MatchingCardStackView: View {
       }
     }
     .alert(
-      isPresented: .constant(self.viewModel.state.isPresentAlert)
+      isPresented: .constant(
+        self.viewModel.state.isPresentAlert
+      )
     ) {
       self.buildAlert(self.viewModel.state.alert)
     }
@@ -66,14 +68,18 @@ struct MatchingCardStackView: View {
     VStack(spacing: 16) {
       ZStack {
         ForEach(
-          Array(self.visibleCards.enumerated().reversed()),
+          Array(
+            self.visibleCards.enumerated().reversed()
+          ),
           id: \.element.id
         ) { index, card in
           MatchingCardView(
             card: card,
             isTop: index == 0,
             onSwipe: { direction in
-              self.viewModel.trigger(.swipe(direction: direction))
+              self.viewModel.trigger(
+                .swipe(direction: direction)
+              )
             },
             onTap: {
               self.viewModel.trigger(
@@ -83,7 +89,9 @@ struct MatchingCardStackView: View {
           )
           .scaleEffect(self.scaleForIndex(index))
           .offset(y: self.offsetForIndex(index))
-          .zIndex(Double(self.visibleCards.count - index))
+          .zIndex(
+            Double(self.visibleCards.count - index)
+          )
         }
       }
       .padding(.horizontal, 16)
@@ -118,7 +126,10 @@ struct MatchingCardStackView: View {
           .frame(width: 60, height: 60)
           .background(.white)
           .clipShape(Circle())
-          .shadow(color: .green.opacity(0.2), radius: 8)
+          .shadow(
+            color: .green.opacity(0.2),
+            radius: 8
+          )
       }
       .buttonStyle(PressedButtonStyle())
     }
@@ -141,7 +152,7 @@ struct MatchingCardStackView: View {
     return CGFloat(index) * 8
   }
 }
+
 // MARK: - AlertBuildable
 
 extension MatchingCardStackView: AlertBuildable { }
-

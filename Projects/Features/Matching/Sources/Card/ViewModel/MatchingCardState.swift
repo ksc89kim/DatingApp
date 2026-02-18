@@ -17,7 +17,13 @@ struct MatchingCardState {
 
   var currentIndex: Int
 
+  var page: Int
+
+  var hasMore: Bool
+
   var isLoading: Bool
+
+  var isFetchingMore: Bool
 
   var isEmpty: Bool
 
@@ -34,7 +40,10 @@ struct MatchingCardState {
   init(
     cards: [MatchingCardItem] = [],
     currentIndex: Int = 0,
+    page: Int = 1,
+    hasMore: Bool = true,
     isLoading: Bool = false,
+    isFetchingMore: Bool = false,
     isEmpty: Bool = false,
     matchedUser: MatchingCardItem? = nil,
     isShowingMatchOverlay: Bool = false,
@@ -43,7 +52,10 @@ struct MatchingCardState {
   ) {
     self.cards = cards
     self.currentIndex = currentIndex
+    self.page = page
+    self.hasMore = hasMore
     self.isLoading = isLoading
+    self.isFetchingMore = isFetchingMore
     self.isEmpty = isEmpty
     self.matchedUser = matchedUser
     self.isShowingMatchOverlay = isShowingMatchOverlay

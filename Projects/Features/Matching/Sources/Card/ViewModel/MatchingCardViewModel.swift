@@ -56,16 +56,20 @@ final class MatchingCardViewModel: ViewModelType, Injectable {
 
   // MARK: - Private
 
+  private let prefetchThreshold = 3
+
   private func load() async {
     await MainActor.run {
       self.state.isLoading = true
     }
     do {
-      let response = try await self.repository.fetchRecommendations()
+      let response = try await self.repository.fetchRecommendations(page: 1)
       await MainActor.run {
         var newState = self.state
         newState.cards = response.recommendations
         newState.currentIndex = 0
+        newState.page = 1
+        newState.hasMore = response.hasMore
         newState.isEmpty = response.recommendations.isEmpty
         newState.isLoading = false
         self.state = newState
@@ -74,6 +78,30 @@ final class MatchingCardViewModel: ViewModelType, Injectable {
       await self.handleError(error)
       await MainActor.run {
         self.state.isLoading = false
+      }
+    }
+  }
+
+  private func loadMore() async {
+    guard self.state.hasMore, !self.state.isFetchingMore else { return }
+    let nextPage = self.state.page + 1
+    await MainActor.run {
+      self.state.isFetchingMore = true
+    }
+    do {
+      let response = try await self.repository.fetchRecommendations(page: nextPage)
+      await MainActor.run {
+        var newState = self.state
+        newState.cards.append(contentsOf: response.recommendations)
+        newState.page = nextPage
+        newState.hasMore = response.hasMore
+        newState.isFetchingMore = false
+        self.state = newState
+      }
+    } catch {
+      await self.handleError(error)
+      await MainActor.run {
+        self.state.isFetchingMore = false
       }
     }
   }
@@ -92,6 +120,7 @@ final class MatchingCardViewModel: ViewModelType, Injectable {
           self.state = newState
         }
       }
+      await self.prefetchIfNeeded()
     } catch {
       await self.handleError(error)
     }
@@ -105,9 +134,15 @@ final class MatchingCardViewModel: ViewModelType, Injectable {
       await MainActor.run {
         self.removeCurrentCard()
       }
+      await self.prefetchIfNeeded()
     } catch {
       await self.handleError(error)
     }
+  }
+
+  private func prefetchIfNeeded() async {
+    guard self.state.cards.count <= self.prefetchThreshold else { return }
+    await self.loadMore()
   }
 
   private func swipe(direction: SwipeDirection) async {

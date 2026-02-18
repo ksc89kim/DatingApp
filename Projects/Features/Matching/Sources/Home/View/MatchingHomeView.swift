@@ -21,7 +21,10 @@ public struct MatchingHomeView<ProfileView: View>: View, Injectable {
   )
 
   @ViewBuilder
-  private let buildProfileView: (String, UserProfileEntryType) -> ProfileView
+  private let buildProfileView: (
+    String,
+    UserProfileEntryType
+  ) -> ProfileView
 
   // MARK: - Init
 
@@ -37,17 +40,26 @@ public struct MatchingHomeView<ProfileView: View>: View, Injectable {
   // MARK: - Body
 
   public var body: some View {
-    NavigationStack(path: self.$appState.matchingRouter.paths) {
+    NavigationStack(
+      path: self.$appState.matchingRouter.paths
+    ) {
       MatchingCardStackView()
-        .navigationDestination(for: MatchingRoutePath.self) { path in
+        .navigationDestination(
+          for: MatchingRoutePath.self
+        ) { path in
           switch path {
           case .userProfile(let userID):
-            self.buildProfileView(userID, .matchRecommend)
-              .navigationBarBackButtonHidden()
+            self.buildProfileView(
+              userID,
+              .matchRecommend
+            )
+            .navigationBarBackButtonHidden()
           }
         }
         .toolbar {
-          ToolbarItem(placement: .navigationBarLeading) {
+          ToolbarItem(
+            placement: .navigationBarLeading
+          ) {
             Text("친구")
               .foregroundStyle(.black)
               .systemScaledFont(style: .boldLargeTitle)
@@ -56,10 +68,13 @@ public struct MatchingHomeView<ProfileView: View>: View, Injectable {
         }
     }
     .toolbar(
-      self.appState.matchingRouter.paths.isEmpty ? .visible : .hidden,
+      self.appState.matchingRouter.paths.isEmpty
+        ? .visible : .hidden,
       for: .tabBar
     )
-    .animation(.none, value: self.appState.matchingRouter.paths.isEmpty)
+    .navigationTransition(
+      self.appState.matchingRouter.navigationTransition
+    )
   }
 }
 

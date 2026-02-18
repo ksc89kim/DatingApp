@@ -12,7 +12,7 @@ public protocol MatchingRepositoryType: AnyObject, Injectable {
 
   // MARK: - Method
 
-  func fetchRecommendations() async throws -> MatchingRecommendationResponse
+  func fetchRecommendations(page: Int) async throws -> MatchingRecommendationResponse
 
   func like(userID: String) async throws -> MatchingLikeResponse
 

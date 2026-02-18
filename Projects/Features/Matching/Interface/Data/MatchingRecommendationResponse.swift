@@ -9,14 +9,30 @@ import Foundation
 
 public struct MatchingRecommendationResponse: Codable {
 
+  // MARK: - CodingKey
+
+  private enum Keys: String, CodingKey {
+    case recommendations
+    case hasMore = "has_more"
+  }
+
   // MARK: - Property
 
   public let recommendations: [MatchingCardItem]
 
+  public let hasMore: Bool
+
   // MARK: - Init
 
-  public init(recommendations: [MatchingCardItem]) {
+  public init(from decoder: Decoder) throws {
+    let container = try decoder.container(keyedBy: Keys.self)
+    self.recommendations = try container.decode([MatchingCardItem].self, forKey: .recommendations)
+    self.hasMore = try container.decodeIfPresent(Bool.self, forKey: .hasMore) ?? false
+  }
+
+  public init(recommendations: [MatchingCardItem], hasMore: Bool = false) {
     self.recommendations = recommendations
+    self.hasMore = hasMore
   }
 }
 

@@ -13,6 +13,7 @@ public enum NavigationTransitionType {
   case base
   case slide
   case fadeCross
+  case slideUp
   
   @inlinable
   public static var `default`: Self {
@@ -24,6 +25,11 @@ public enum NavigationTransitionType {
     case .base: return .default
     case .slide: return .slide
     case .fadeCross: return .fade(.cross).animation(.none)
+    case .slideUp:
+      return .init(SlideUpTransition())
+        .animation(
+          .interpolatingSpring(mass: 1.0, stiffness: 300, damping: 25)
+        )
     }
   }
 }
