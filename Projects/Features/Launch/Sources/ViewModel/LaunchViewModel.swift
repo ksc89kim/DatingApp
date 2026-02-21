@@ -231,15 +231,18 @@ final class LaunchViewModel: ViewModelType, Injectable {
 
   @MainActor
   private func setCompletionCount(completedCount: Int, totalCount: Int) {
+    var newState = self.state
     guard totalCount > 0 else {
-      self.state.bottomMessage = ""
-      self.state.completedCount = 0
-      self.state.totalCount = 0
+      newState.bottomMessage = ""
+      newState.completedCount = 0
+      newState.totalCount = 0
+      self.state = newState
       return
     }
-    self.state.bottomMessage = "\(completedCount)/\(totalCount)"
-    self.state.completedCount = completedCount
-    self.state.totalCount = totalCount
+    newState.bottomMessage = "\(completedCount)/\(totalCount)"
+    newState.completedCount = completedCount
+    newState.totalCount = totalCount
+    self.state = newState
   }
 
   private func checkForceUpdate() {

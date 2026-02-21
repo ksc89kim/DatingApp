@@ -30,5 +30,6 @@ let project = Project.make(
     feature(.main, type: .source)
     feature(.chat, type: .source)
     feature(.matching, type: .source)
+    feature(.myPage, type: .source)
   }
 }

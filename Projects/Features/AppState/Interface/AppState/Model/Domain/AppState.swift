@@ -30,5 +30,10 @@ public final class AppState: ObservableObject, Injectable {
     for: MatchingRouteKey.self
   )
 
+  @Published
+  public var myPageRouter: MyPageRouter = DIContainer.resolve(
+    for: MyPageRouteKey.self
+  )
+
   public static let instance: AppState = .init()
 }

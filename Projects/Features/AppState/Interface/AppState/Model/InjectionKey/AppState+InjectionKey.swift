@@ -27,3 +27,8 @@ public enum ChatRouteKey: InjectionKey {
 public enum MatchingRouteKey: InjectionKey {
   public typealias Value = MatchingRouter
 }
+
+
+public enum MyPageRouteKey: InjectionKey {
+  public typealias Value = MyPageRouter
+}

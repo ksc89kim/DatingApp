@@ -20,6 +20,8 @@ import Chat
 import ChatInterface
 import Matching
 import MatchingInterface
+import MyPage
+import MyPageInterface
 
 struct DIRegister {
 
@@ -32,6 +34,7 @@ struct DIRegister {
     UserDIRegister.register()
     ChatDIRegister.register()
     MatchingDIRegister.register()
+    MyPageDIRegister.register()
     self.registerCrossModuleDependencies()
   }
 
@@ -58,6 +61,9 @@ struct DIRegister {
             )
           )
         }
+      }
+      InjectItem(MyPageHomeViewKey.self) {
+        MyPageHomeView()
       }
     }
   }

@@ -45,5 +45,6 @@ public extension ProjectType {
     case appState = "AppState"
     case version = "Version"
     case launch = "Launch"
+    case myPage = "MyPage"
   }
 }

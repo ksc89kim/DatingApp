@@ -11,6 +11,7 @@ import SwiftUI
 @testable import DI
 @testable import ChatInterface
 @testable import MatchingInterface
+@testable import MyPageInterface
 
 struct MainView: View, Injectable {
 
@@ -30,7 +31,7 @@ struct MainView: View, Injectable {
         .tabItem {
           Label("채팅", systemImage: "message")
         }
-      Text("My")
+      DIContainer.resolveView(for: MyPageHomeViewKey.self)
         .tabItem {
           Label("MY", systemImage: "person")
         }
@@ -53,6 +54,9 @@ struct MainView: View, Injectable {
     }
     InjectItem(MatchingHomeViewKey.self) {
       AnyView(Text("Matching"))
+    }
+    InjectItem(MyPageHomeViewKey.self) {
+      AnyView(Text("My Page"))
     }
   }
   return MainView()
