@@ -32,3 +32,8 @@ public enum MatchingRouteKey: InjectionKey {
 public enum MyPageRouteKey: InjectionKey {
   public typealias Value = MyPageRouter
 }
+
+
+public enum HomeRouteKey: InjectionKey {
+  public typealias Value = HomeRouter
+}

@@ -20,6 +20,7 @@ public struct AppStateDIRegister {
       InjectItem(ChatRouteKey.self) { ChatRouter() }
       InjectItem(MatchingRouteKey.self) { MatchingRouter() }
       InjectItem(MyPageRouteKey.self) { MyPageRouter() }
+      InjectItem(HomeRouteKey.self) { HomeRouter() }
     }
   }
 }

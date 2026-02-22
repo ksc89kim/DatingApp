@@ -49,6 +49,7 @@ public extension SystemFont {
     case boldTitle
     case semiboldTitle
     case body
+    case caption
     case placeHolder
     case bottomButton
     case logo
@@ -62,6 +63,7 @@ public extension SystemFont {
       case .boldTitle: .bold
       case .semiboldTitle: .semibold
       case .body: .regular
+      case .caption: .regular
       case .placeHolder: .regular
       case .bottomButton: .bold
       case .logo: .bold
@@ -75,6 +77,7 @@ public extension SystemFont {
       case .boldTitle: 22
       case .semiboldTitle: 22
       case .body: 17
+      case .caption: 12
       case .placeHolder: 12
       case .bottomButton: 14
       case .logo: 32

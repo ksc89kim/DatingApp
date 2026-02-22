@@ -35,5 +35,10 @@ public final class AppState: ObservableObject, Injectable {
     for: MyPageRouteKey.self
   )
 
+  @Published
+  public var homeRouter: HomeRouter = DIContainer.resolve(
+    for: HomeRouteKey.self
+  )
+
   public static let instance: AppState = .init()
 }

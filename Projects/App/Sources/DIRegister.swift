@@ -16,6 +16,7 @@ import User
 import UserInterface
 import Onboarding
 import Main
+import MainInterface
 import Chat
 import ChatInterface
 import Matching
@@ -42,6 +43,16 @@ struct DIRegister {
 
   private func registerCrossModuleDependencies() {
     DIContainer.register {
+      InjectItem(HomeViewKey.self) {
+        HomeView { userID, entryType in
+          UserProfileView(
+            viewModel: UserProfileViewModel(
+              userID: userID,
+              entryType: entryType
+            )
+          )
+        }
+      }
       InjectItem(ChatHomeViewKey.self) {
         ChatHomeView { userID, entryType in
           UserProfileView(

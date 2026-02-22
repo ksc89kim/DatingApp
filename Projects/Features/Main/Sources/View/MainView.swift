@@ -12,6 +12,7 @@ import SwiftUI
 @testable import ChatInterface
 @testable import MatchingInterface
 @testable import MyPageInterface
+@testable import MainInterface
 
 struct MainView: View, Injectable {
 
@@ -19,7 +20,7 @@ struct MainView: View, Injectable {
 
   var body: some View {
     TabView {
-      Text("Home")
+      DIContainer.resolveView(for: HomeViewKey.self)
         .tabItem {
           Label("홈", systemImage: "house")
         }
@@ -49,6 +50,9 @@ struct MainView: View, Injectable {
 
 #Preview {
   DIContainer.register {
+    InjectItem(HomeViewKey.self) {
+      AnyView(Text("Home"))
+    }
     InjectItem(ChatHomeViewKey.self) {
       AnyView(Text("Chat List"))
     }
