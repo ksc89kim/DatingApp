@@ -36,7 +36,7 @@ public struct ChatDIRegister {
         )
       }
       InjectItem(ChatSocketManagerTypeKey.self) {
-        return ChatSocketManager()
+        return ChatSocketManagerStub()
       }
     }
   }
