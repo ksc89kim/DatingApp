@@ -12,8 +12,3 @@ import SwiftUI
 public enum MainViewKey: InjectionKey {
   public typealias Value = View
 }
-
-
-public enum HomeViewKey: InjectionKey {
-  public typealias Value = View
-}

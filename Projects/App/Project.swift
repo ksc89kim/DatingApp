@@ -28,6 +28,7 @@ let project = Project.make(
     feature(.user, type: .source)
     feature(.onboarding, type: .source)
     feature(.main, type: .source)
+    feature(.home, type: .source)
     feature(.chat, type: .source)
     feature(.matching, type: .source)
     feature(.myPage, type: .source)

@@ -1,8 +1,6 @@
 //
 //  HomeHeaderView.swift
-//  Main
-//
-//  Created by claude on 2/22/26.
+//  Home
 //
 
 import SwiftUI

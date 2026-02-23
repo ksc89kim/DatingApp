@@ -38,6 +38,7 @@ public extension ProjectType {
   
   enum Features: String {
     case chat = "Chat"
+    case home = "Home"
     case matching = "Matching"
     case main = "Main"
     case onboarding = "Onboarding"

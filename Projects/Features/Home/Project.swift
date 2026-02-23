@@ -1,12 +1,10 @@
 import ProjectDescription
 import ProjectDescriptionHelpers
 
-let project: Project = .feature(.main) {
+let project: Project = .feature(.home) {
   dependency(type: .source) {
     feature(.appState, type: .interface)
-    feature(.chat, type: .interface)
-    feature(.home, type: .interface)
     feature(.matching, type: .interface)
-    feature(.myPage, type: .interface)
+    feature(.user, type: .interface)
   }
 }

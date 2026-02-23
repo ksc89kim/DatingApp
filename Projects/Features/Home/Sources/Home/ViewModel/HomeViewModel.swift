@@ -1,8 +1,6 @@
 //
 //  HomeViewModel.swift
-//  Main
-//
-//  Created by claude on 2/21/26.
+//  Home
 //
 
 import Foundation

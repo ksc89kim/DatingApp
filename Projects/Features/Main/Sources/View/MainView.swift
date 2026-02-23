@@ -10,6 +10,7 @@ import SwiftUI
 @testable import Util
 @testable import DI
 @testable import ChatInterface
+@testable import HomeInterface
 @testable import MatchingInterface
 @testable import MyPageInterface
 @testable import MainInterface

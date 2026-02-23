@@ -17,6 +17,8 @@ import UserInterface
 import Onboarding
 import Main
 import MainInterface
+import Home
+import HomeInterface
 import Chat
 import ChatInterface
 import Matching
