@@ -7,13 +7,12 @@
 
 import Foundation
 import DI
-import UserInterface
 
 public protocol MyPageRepositoryType: AnyObject, Injectable {
 
   // MARK: - Method
 
-  func fetchMyProfile() async throws -> UserProfileResponse
+  func fetchMyProfile() async throws -> MyPageProfile
 
-  func updateMyProfile(_ request: MyPageUpdateRequest) async throws -> UserProfileResponse
+  func updateMyProfile(_ request: MyPageUpdateRequest) async throws -> MyPageProfile
 }

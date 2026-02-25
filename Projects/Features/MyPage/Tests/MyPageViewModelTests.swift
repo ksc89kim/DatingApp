@@ -65,7 +65,7 @@ final class MyPageViewModelTests: XCTestCase {
     self.mockRepository.fetchMyProfileResult = .init(
       userID: "test",
       nickname: "테스트",
-      profileImages: [],
+      profileImageURLs: [],
       birthday: "2000-01-01",
       height: "170",
       job: "개발자",

@@ -80,20 +80,20 @@ final class MyPageViewModel: ViewModelType, Injectable {
 
   @MainActor
   private func applyProfile(
-    _ response: UserProfileResponse
+    _ profile: MyPageProfile
   ) {
     var newState = self.state
-    newState.nickname = response.nickname
+    newState.nickname = profile.nickname
     newState.age = UserProfileAgeCalculator
-      .calculateAge(from: response.birthday)
-    newState.height = response.height
-    newState.job = response.job
-    newState.profileImageURLs = response.profileImages
-    newState.gameGenre = response.gameGenre
-    newState.introduce = response.introduce
-    newState.mbti = response.mbti
+      .calculateAge(from: profile.birthday)
+    newState.height = profile.height
+    newState.job = profile.job
+    newState.profileImageURLs = profile.profileImageURLs
+    newState.gameGenre = profile.gameGenre
+    newState.introduce = profile.introduce
+    newState.mbti = profile.mbti
     newState.currentImageIndex = 0
-    newState.gameGenreChips = response.gameGenre.map {
+    newState.gameGenreChips = profile.gameGenre.map {
       Chip(
         key: $0,
         title: LocalizedStringResource(stringLiteral: $0)

@@ -7,16 +7,15 @@
 
 import Foundation
 import MyPageInterface
-import UserInterface
 
 public final class MockMyPageRepository: MyPageRepositoryType {
 
   // MARK: - Property
 
-  public var fetchMyProfileResult: UserProfileResponse = .init(
+  public var fetchMyProfileResult: MyPageProfile = .init(
     userID: "test_user",
     nickname: "테스트유저",
-    profileImages: [],
+    profileImageURLs: [],
     birthday: "1995-05-15",
     height: "170",
     job: "개발자",
@@ -25,10 +24,10 @@ public final class MockMyPageRepository: MyPageRepositoryType {
     mbti: "INFJ"
   )
 
-  public var updateMyProfileResult: UserProfileResponse = .init(
+  public var updateMyProfileResult: MyPageProfile = .init(
     userID: "test_user",
     nickname: "수정된유저",
-    profileImages: [],
+    profileImageURLs: [],
     birthday: "1995-05-15",
     height: "170",
     job: "디자이너",
@@ -47,14 +46,14 @@ public final class MockMyPageRepository: MyPageRepositoryType {
 
   // MARK: - Method
 
-  public func fetchMyProfile() async throws -> UserProfileResponse {
+  public func fetchMyProfile() async throws -> MyPageProfile {
     if let error = self.fetchMyProfileError {
       throw error
     }
     return self.fetchMyProfileResult
   }
 
-  public func updateMyProfile(_ request: MyPageUpdateRequest) async throws -> UserProfileResponse {
+  public func updateMyProfile(_ request: MyPageUpdateRequest) async throws -> MyPageProfile {
     if let error = self.updateMyProfileError {
       throw error
     }

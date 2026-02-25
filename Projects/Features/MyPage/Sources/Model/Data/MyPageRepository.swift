@@ -24,16 +24,16 @@ final class MyPageRepository: MyPageRepositoryType {
 
   // MARK: - Method
 
-  func fetchMyProfile() async throws -> UserProfileResponse {
+  func fetchMyProfile() async throws -> MyPageProfile {
     let response = try await self.networking.request(
       UserProfileResponse.self,
       target: .me
     ).data
 
-    return response
+    return MyPageProfile(response: response)
   }
 
-  func updateMyProfile(_ request: MyPageUpdateRequest) async throws -> UserProfileResponse {
+  func updateMyProfile(_ request: MyPageUpdateRequest) async throws -> MyPageProfile {
     let encoder = JSONEncoder()
     let body = try encoder.encode(request)
     let response = try await self.networking.request(
@@ -41,6 +41,25 @@ final class MyPageRepository: MyPageRepositoryType {
       target: .updateMe(body: body)
     ).data
 
-    return response
+    return MyPageProfile(response: response)
+  }
+}
+
+// MARK: - MyPageProfile
+
+private extension MyPageProfile {
+
+  init(response: UserProfileResponse) {
+    self.init(
+      userID: response.userID,
+      nickname: response.nickname,
+      profileImageURLs: response.profileImages,
+      birthday: response.birthday,
+      height: response.height,
+      job: response.job,
+      gameGenre: response.gameGenre,
+      introduce: response.introduce,
+      mbti: response.mbti
+    )
   }
 }
